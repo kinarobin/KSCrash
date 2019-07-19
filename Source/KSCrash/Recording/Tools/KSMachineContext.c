@@ -150,8 +150,7 @@ void ksmc_addReservedThread(KSThread thread)
 static inline bool isThreadInList(thread_t thread, KSThread* list, int listCount)
 {
     for(int i = 0; i < listCount; i++) {
-        if (list[i] == (KSThread)thread)
-        {
+        if (list[i] == (KSThread)thread) {
             return true;
         }
     }
@@ -174,8 +173,7 @@ void ksmc_suspendEnvironment()
     
     for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
         thread_t thread = g_suspendedThreads[i];
-        if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount))
-        {
+        if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount)) {
             if ((kr = thread_suspend(thread)) != KERN_SUCCESS)
             {
                 // Record the error and keep going.
@@ -203,8 +201,7 @@ void ksmc_resumeEnvironment()
     
     for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
         thread_t thread = g_suspendedThreads[i];
-        if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount))
-        {
+        if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount)) {
             if ((kr = thread_resume(thread)) != KERN_SUCCESS)
             {
                 // Record the error and keep going.
@@ -240,8 +237,7 @@ int ksmc_indexOfThread(const KSMachineContext* const context, KSThread thread)
     KSLOG_TRACE("check thread vs %d threads", context->threadCount);
     for(int i = 0; i < (int)context->threadCount; i++) {
         KSLOG_TRACE("%d: %x vs %x", i, thread, context->allThreads[i]);
-        if (context->allThreads[i] == thread)
-        {
+        if (context->allThreads[i] == thread) {
             return i;
         }
     }

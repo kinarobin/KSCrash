@@ -65,13 +65,11 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
     
     for(;;) {
         int copyLength = (int)(pSrcEnd - pSrc);
-        if (copyLength <= 0)
-        {
+        if (copyLength <= 0) {
             break;
         }
         
-        if (copySafely(pSrc, pDst, copyLength) == copyLength)
-        {
+        if (copySafely(pSrc, pDst, copyLength) == copyLength) {
             bytesCopied += copyLength;
             pSrc += copyLength;
             pDst += copyLength;
@@ -96,8 +94,7 @@ static inline bool isMemoryReadable(const void* const memory, const int byteCoun
     
     while(bytesRemaining > 0) {
         int bytesToCopy = bytesRemaining > testBufferSize ? testBufferSize : bytesRemaining;
-        if (copySafely(memory, g_memoryTestBuffer, bytesToCopy) != bytesToCopy)
-        {
+        if (copySafely(memory, g_memoryTestBuffer, bytesToCopy) != bytesToCopy) {
             break;
         }
         bytesRemaining -= bytesToCopy;
@@ -112,8 +109,7 @@ int ksmem_maxReadableBytes(const void* const memory, const int tryByteCount)
     int bytesRemaining = tryByteCount;
 
     while(bytesRemaining > testBufferSize) {
-        if (!isMemoryReadable(currentPosition, testBufferSize))
-        {
+        if (!isMemoryReadable(currentPosition, testBufferSize)) {
             break;
         }
         currentPosition += testBufferSize;

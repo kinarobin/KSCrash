@@ -73,8 +73,7 @@ static bool copyStringIvar(const void* self, const char *ivarName, char *buffer,
     KSObjCIvar ivar = {0};
     likely_if(ksobjc_ivarNamed(class, ivarName, &ivar)) {
         void* pointer;
-        likely_if(ksobjc_ivarValue(self, ivar.index, &pointer))
-        {
+        likely_if(ksobjc_ivarValue(self, ivar.index, &pointer)) {
             likely_if(ksobjc_isValidObject(pointer))
             {
                 likely_if(ksobjc_copyStringContents(pointer, buffer, bufferLength) > 0)
@@ -114,8 +113,7 @@ static inline void handleDealloc(const void* self)
         zombie->object = self;
         Class class = object_getClass((id)self);
         zombie->className = class_getName(class);
-        for(; class != nil; class = class_getSuperclass(class))
-        {
+        for(; class != nil; class = class_getSuperclass(class)) {
             unlikely_if(class == g_lastDeallocedException.class)
             {
                 storeException(self);
@@ -201,8 +199,7 @@ static void setEnabled(bool isEnabled)
 {
     if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
-        if (isEnabled)
-        {
+        if (isEnabled) {
             install();
         } else {
             // TODO: Uninstall doesn't work.

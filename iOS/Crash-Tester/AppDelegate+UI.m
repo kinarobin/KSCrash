@@ -524,8 +524,7 @@ block:^(__unused UIViewController* controller) \
         Class testClass = classes[i];
         if (testClass != NULL &&
             class_getSuperclass(testClass) == [CRLCrash class] &&
-            strstr(class_getName(testClass), "CRLCrashSwift") != NULL)
-        {
+            strstr(class_getName(testClass), "CRLCrashSwift") != NULL) {
             foundClass = testClass;
             break;
         }

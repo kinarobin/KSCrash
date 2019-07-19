@@ -68,12 +68,10 @@ bool ksstring_isNullTerminatedUTF8String(const void* memory,
 
     for(; ptr < end; ptr++) {
         unsigned char ch = *ptr;
-        unlikely_if(ch == 0)
-        {
+        unlikely_if(ch == 0) {
             return (ptr - (const unsigned char*)memory) >= minLength;
         }
-        unlikely_if(ch & 0x80)
-        {
+        unlikely_if(ch & 0x80) {
             unlikely_if((ch & 0xc0) != 0xc0)
             {
                 return false;
@@ -91,8 +89,7 @@ bool ksstring_isNullTerminatedUTF8String(const void* memory,
                     return false;
                 }
             }
-        } else unlikely_if(ch < 0x20 && !g_printableControlChars[ch])
-        {
+        } else unlikely_if(ch < 0x20 && !g_printableControlChars[ch]) {
             return false;
         }
     }

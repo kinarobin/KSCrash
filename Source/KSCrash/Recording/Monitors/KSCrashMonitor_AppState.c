@@ -105,8 +105,7 @@ static int onIntegerElement(const char *const name, const int64_t value, void* c
     KSCrash_AppState* state = userData;
 
     if (strcmp(name, kKeyFormatVersion) == 0) {
-        if (value != kFormatVersion)
-        {
+        if (value != kFormatVersion) {
             KSLOG_ERROR("Expected version 1 but got %" PRId64, value);
             return KSJSON_ERROR_INVALID_DATA;
         }
@@ -335,8 +334,7 @@ bool kscrashstate_reset()
         g_state.sessionsSinceLaunch = 1;
         g_state.activeDurationSinceLaunch = 0;
         g_state.backgroundDurationSinceLaunch = 0;
-        if (g_state.crashedLastLaunch)
-        {
+        if (g_state.crashedLastLaunch) {
             g_state.activeDurationSinceLastCrash = 0;
             g_state.backgroundDurationSinceLastCrash = 0;
             g_state.launchesSinceLastCrash = 0;
@@ -367,8 +365,7 @@ void kscrashstate_notifyAppActive(const bool isActive)
 {
     if (g_isEnabled) {
         g_state.applicationIsActive = isActive;
-        if (isActive)
-        {
+        if (isActive) {
             KSLOG_TRACE("Updating transition time from: %f to: %f", g_state.appStateTransitionTime, getCurentTime());
             g_state.appStateTransitionTime = getCurentTime();
         } else {
@@ -387,8 +384,7 @@ void kscrashstate_notifyAppInForeground(const bool isInForeground)
         const char *const stateFilePath = g_stateFilePath;
 
         g_state.applicationIsInForeground = isInForeground;
-        if (isInForeground)
-        {
+        if (isInForeground) {
             double duration = getCurentTime() - g_state.appStateTransitionTime;
             KSLOG_TRACE("Updating backgroundDurationSinceLaunch: %f and backgroundDurationSinceLastCrash: %f with duration: %f",
                         g_state.backgroundDurationSinceLaunch, g_state.backgroundDurationSinceLastCrash, duration);
@@ -432,8 +428,7 @@ static void setEnabled(bool isEnabled)
 {
     if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
-        if (isEnabled)
-        {
+        if (isEnabled) {
             kscrashstate_reset();
         }
     }

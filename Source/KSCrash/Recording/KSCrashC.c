@@ -135,8 +135,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
         strncpy(g_lastCrashReportFilePath, crashReportFilePath, sizeof(g_lastCrashReportFilePath));
         kscrashreport_writeStandardReport(monitorContext, crashReportFilePath);
 
-        if (g_reportWrittenCallback)
-        {
+        if (g_reportWrittenCallback) {
             g_reportWrittenCallback(reportID);
         }
     }

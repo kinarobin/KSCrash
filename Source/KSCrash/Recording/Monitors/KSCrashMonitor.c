@@ -154,8 +154,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
 {
     if (ksdebug_isBeingTraced() && (monitorTypes & KSCrashMonitorTypeDebuggerUnsafe)) {
         static bool hasWarned = false;
-        if (!hasWarned)
-        {
+        if (!hasWarned) {
             hasWarned = true;
             KSLOGBASIC_WARN("    ************************ Crash Handler Notice ************************");
             KSLOGBASIC_WARN("    *     App is running in a debugger. Masking out unsafe monitors.     *");
@@ -176,8 +175,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
         Monitor* monitor = &g_monitors[i];
         bool isEnabled = monitor->monitorType & monitorTypes;
         setMonitorEnabled(monitor, isEnabled);
-        if (isMonitorEnabled(monitor))
-        {
+        if (isMonitorEnabled(monitor)) {
             activeMonitors |= monitor->monitorType;
         } else {
             activeMonitors &= ~monitor->monitorType;
@@ -220,8 +218,7 @@ void kscm_handleException(struct KSCrash_MonitorContext* context)
     }
     for(int i = 0; i < g_monitorsCount; i++) {
         Monitor* monitor = &g_monitors[i];
-        if (isMonitorEnabled(monitor))
-        {
+        if (isMonitorEnabled(monitor)) {
             addContextualInfoToEvent(monitor, context);
         }
     }

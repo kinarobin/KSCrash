@@ -172,8 +172,7 @@ static void restoreExceptionPorts(void)
                                       g_previousExceptionPorts.ports[i],
                                       g_previousExceptionPorts.behaviors[i],
                                       g_previousExceptionPorts.flavors[i]);
-        if (kr != KERN_SUCCESS)
-        {
+        if (kr != KERN_SUCCESS) {
             KSLOG_ERROR("task_set_exception_ports: %s",
                         mach_error_string(kr));
         }
@@ -279,8 +278,7 @@ static void* handleExceptions(void* const userData)
                                     g_exceptionPort,
                                     MACH_MSG_TIMEOUT_NONE,
                                     MACH_PORT_NULL);
-        if (kr == KERN_SUCCESS)
-        {
+        if (kr == KERN_SUCCESS) {
             break;
         }
 
@@ -300,8 +298,7 @@ static void* handleExceptions(void* const userData)
 
         // Switch to the secondary thread if necessary, or uninstall the handler
         // to avoid a death loop.
-        if (ksthread_self() == g_primaryMachThread)
-        {
+        if (ksthread_self() == g_primaryMachThread) {
             KSLOG_DEBUG("This is the primary exception thread. Activating secondary thread.");
 // TODO: This was put here to avoid a freeze. Does secondary thread ever fire?
             restoreExceptionPorts();
@@ -320,8 +317,7 @@ static void* handleExceptions(void* const userData)
         KSCrash_MonitorContext* crashContext = &g_monitorContext;
         crashContext->offendingMachineContext = machineContext;
         kssc_initCursor(&g_stackCursor, NULL, NULL);
-        if (ksmc_getContextForThread(exceptionMessage.thread.name, machineContext, true))
-        {
+        if (ksmc_getContextForThread(exceptionMessage.thread.name, machineContext, true)) {
             kssc_initWithMachineContext(&g_stackCursor, 100, machineContext);
             KSLOG_TRACE("Fault address 0x%x, instruction address 0x%x", kscpu_faultAddress(machineContext), kscpu_instructionAddress(machineContext));
             if (exceptionMessage.exception == EXC_BAD_ACCESS)
@@ -341,8 +337,7 @@ static void* handleExceptions(void* const userData)
         crashContext->mach.type = exceptionMessage.exception;
         crashContext->mach.code = exceptionMessage.code[0];
         crashContext->mach.subcode = exceptionMessage.code[1];
-        if (crashContext->mach.code == KERN_PROTECTION_FAILURE && crashContext->isStackOverflow)
-        {
+        if (crashContext->mach.code == KERN_PROTECTION_FAILURE && crashContext->isStackOverflow) {
             // A stack overflow should return KERN_INVALID_ADDRESS, but
             // when a stack blasts through the guard pages at the top of the stack,
             // it generates KERN_PROTECTION_FAILURE. Correct for this.
@@ -393,8 +388,7 @@ static void uninstallExceptionHandler()
     
     if (g_primaryPThread != 0 && g_primaryMachThread != thread_self) {
         KSLOG_DEBUG("Canceling primary exception thread.");
-        if (g_isHandlingCrash)
-        {
+        if (g_isHandlingCrash) {
             thread_terminate(g_primaryMachThread);
         } else {
             pthread_cancel(g_primaryPThread);
@@ -404,8 +398,7 @@ static void uninstallExceptionHandler()
     }
     if (g_secondaryPThread != 0 && g_secondaryMachThread != thread_self) {
         KSLOG_DEBUG("Canceling secondary exception thread.");
-        if (g_isHandlingCrash)
-        {
+        if (g_isHandlingCrash) {
             thread_terminate(g_secondaryMachThread);
         } else {
             pthread_cancel(g_secondaryPThread);
@@ -453,8 +446,7 @@ static bool installExceptionHandler()
         kr = mach_port_allocate(thisTask,
                                 MACH_PORT_RIGHT_RECEIVE,
                                 &g_exceptionPort);
-        if (kr != KERN_SUCCESS)
-        {
+        if (kr != KERN_SUCCESS) {
             KSLOG_ERROR("mach_port_allocate: %s", mach_error_string(kr));
             goto failed;
         }
@@ -464,8 +456,7 @@ static bool installExceptionHandler()
                                     g_exceptionPort,
                                     g_exceptionPort,
                                     MACH_MSG_TYPE_MAKE_SEND);
-        if (kr != KERN_SUCCESS)
-        {
+        if (kr != KERN_SUCCESS) {
             KSLOG_ERROR("mach_port_insert_right: %s", mach_error_string(kr));
             goto failed;
         }
@@ -527,8 +518,7 @@ static void setEnabled(bool isEnabled)
 {
     if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
-        if (isEnabled)
-        {
+        if (isEnabled) {
             ksid_generate(g_primaryEventID);
             ksid_generate(g_secondaryEventID);
             if (!installExceptionHandler())

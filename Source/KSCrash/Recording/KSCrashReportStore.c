@@ -89,8 +89,7 @@ static int getReportCount()
     }
     struct dirent* ent;
     while((ent = readdir(dir)) != NULL) {
-        if (getReportIDFromFilename(ent->d_name) > 0)
-        {
+        if (getReportIDFromFilename(ent->d_name) > 0) {
             count++;
         }
     }
@@ -114,8 +113,7 @@ static int getReportIDs(int64_t* reportIDs, int count)
     struct dirent* ent;
     while((ent = readdir(dir)) != NULL && index < count) {
         int64_t reportID = getReportIDFromFilename(ent->d_name);
-        if (reportID > 0)
-        {
+        if (reportID > 0) {
             reportIDs[index++] = reportID;
         }
     }
@@ -136,8 +134,7 @@ static void pruneReports()
         int64_t reportIDs[reportCount];
         reportCount = getReportIDs(reportIDs, reportCount);
         
-        for(int i = 0; i < reportCount - g_maxReportCount; i++)
-        {
+        for(int i = 0; i < reportCount - g_maxReportCount; i++) {
             kscrs_deleteReportWithID(reportIDs[i]);
         }
     }

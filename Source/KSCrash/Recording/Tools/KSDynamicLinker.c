@@ -75,8 +75,7 @@ static uint32_t imageIndexContainingAddress(const uintptr_t address)
     
     for(uint32_t iImg = 0; iImg < imageCount; iImg++) {
         header = _dyld_get_image_header(iImg);
-        if (header != NULL)
-        {
+        if (header != NULL) {
             // Look for a segment command with this address within its range.
             uintptr_t addressWSlide = address - (uintptr_t)_dyld_get_image_vmaddr_slide(iImg);
             uintptr_t cmdPtr = firstCmdAfterHeader(header);
@@ -130,15 +129,13 @@ static uintptr_t segmentBaseOfImageIndex(const uint32_t idx)
     }
     for(uint32_t i = 0;i < header->ncmds; i++) {
         const struct load_command* loadCmd = (struct load_command*)cmdPtr;
-        if (loadCmd->cmd == LC_SEGMENT)
-        {
+        if (loadCmd->cmd == LC_SEGMENT) {
             const struct segment_command* segmentCmd = (struct segment_command*)cmdPtr;
             if (strcmp(segmentCmd->segname, SEG_LINKEDIT) == 0)
             {
                 return segmentCmd->vmaddr - segmentCmd->fileoff;
             }
-        } else if (loadCmd->cmd == LC_SEGMENT_64)
-        {
+        } else if (loadCmd->cmd == LC_SEGMENT_64) {
             const struct segment_command_64* segmentCmd = (struct segment_command_64*)cmdPtr;
             if (strcmp(segmentCmd->segname, SEG_LINKEDIT) == 0)
             {
@@ -156,8 +153,7 @@ uint32_t ksdl_imageNamed(const char *const imageName, bool exactMatch)
     if (imageName != NULL) {
         const uint32_t imageCount = _dyld_image_count();
 
-        for(uint32_t iImg = 0; iImg < imageCount; iImg++)
-        {
+        for(uint32_t iImg = 0; iImg < imageCount; iImg++) {
             const char *name = _dyld_get_image_name(iImg);
             if (exactMatch)
             {
@@ -182,8 +178,7 @@ const uint8_t* ksdl_imageUUID(const char *const imageName, bool exactMatch)
 {
     if (imageName != NULL) {
         const uint32_t iImg = ksdl_imageNamed(imageName, exactMatch);
-        if (iImg != UINT32_MAX)
-        {
+        if (iImg != UINT32_MAX) {
             const struct mach_header* header = _dyld_get_image_header(iImg);
             if (header != NULL)
             {
@@ -238,8 +233,7 @@ bool ksdl_dladdr(const uintptr_t address, Dl_info* const info)
     }
     for(uint32_t iCmd = 0; iCmd < header->ncmds; iCmd++) {
         const struct load_command* loadCmd = (struct load_command*)cmdPtr;
-        if (loadCmd->cmd == LC_SYMTAB)
-        {
+        if (loadCmd->cmd == LC_SYMTAB) {
             const struct symtab_command* symtabCmd = (struct symtab_command*)cmdPtr;
             const STRUCT_NLIST* symbolTable = (STRUCT_NLIST*)(segmentBase + symtabCmd->symoff);
             const uintptr_t stringTable = segmentBase + symtabCmd->stroff;
@@ -311,8 +305,7 @@ bool ksdl_getBinaryImage(int index, KSBinaryImage* buffer)
     
     for(uint32_t iCmd = 0; iCmd < header->ncmds; iCmd++) {
         struct load_command* loadCmd = (struct load_command*)cmdPtr;
-        switch(loadCmd->cmd)
-        {
+        switch(loadCmd->cmd) {
             case LC_SEGMENT:
             {
                 struct segment_command* segCmd = (struct segment_command*)cmdPtr;

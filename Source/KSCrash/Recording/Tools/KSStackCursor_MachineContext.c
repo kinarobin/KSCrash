@@ -110,8 +110,7 @@ static bool advanceCursor(KSStackCursor *cursor)
     
     if (context->instructionAddress == 0) {
         context->instructionAddress = kscpu_instructionAddress(context->machineContext);
-        if (context->instructionAddress == 0)
-        {
+        if (context->instructionAddress == 0) {
             return false;
         }
         nextAddress = context->instructionAddress;
@@ -119,8 +118,7 @@ static bool advanceCursor(KSStackCursor *cursor)
     }
 
     if (context->currentFrame.previous == NULL) {
-        if (context->isPastFramePointer)
-        {
+        if (context->isPastFramePointer) {
             return false;
         }
         context->currentFrame.previous = (struct FrameEntry*)kscpu_framePointer(context->machineContext);

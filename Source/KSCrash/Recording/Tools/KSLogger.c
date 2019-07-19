@@ -105,8 +105,7 @@ static void writeToLog(const char *const str)
     if (g_fd >= 0) {
         int bytesToWrite = (int)strlen(str);
         const char *pos = str;
-        while(bytesToWrite > 0)
-        {
+        while(bytesToWrite > 0) {
             int bytesWritten = (int)write(g_fd, pos, (unsigned)bytesToWrite);
             unlikely_if(bytesWritten == -1)
             {
@@ -148,18 +147,15 @@ bool kslog_setLogFilename(const char *filename, bool overwrite)
     static int fd = -1;
     if (filename != NULL) {
         int openMask = O_WRONLY | O_CREAT;
-        if (overwrite)
-        {
+        if (overwrite) {
             openMask |= O_TRUNC;
         }
         fd = open(filename, openMask, 0644);
-        unlikely_if(fd < 0)
-        {
+        unlikely_if(fd < 0) {
             writeFmtToLog("KSLogger: Could not open %s: %s", filename, strerror(errno));
             return false;
         }
-        if(filename != g_logFilename)
-        {
+        if(filename != g_logFilename) {
             strncpy(g_logFilename, filename, sizeof(g_logFilename));
         }
     }
@@ -212,8 +208,7 @@ bool kslog_setLogFilename(const char *filename, bool overwrite)
     FILE* oldFile = file;
     if (filename != NULL) {
         file = fopen(filename, overwrite ? "wb" : "ab");
-        unlikely_if(file == NULL)
-        {
+        unlikely_if(file == NULL) {
             writeFmtToLog("KSLogger: Could not open %s: %s", filename, strerror(errno));
             return false;
         }

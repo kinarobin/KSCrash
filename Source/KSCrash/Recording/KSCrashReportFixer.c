@@ -104,8 +104,7 @@ static bool matchesPath(FixupContext* context, char** path, const char *finalNam
     }
 
     for(int i = 0;i < context->currentDepth; i++) {
-        if (strncmp(context->objectPath[i], path[i], MAX_NAME_LENGTH) != 0)
-        {
+        if (strncmp(context->objectPath[i], path[i], MAX_NAME_LENGTH) != 0) {
             return false;
         }
     }
@@ -118,8 +117,7 @@ static bool matchesPath(FixupContext* context, char** path, const char *finalNam
 static bool matchesAPath(FixupContext* context, const char *name, char *paths[][MAX_DEPTH], int pathsCount)
 {
     for(int i = 0; i < pathsCount; i++) {
-        if (matchesPath(context, paths[i], name))
-        {
+        if (matchesPath(context, paths[i], name)) {
             return true;
         }
     }
@@ -177,8 +175,7 @@ static int onIntegerElement(const char *const name,
     if (shouldFixDate(context, name)) {
         char buffer[28];
 
-        if (matchesMinVersion(context, 3, 3, 0))
-        {
+        if (matchesMinVersion(context, 3, 3, 0)) {
             ksdate_utcStringFromMicroseconds(value, buffer);
         } else {
             ksdate_utcStringFromTimestamp((time_t)value, buffer);
@@ -208,13 +205,11 @@ static int onStringElement(const char *const name,
     if (shouldDemangle(context, name)) {
         demangled = ksdm_demangleCPP(value);
 #if KSCRASH_HAS_SWIFT
-        if (demangled == NULL)
-        {
+        if (demangled == NULL) {
             demangled = ksdm_demangleSwift(value);
         }
 #endif
-        if (demangled != NULL)
-        {
+        if (demangled != NULL) {
             stringValue = demangled;
         }
     }
@@ -227,8 +222,7 @@ static int onStringElement(const char *const name,
         int versionPartsIndex = 0;
         char *mutableValue = strdup(value);
         char *versionPart = strtok(mutableValue, ".");
-        while(versionPart != NULL && versionPartsIndex < REPORT_VERSION_COMPONENTS_COUNT)
-        {
+        while(versionPart != NULL && versionPartsIndex < REPORT_VERSION_COMPONENTS_COUNT) {
             context->reportVersionComponents[versionPartsIndex++] = atoi(versionPart);
             versionPart = strtok(NULL, ".");
         }

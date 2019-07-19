@@ -37,8 +37,7 @@ static bool advanceCursor(KSStackCursor *cursor)
         int currentIndex = cursor->state.currentDepth + context->skippedEntries;
         uintptr_t nextAddress = context->backtrace[currentIndex];
         // Bug: The system sometimes gives a backtrace with an extra 0x00000001 at the end.
-        if (nextAddress > 1)
-        {
+        if (nextAddress > 1) {
             cursor->stackEntry.address = kscpu_normaliseInstructionPointer(nextAddress);
             cursor->state.currentDepth++;
             return true;

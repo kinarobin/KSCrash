@@ -178,8 +178,7 @@ static const ClassData* getClassDataFromTaggedPointer(const void* const object)
 static bool isValidTaggedPointer(const void* object)
 {
     if (isTaggedPointer(object)) {
-        if (getTaggedSlot(object) <= g_taggedClassDataCount)
-        {
+        if (getTaggedSlot(object) <= g_taggedClassDataCount) {
             const ClassData* classData = getClassDataFromTaggedPointer(object);
             return classData->type != KSObjCClassTypeUnknown;
         }
@@ -313,21 +312,18 @@ static int extractTaggedNSString(const void* const object, char *buffer, int buf
     uintptr_t value = payload >> 4;
     static char *alphabet = "eilotrm.apdnsIc ufkMShjTRxgC4013bDNvwyUL2O856P-B79AFKEWV_zGJ/HYX";
     if (length <=7) {
-        for(int i = 0; i < copyLength; i++)
-        {
+        for(int i = 0; i < copyLength; i++) {
             // ASCII case, limit to bottom 7 bits just in case
             buffer[i] = (char)(value & 0x7f);
             value >>= 8;
         }
     } else if (length <= 9) {
-        for(int i = 0; i < copyLength; i++)
-        {
+        for(int i = 0; i < copyLength; i++) {
             uintptr_t index = (value >> ((length - 1 - i) * 6)) & 0x3f;
             buffer[i] = alphabet[index];
         }
     } else if (length <= 11) {
-        for(int i = 0; i < copyLength; i++)
-        {
+        for(int i = 0; i < copyLength; i++) {
             uintptr_t index = (value >> ((length - 1 - i) * 5)) & 0x1f;
             buffer[i] = alphabet[index];
         }
@@ -374,16 +370,13 @@ static ClassData* getClassData(const void* class)
 {
     const char *className = getClassName(class);
     for(ClassData* data = g_classData;; data++) {
-        unlikely_if(data->name == NULL)
-        {
+        unlikely_if(data->name == NULL) {
             return data;
         }
-        unlikely_if(class == data->class)
-        {
+        unlikely_if(class == data->class) {
             return data;
         }
-        unlikely_if(data->class == NULL && strcmp(className, data->name) == 0)
-        {
+        unlikely_if(data->class == NULL && strcmp(className, data->name) == 0) {
             data->class = class;
             return data;
         }
@@ -471,8 +464,7 @@ static bool isValidName(const char *const name, const int maxLength)
         return false;
     }
     for(int i = 1; i < length; i++) {
-        unlikely_if(!VALID_NAME_CHAR(name[i]))
-        {
+        unlikely_if(!VALID_NAME_CHAR(name[i])) {
             if (name[i] == 0)
             {
                 return true;
@@ -498,8 +490,7 @@ static bool isValidIvarType(const char *const type)
         return false;
     }
     for(int i = 0; i < length; i++) {
-        unlikely_if(!VALID_TYPE_CHAR(type[i]))
-        {
+        unlikely_if(!VALID_TYPE_CHAR(type[i])) {
             if (type[i] == 0)
             {
                 return true;
@@ -540,8 +531,7 @@ static bool containsValidIvarData(const void* const classPtr)
     if (ivars->count > 0) {
         struct ivar_t ivar;
         uint8_t* ivarPtr = (uint8_t*)(&ivars->first) + ivars->entsizeAndFlags;
-        for(uint32_t i = 1; i < ivars->count; i++)
-        {
+        for(uint32_t i = 1; i < ivars->count; i++) {
             if (!ksmem_copySafely(ivarPtr, &ivar, sizeof(ivar)))
             {
                 return false;
@@ -649,8 +639,7 @@ const char *ksobjc_className(const void* classPtr)
 const char *ksobjc_objectClassName(const void* objectPtr)
 {
     if (isTaggedPointer(objectPtr)) {
-        if (isValidTaggedPointer(objectPtr))
-        {
+        if (isValidTaggedPointer(objectPtr)) {
             const ClassData* class = getClassDataFromTaggedPointer(objectPtr);
             return class->name;
         }
@@ -679,17 +668,14 @@ bool ksobjc_isKindOfClass(const void* const classPtr, const char *const classNam
     
     for(int i = 0; i < 20; i++) {
         const char *name = getClassName(class);
-        if (name == NULL)
-        {
+        if (name == NULL) {
             return false;
         }
-        if (strcmp(className, name) == 0)
-        {
+        if (strcmp(className, name) == 0) {
             return true;
         }
         class = class->superclass;
-        if (!containsValidROData(class))
-        {
+        if (!containsValidROData(class)) {
             return false;
         }
     }
@@ -702,14 +688,12 @@ const void* ksobjc_baseClass(const void* const classPtr)
     const struct class_t* subClass = classPtr;
     
     for(int i = 0; i < 20; i++) {
-        if (isRootClass(superClass))
-        {
+        if (isRootClass(superClass)) {
             return subClass;
         }
         subClass = superClass;
         superClass = superClass->superclass;
-        if (!containsValidROData(superClass))
-        {
+        if (!containsValidROData(superClass)) {
             return NULL;
         }
     }
@@ -763,8 +747,7 @@ bool ksobjc_ivarNamed(const void* const classPtr, const char *name, KSObjCIvar* 
     uintptr_t ivarPtr = (uintptr_t)&ivars->first;
     const struct ivar_t* ivar = (void*)ivarPtr;
     for(int i = 0; i < (int)ivars->count; i++) {
-        if (ivar->name != NULL && strcmp(name, ivar->name) == 0)
-        {
+        if (ivar->name != NULL && strcmp(name, ivar->name) == 0) {
             dst->name = ivar->name;
             dst->type = ivar->type;
             dst->index = i;
@@ -780,14 +763,12 @@ bool ksobjc_ivarValue(const void* const objectPtr, int ivarIndex, void* dst)
 {
     if (isTaggedPointer(objectPtr)) {
         // Naively assume they want "value".
-        if (isTaggedPointerNSDate(objectPtr))
-        {
+        if (isTaggedPointerNSDate(objectPtr)) {
             CFTimeInterval value = extractTaggedNSDate(objectPtr);
             memcpy(dst, &value, sizeof(value));
             return true;
         }
-        if (isTaggedPointerNSNumber(objectPtr))
-        {
+        if (isTaggedPointerNSNumber(objectPtr)) {
             // TODO: Correct to assume 64-bit signed int? What does the actual ivar say?
             int64_t value = extractTaggedNSNumber(objectPtr);
             memcpy(dst, &value, sizeof(value));
@@ -915,30 +896,25 @@ static bool stringIsValid(const void* const stringPtr)
     }
     
     if (__CFStrIsInline(string)) {
-        if (!ksmem_copySafely(&string->variants.inline1, &temp, sizeof(string->variants.inline1)))
-        {
+        if (!ksmem_copySafely(&string->variants.inline1, &temp, sizeof(string->variants.inline1))) {
             return false;
         }
         length = string->variants.inline1.length;
     } else if (__CFStrIsMutable(string)) {
-        if (!ksmem_copySafely(&string->variants.notInlineMutable, &temp, sizeof(string->variants.notInlineMutable)))
-        {
+        if (!ksmem_copySafely(&string->variants.notInlineMutable, &temp, sizeof(string->variants.notInlineMutable))) {
             return false;
         }
         length = string->variants.notInlineMutable.length;
     } else if (!__CFStrHasLengthByte(string)) {
-        if (!ksmem_copySafely(&string->variants.notInlineImmutable1, &temp, sizeof(string->variants.notInlineImmutable1)))
-        {
+        if (!ksmem_copySafely(&string->variants.notInlineImmutable1, &temp, sizeof(string->variants.notInlineImmutable1))) {
             return false;
         }
         length = string->variants.notInlineImmutable1.length;
     } else {
-        if (!ksmem_copySafely(&string->variants.notInlineImmutable2, &temp, sizeof(string->variants.notInlineImmutable2)))
-        {
+        if (!ksmem_copySafely(&string->variants.notInlineImmutable2, &temp, sizeof(string->variants.notInlineImmutable2))) {
             return false;
         }
-        if (!ksmem_copySafely(__CFStrContents(string), &oneByte, sizeof(oneByte)))
-        {
+        if (!ksmem_copySafely(__CFStrContents(string), &oneByte, sizeof(oneByte))) {
             return false;
         }
         length = oneByte;
@@ -947,8 +923,7 @@ static bool stringIsValid(const void* const stringPtr)
     if (length < 0) {
         return false;
     } else if (length > 0) {
-        if (!ksmem_copySafely(stringStart(string), &oneByte, sizeof(oneByte)))
-        {
+        if (!ksmem_copySafely(stringStart(string), &oneByte, sizeof(oneByte))) {
             return false;
         }
     }
@@ -964,8 +939,7 @@ int ksobjc_stringLength(const void* const stringPtr)
     const struct __CFString* string = stringPtr;
 
     if (__CFStrHasExplicitLength(string)) {
-        if (__CFStrIsInline(string))
-        {
+        if (__CFStrIsInline(string)) {
             return (int)string->variants.inline1.length;
         } else {
             return (int)string->variants.notInlineImmutable1.length;
@@ -993,11 +967,9 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
         // Decode UTF-16
         uint32_t character = 0;
         uint16_t leadSurrogate = *pSrc++;
-        likely_if(leadSurrogate < kUTF16_LeadSurrogateStart || leadSurrogate > kUTF16_TailSurrogateEnd)
-        {
+        likely_if(leadSurrogate < kUTF16_LeadSurrogateStart || leadSurrogate > kUTF16_TailSurrogateEnd) {
             character = leadSurrogate;
-        } else if (leadSurrogate > kUTF16_LeadSurrogateEnd)
-        {
+        } else if (leadSurrogate > kUTF16_LeadSurrogateEnd) {
             // Inverted surrogate
             *((uint8_t*)dst) = 0;
             return 0;
@@ -1015,11 +987,9 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
         }
         
         // Encode UTF-8
-        likely_if(character <= 0x7f)
-        {
+        likely_if(character <= 0x7f) {
             *pDst++ = (uint8_t)character;
-        } else if (character <= 0x7ff)
-        {
+        } else if (character <= 0x7ff) {
             if (pDstEnd - pDst >= 2)
             {
                 *pDst++ = (uint8_t)(0xc0 | (character >> 6));
@@ -1029,8 +999,7 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
             {
                 break;
             }
-        } else if (character <= 0xffff)
-        {
+        } else if (character <= 0xffff) {
             if (pDstEnd - pDst >= 3)
             {
                 *pDst++ = (uint8_t)(0xe0 | (character >> 12));
@@ -1043,8 +1012,7 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
             }
         }
         // RFC3629 restricts UTF-8 to end at 0x10ffff.
-        else if (character <= 0x10ffff)
-        {
+        else if (character <= 0x10ffff) {
             if (pDstEnd - pDst >= 4)
             {
                 *pDst++ = (uint8_t)(0xf0 | (character >> 18));
@@ -1346,8 +1314,7 @@ static int nsarrayContents(const void* const arrayPtr, uintptr_t* contents, int 
     const struct NSArray* array = arrayPtr;
     
     if (array->basic.count < (CFIndex)count) {
-        if (array->basic.count <= 0)
-        {
+        if (array->basic.count <= 0) {
             return 0;
         }
         count = (int)array->basic.count;
@@ -1372,8 +1339,7 @@ static inline bool cfarrayIsValid(const void* const arrayPtr)
     }
     const struct __CFArray* array = arrayPtr;
     if (__CFArrayGetType(array) == __kCFArrayDeque) {
-        if (array->_store != NULL)
-        {
+        if (array->_store != NULL) {
             struct __CFArrayDeque deque;
             if (!ksmem_copySafely(array->_store, &deque, sizeof(deque)))
             {
@@ -1399,8 +1365,7 @@ static int cfarrayContents(const void* const arrayPtr, uintptr_t* contents, int 
 {
     const struct __CFArray* array = arrayPtr;
     if (array->_count < (CFIndex)count) {
-        if (array->_count <= 0)
-        {
+        if (array->_count <= 0) {
             return 0;
         }
         count = (int)array->_count;
@@ -1455,8 +1420,7 @@ static int arrayDescription(const void* object, char *buffer, int bufferLength)
 
     if (pBuffer < pEnd-1 && ksobjc_arrayCount(object) > 0) {
         uintptr_t contents = 0;
-        if (ksobjc_arrayContents(object, &contents, 1) == 1)
-        {
+        if (ksobjc_arrayContents(object, &contents, 1) == 1) {
             pBuffer += ksobjc_getDescription((void*)contents, pBuffer, (int)(pEnd - pBuffer));
         }
     }

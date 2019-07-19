@@ -141,8 +141,7 @@ static int appendEscapedString(KSJSONEncodeContext* const context,
 
     // Deal with complicated case (if any)
     for(; src < srcEnd; src++) {
-        switch(*src)
-        {
+        switch(*src) {
             case '\\':
             case '\"':
                 *dst++ = '\\';
@@ -203,13 +202,11 @@ static int addEscapedString(KSJSONEncodeContext* const context,
     int offset = 0;
     while(offset < length) {
         int toAdd = length - offset;
-        unlikely_if(toAdd > KSJSONCODEC_WorkBufferSize / 2)
-        {
+        unlikely_if(toAdd > KSJSONCODEC_WorkBufferSize / 2) {
             toAdd = KSJSONCODEC_WorkBufferSize / 2;
         }
         result = appendEscapedString(context, string + offset, toAdd);
-        unlikely_if(result != KSJSON_OK)
-        {
+        unlikely_if(result != KSJSON_OK) {
             break;
         }
         offset += toAdd;
@@ -251,20 +248,17 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char *const na
     unlikely_if(context->containerFirstEntry) {
         context->containerFirstEntry = false;
     } else {
-        unlikely_if((result = addJSONData(context, ",", 1)) != KSJSON_OK)
-        {
+        unlikely_if((result = addJSONData(context, ",", 1)) != KSJSON_OK) {
             return result;
         }
     }
 
     // Pretty printing
     unlikely_if(context->prettyPrint && context->containerLevel > 0) {
-        unlikely_if((result = addJSONData(context, "\n", 1)) != KSJSON_OK)
-        {
+        unlikely_if((result = addJSONData(context, "\n", 1)) != KSJSON_OK) {
             return result;
         }
-        for(int i = 0; i < context->containerLevel; i++)
-        {
+        for(int i = 0; i < context->containerLevel; i++) {
             unlikely_if((result = addJSONData(context, "    ", 4)) != KSJSON_OK)
             {
                 return result;
@@ -274,17 +268,14 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char *const na
 
     // Add a name field if we're in an object.
     if (context->isObject[context->containerLevel]) {
-        unlikely_if(name == NULL)
-        {
+        unlikely_if(name == NULL) {
             KSLOG_DEBUG("Name was null inside an object");
             return KSJSON_ERROR_INVALID_DATA;
         }
-        unlikely_if((result = addQuotedEscapedString(context, name, (int)strlen(name))) != KSJSON_OK)
-        {
+        unlikely_if((result = addQuotedEscapedString(context, name, (int)strlen(name))) != KSJSON_OK) {
             return result;
         }
-        unlikely_if(context->prettyPrint)
-        {
+        unlikely_if(context->prettyPrint) {
             unlikely_if((result = addJSONData(context, ": ", 2)) != KSJSON_OK)
             {
                 return result;
@@ -431,8 +422,7 @@ int ksjson_appendDataElement(KSJSONEncodeContext* const context,
         chars[0] = g_hexNybbles[(*currentByte>>4)&15];
         chars[1] = g_hexNybbles[*currentByte&15];
         result = addJSONData(context, chars, sizeof(chars));
-        if (result != KSJSON_OK)
-        {
+        if (result != KSJSON_OK) {
             break;
         }
         currentByte++;
@@ -450,8 +440,7 @@ int ksjson_beginArray(KSJSONEncodeContext* const context,
 {
     likely_if(context->containerLevel >= 0) {
         int result = ksjson_beginElement(context, name);
-        unlikely_if(result != KSJSON_OK)
-        {
+        unlikely_if(result != KSJSON_OK) {
             return result;
         }
     }
@@ -468,8 +457,7 @@ int ksjson_beginObject(KSJSONEncodeContext* const context,
 {
     likely_if(context->containerLevel >= 0) {
         int result = ksjson_beginElement(context, name);
-        unlikely_if(result != KSJSON_OK)
-        {
+        unlikely_if(result != KSJSON_OK) {
             return result;
         }
     }
@@ -493,12 +481,10 @@ int ksjson_endContainer(KSJSONEncodeContext* const context)
     // Pretty printing
     unlikely_if(context->prettyPrint && !context->containerFirstEntry) {
         int result;
-        unlikely_if((result = addJSONData(context, "\n", 1)) != KSJSON_OK)
-        {
+        unlikely_if((result = addJSONData(context, "\n", 1)) != KSJSON_OK) {
             return result;
         }
-        for(int i = 0; i < context->containerLevel; i++)
-        {
+        for(int i = 0; i < context->containerLevel; i++) {
             unlikely_if((result = addJSONData(context, "    ", 4)) != KSJSON_OK)
             {
                 return result;
@@ -525,8 +511,7 @@ int ksjson_endEncode(KSJSONEncodeContext* const context)
 {
     int result = KSJSON_OK;
     while(context->containerLevel > 0) {
-        unlikely_if((result = ksjson_endContainer(context)) != KSJSON_OK)
-        {
+        unlikely_if((result = ksjson_endContainer(context)) != KSJSON_OK) {
             return result;
         }
     }
@@ -697,8 +682,7 @@ static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBu
     bool fastCopy = true;
 
     for(; src < context->bufferEnd && *src != '\"'; src++) {
-        unlikely_if(*src == '\\')
-        {
+        unlikely_if(*src == '\\') {
             fastCopy = false;
             src++;
         }
@@ -727,8 +711,7 @@ static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBu
     char *dst = dstBuffer;
 
     for(; src < srcEnd; src++) {
-        likely_if(*src != '\\')
-        {
+        likely_if(*src != '\\') {
             *dst++ = *src;
         } else {
             src++;
@@ -993,8 +976,7 @@ static int decodeElement(const char *const name, KSJSONDecodeContext* context)
         case '-':
             sign = -1;
             context->bufferPtr++;
-            unlikely_if(!isdigit(*context->bufferPtr))
-        {
+            unlikely_if(!isdigit(*context->bufferPtr)) {
             KSLOG_DEBUG("Not a digit: '%c'", *context->bufferPtr);
             return KSJSON_ERROR_INVALID_CHARACTER;
         }
@@ -1126,8 +1108,7 @@ static void updateDecoder_readFile(struct JSONFromFileContext* context)
         const char *ptr = context->decodeContext->bufferPtr;
         int bufferLength = (int)(end - start);
         int remainingLength = (int)(end - ptr);
-        unlikely_if(remainingLength < bufferLength / 2)
-        {
+        unlikely_if(remainingLength < bufferLength / 2) {
             int fillLength = bufferLength - remainingLength;
             memcpy(start, ptr, remainingLength);
             context->decodeContext->bufferPtr = start;

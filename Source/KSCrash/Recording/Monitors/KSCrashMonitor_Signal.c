@@ -155,8 +155,7 @@ static bool installSignalHandler()
 
     for(int i = 0; i < fatalSignalsCount; i++) {
         KSLOG_DEBUG("Assigning handler for signal %d", fatalSignals[i]);
-        if (sigaction(fatalSignals[i], &action, &g_previousSignalHandlers[i]) != 0)
-        {
+        if (sigaction(fatalSignals[i], &action, &g_previousSignalHandlers[i]) != 0) {
             char sigNameBuff[30];
             const char *sigName = kssignal_signalName(fatalSignals[i]);
             if (sigName == NULL)
@@ -203,8 +202,7 @@ static void setEnabled(bool isEnabled)
 {
     if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
-        if (isEnabled)
-        {
+        if (isEnabled) {
             ksid_generate(g_eventID);
             if (!installSignalHandler())
             {

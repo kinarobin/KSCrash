@@ -81,14 +81,12 @@ extern "C"
     void __cxa_throw(void* thrown_exception, std::type_info* tinfo, void (*dest)(void*)) __attribute__ ((weak));
 
     void __cxa_throw(void* thrown_exception, std::type_info* tinfo, void (*dest)(void*)) {
-        if (g_captureNextStackTrace)
-        {
+        if (g_captureNextStackTrace) {
             kssc_initSelfThread(&g_stackCursor, 1);
         }
         
         static cxa_throw_type orig_cxa_throw = NULL;
-        unlikely_if(orig_cxa_throw == NULL)
-        {
+        unlikely_if(orig_cxa_throw == NULL) {
             orig_cxa_throw = (cxa_throw_type) dlsym(RTLD_NEXT, "__cxa_throw");
         }
         orig_cxa_throw(thrown_exception, tinfo, dest);
@@ -121,8 +119,7 @@ static void CPPExceptionTerminate(void)
         {
             throw;
         }
-        catch(std::exception& exc)
-        {
+        catch(std::exception& exc) {
             strncpy(descriptionBuff, exc.what(), sizeof(descriptionBuff));
         }
 #define CATCH_VALUE(TYPE, PRINTFTYPE) \
@@ -144,8 +141,7 @@ catch(TYPE value)\
         CATCH_VALUE(double,               f)
         CATCH_VALUE(long double,         Lf)
         CATCH_VALUE(char*,                s)
-        catch(...)
-        {
+        catch(...) {
             description = NULL;
         }
         g_captureNextStackTrace = g_isEnabled;
@@ -192,8 +188,7 @@ static void setEnabled(bool isEnabled)
 {
     if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
-        if (isEnabled)
-        {
+        if (isEnabled) {
             initialize();
 
             ksid_generate(g_eventID);

@@ -51,8 +51,7 @@ static const int g_monitorTypesCount = sizeof(g_monitorTypes) / sizeof(*g_monito
 const char *kscrashmonitortype_name(const KSCrashMonitorType monitorType)
 {
     for(int i = 0; i < g_monitorTypesCount; i++) {
-        if (g_monitorTypes[i].type == monitorType)
-        {
+        if (g_monitorTypes[i].type == monitorType) {
             return g_monitorTypes[i].name;
         }
     }
