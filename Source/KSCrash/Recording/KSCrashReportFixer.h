@@ -41,7 +41,7 @@ extern "C" {
  *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on
  * the returned value.
  */
-char* kscrf_fixupCrashReport(const char* crashReport);
+char *kscrf_fixupCrashReport(const char *crashReport);
 
 #ifdef __cplusplus
 }

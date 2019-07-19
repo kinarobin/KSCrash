@@ -37,7 +37,7 @@
 #include "KSLogger.h"
 
 
-static const char* g_registerNames[] =
+static const char *g_registerNames[] =
 {
     "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
     "r8", "r9", "r10", "r11", "ip",
@@ -47,7 +47,7 @@ static const int g_registerNamesCount =
 sizeof(g_registerNames) / sizeof(*g_registerNames);
 
 
-static const char* g_exceptionRegisterNames[] =
+static const char *g_exceptionRegisterNames[] =
 {
     "exception", "fsr", "far"
 };
@@ -89,7 +89,7 @@ int kscpu_numRegisters(void)
     return g_registerNamesCount;
 }
 
-const char* kscpu_registerName(const int regNumber)
+const char *kscpu_registerName(const int regNumber)
 {
     if (regNumber < kscpu_numRegisters())
     {
@@ -122,7 +122,7 @@ int kscpu_numExceptionRegisters(void)
     return g_exceptionRegisterNamesCount;
 }
 
-const char* kscpu_exceptionRegisterName(const int regNumber)
+const char *kscpu_exceptionRegisterName(const int regNumber)
 {
     if (regNumber < kscpu_numExceptionRegisters())
     {

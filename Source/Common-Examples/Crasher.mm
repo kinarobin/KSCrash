@@ -12,10 +12,10 @@
 class MyException: public std::exception
 {
 public:
-    virtual const char* what() const noexcept;
+    virtual const char *what() const noexcept;
 };
 
-const char* MyException::what() const noexcept
+const char *MyException::what() const noexcept
 {
     return "Something bad happened...";
 }
@@ -91,7 +91,7 @@ int g_crasher_denominator = 0;
 
 - (void) dereferenceBadPointer
 {
-    char* ptr = (char*)-1;
+    char *ptr = (char*)-1;
     *ptr = 1;
 }
 

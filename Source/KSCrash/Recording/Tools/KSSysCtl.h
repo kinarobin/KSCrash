@@ -54,7 +54,7 @@ int32_t kssysctl_int32(int major_cmd, int minor_cmd);
  *
  * @return The value returned by sysctl.
  */
-int32_t kssysctl_int32ForName(const char* name);
+int32_t kssysctl_int32ForName(const char *name);
 
 /** Get a uint32 value via sysctl.
  *
@@ -72,7 +72,7 @@ uint32_t kssysctl_uint32(int major_cmd, int minor_cmd);
  *
  * @return The value returned by sysctl.
  */
-uint32_t kssysctl_uint32ForName(const char* name);
+uint32_t kssysctl_uint32ForName(const char *name);
 
 /** Get an int64 value via sysctl.
  *
@@ -90,7 +90,7 @@ int64_t kssysctl_int64(int major_cmd, int minor_cmd);
  *
  * @return The value returned by sysctl.
  */
-int64_t kssysctl_int64ForName(const char* name);
+int64_t kssysctl_int64ForName(const char *name);
 
 /** Get a uint64 value via sysctl.
  *
@@ -108,7 +108,7 @@ uint64_t kssysctl_uint64(int major_cmd, int minor_cmd);
  *
  * @return The value returned by sysctl.
  */
-uint64_t kssysctl_uint64ForName(const char* name);
+uint64_t kssysctl_uint64ForName(const char *name);
 
 /** Get a string value via sysctl.
  *
@@ -124,7 +124,7 @@ uint64_t kssysctl_uint64ForName(const char* name);
  * @return The number of bytes written (or that would have been written if
  *         value is NULL).
  */
-int kssysctl_string(int major_cmd, int minor_cmd, char* value, int maxSize);
+int kssysctl_string(int major_cmd, int minor_cmd, char *value, int maxSize);
 
 /** Get a string value via sysctl by name.
  *
@@ -138,7 +138,7 @@ int kssysctl_string(int major_cmd, int minor_cmd, char* value, int maxSize);
  * @return The number of bytes written (or that would have been written if
  *         value is NULL).
  */
-int kssysctl_stringForName(const char* name, char* value, int maxSize);
+int kssysctl_stringForName(const char *name, char *value, int maxSize);
 
 /** Get a timeval value via sysctl.
  *
@@ -156,7 +156,7 @@ struct timeval kssysctl_timeval(int major_cmd, int minor_cmd);
  *
  * @return The value returned by sysctl.
  */
-struct timeval kssysctl_timevalForName(const char* name);
+struct timeval kssysctl_timevalForName(const char *name);
 
 /** Get information about a process.
  *
@@ -177,7 +177,7 @@ bool kssysctl_getProcessInfo(int pid, struct kinfo_proc* procInfo);
  *
  * @return true if the address was successfully retrieved.
  */
-bool kssysctl_getMacAddress(const char* name, char* macAddressBuffer);
+bool kssysctl_getMacAddress(const char *name, char *macAddressBuffer);
 
 #ifdef __cplusplus
 }

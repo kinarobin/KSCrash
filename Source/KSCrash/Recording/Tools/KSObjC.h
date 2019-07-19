@@ -53,8 +53,8 @@ typedef enum {
 } KSObjCClassType;
 
 typedef struct {
-  const char* name;
-  const char* type;
+  const char *name;
+  const char *type;
   int index;
 } KSObjCIvar;
 
@@ -156,7 +156,7 @@ bool ksobjc_isRootClass(const void* classPtr);
  *
  * @return the name, or NULL if the name inaccessible.
  */
-const char* ksobjc_className(const void* classPtr);
+const char *ksobjc_className(const void* classPtr);
 
 /** Get the name of an object's class.
  * This also handles tagged pointers.
@@ -165,7 +165,7 @@ const char* ksobjc_className(const void* classPtr);
  *
  * @return the name, or NULL if the name is inaccessible.
  */
-const char* ksobjc_objectClassName(const void* objectPtr);
+const char *ksobjc_objectClassName(const void* objectPtr);
 
 /** Check if a class has a specific name.
  *
@@ -176,7 +176,7 @@ const char* ksobjc_objectClassName(const void* objectPtr);
  * @return true if the class has the specified name.
  */
 bool ksobjc_isClassNamed(const void* const classPtr,
-                         const char* const className);
+                         const char *const className);
 
 /** Check if a class is of the specified type or a subclass thereof.
  * Note: This function is considerably slower than ksobjc_baseClassName().
@@ -188,7 +188,7 @@ bool ksobjc_isClassNamed(const void* const classPtr,
  * @return true if the class is of the specified type or a subclass of that
  * type.
  */
-bool ksobjc_isKindOfClass(const void* classPtr, const char* className);
+bool ksobjc_isKindOfClass(const void* classPtr, const char *className);
 
 /** Get the number of ivars registered with a class.
  *
@@ -220,7 +220,7 @@ int ksobjc_ivarList(const void* classPtr, KSObjCIvar* dstIvars, int ivarsCount);
  *
  * @return true if the operation was successful.
  */
-bool ksobjc_ivarNamed(const void* const classPtr, const char* name,
+bool ksobjc_ivarNamed(const void* const classPtr, const char *name,
                       KSObjCIvar* dst);
 
 /** Get the value of an ivar in an object.
@@ -261,7 +261,7 @@ uintptr_t ksobjc_taggedPointerPayload(const void* taggedObjectPtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int ksobjc_getDescription(void* object, char* buffer, int bufferLength);
+int ksobjc_getDescription(void* object, char *buffer, int bufferLength);
 
 /** Get the class type of an object.
  * There are a number of common class types that KSObjC understamds,
@@ -322,7 +322,7 @@ double ksobjc_dateContents(const void* datePtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int ksobjc_copyURLContents(const void* nsurl, char* dst, int maxLength);
+int ksobjc_copyURLContents(const void* nsurl, char *dst, int maxLength);
 
 /** Get the length of a string in characters.
  *
@@ -345,7 +345,7 @@ int ksobjc_stringLength(const void* const stringPtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int ksobjc_copyStringContents(const void* string, char* dst, int maxLength);
+int ksobjc_copyStringContents(const void* string, char *dst, int maxLength);
 
 /** Get an NSArray's count.
  *

@@ -9,7 +9,7 @@
 
 - (IBAction) onCrash:(__unused id) sender
 {
-    char* ptr = (char*)-1;
+    char *ptr = (char*)-1;
     *ptr = 10;
 }
 

@@ -40,7 +40,7 @@ extern "C" {
  *
  * @return The current architecture.
  */
-const char* kscpu_currentArch(void);
+const char *kscpu_currentArch(void);
 
 /** Get the frame pointer for a machine context.
  * The frame pointer marks the top of the call stack.
@@ -99,7 +99,7 @@ int kscpu_numRegisters(void);
  *
  * @return The register's name or NULL if not found.
  */
-const char* kscpu_registerName(int regNumber);
+const char *kscpu_registerName(int regNumber);
 
 /** Get the value stored in a normal register.
  *
@@ -122,7 +122,7 @@ int kscpu_numExceptionRegisters(void);
  *
  * @return The register's name or NULL if not found.
  */
-const char* kscpu_exceptionRegisterName(int regNumber);
+const char *kscpu_exceptionRegisterName(int regNumber);
 
 /** Get the value stored in an exception register.
  *

@@ -41,7 +41,7 @@ extern "C" {
  * @param reportsPath Full path to directory where the reports are to be stored
  * (path will be created if needed).
  */
-void kscrs_initialize(const char* appName, const char* reportsPath);
+void kscrs_initialize(const char *appName, const char *reportsPath);
 
 /** Get the next crash report to be generated.
  * Max length for paths is KSCRS_MAX_PATH_LENGTH
@@ -50,7 +50,7 @@ void kscrs_initialize(const char* appName, const char* reportsPath);
  *
  * @return the report ID of the next report.
  */
-int64_t kscrs_getNextCrashReport(char* crashReportPathBuffer);
+int64_t kscrs_getNextCrashReport(char *crashReportPathBuffer);
 
 /** Get the number of reports on disk.
  */
@@ -73,7 +73,7 @@ int kscrs_getReportIDs(int64_t* reportIDs, int count);
  *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on
  * the returned value.
  */
-char* kscrs_readReport(int64_t reportID);
+char *kscrs_readReport(int64_t reportID);
 
 /** Add a custom report to the store.
  *
@@ -82,7 +82,7 @@ char* kscrs_readReport(int64_t reportID);
  *
  * @return the new report's ID.
  */
-int64_t kscrs_addUserReport(const char* report, int reportLength);
+int64_t kscrs_addUserReport(const char *report, int reportLength);
 
 /** Delete all reports on disk.
  */

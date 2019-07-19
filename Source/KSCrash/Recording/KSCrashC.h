@@ -46,8 +46,8 @@ extern "C" {
  *
  * @return The crash types that are being handled.
  */
-KSCrashMonitorType kscrash_install(const char* appName,
-                                   const char* const installPath);
+KSCrashMonitorType kscrash_install(const char *appName,
+                                   const char *const installPath);
 
 /** Set the crash types that will be handled.
  * Some crash types may not be enabled depending on circumstances (e.g. running
@@ -67,7 +67,7 @@ KSCrashMonitorType kscrash_setMonitoring(KSCrashMonitorType monitors);
  * @param userInfoJSON Pre-baked JSON containing user-supplied information.
  *                     NULL = delete.
  */
-void kscrash_setUserInfoJSON(const char* const userInfoJSON);
+void kscrash_setUserInfoJSON(const char *const userInfoJSON);
 
 /** Set the maximum time to allow the main thread to run without returning.
  * If a task occupies the main thread for longer than this interval, the
@@ -187,9 +187,9 @@ void kscrash_setMaxReportCount(int maxReportCount);
  * @param terminateProgram If true, do not return from this function call.
  * Terminate the program instead.
  */
-void kscrash_reportUserException(const char* name, const char* reason,
-                                 const char* language, const char* lineOfCode,
-                                 const char* stackTrace, bool logAllThreads,
+void kscrash_reportUserException(const char *name, const char *reason,
+                                 const char *language, const char *lineOfCode,
+                                 const char *stackTrace, bool logAllThreads,
                                  bool terminateProgram);
 
 #pragma mark-- Notifications --
@@ -243,7 +243,7 @@ int kscrash_getReportIDs(int64_t* reportIDs, int count);
  *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on
  * the returned value.
  */
-char* kscrash_readReport(int64_t reportID);
+char *kscrash_readReport(int64_t reportID);
 
 /** Add a custom report to the store.
  *
@@ -252,7 +252,7 @@ char* kscrash_readReport(int64_t reportID);
  *
  * @return the new report's ID.
  */
-int64_t kscrash_addUserReport(const char* report, int reportLength);
+int64_t kscrash_addUserReport(const char *report, int reportLength);
 
 /** Delete all reports on disk.
  */

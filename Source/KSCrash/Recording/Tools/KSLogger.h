@@ -157,8 +157,8 @@ extern "C" {
 
 #import <CoreFoundation/CoreFoundation.h>
 
-void i_kslog_logObjC(const char* level, const char* file, int line,
-                     const char* function, CFStringRef fmt, ...);
+void i_kslog_logObjC(const char *level, const char *file, int line,
+                     const char *function, CFStringRef fmt, ...);
 
 void i_kslog_logObjCBasic(CFStringRef fmt, ...);
 
@@ -170,10 +170,10 @@ void i_kslog_logObjCBasic(CFStringRef fmt, ...);
 
 #else  // __OBJC__
 
-void i_kslog_logC(const char* level, const char* file, int line,
-                  const char* function, const char* fmt, ...);
+void i_kslog_logC(const char *level, const char *file, int line,
+                  const char *function, const char *fmt, ...);
 
-void i_kslog_logCBasic(const char* fmt, ...);
+void i_kslog_logCBasic(const char *fmt, ...);
 
 #define i_KSLOG_FULL i_kslog_logC
 #define i_KSLOG_BASIC i_kslog_logCBasic
@@ -242,7 +242,7 @@ void i_kslog_logCBasic(const char* fmt, ...);
  *
  * @param overwrite If true, overwrite the log file.
  */
-bool kslog_setLogFilename(const char* filename, bool overwrite);
+bool kslog_setLogFilename(const char *filename, bool overwrite);
 
 /** Clear the log file. */
 bool kslog_clearLogFile(void);

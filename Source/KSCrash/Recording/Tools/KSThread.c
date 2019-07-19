@@ -46,7 +46,7 @@ KSThread ksthread_self()
     return (KSThread)thread_self;
 }
 
-bool ksthread_getThreadName(const KSThread thread, char* const buffer, int bufLength)
+bool ksthread_getThreadName(const KSThread thread, char *const buffer, int bufLength)
 {
     // WARNING: This implementation is no longer async-safe!
     
@@ -54,7 +54,7 @@ bool ksthread_getThreadName(const KSThread thread, char* const buffer, int bufLe
     return pthread_getname_np(pthread, buffer, (unsigned)bufLength) == 0;
 }
 
-bool ksthread_getQueueName(const KSThread thread, char* const buffer, int bufLength)
+bool ksthread_getQueueName(const KSThread thread, char *const buffer, int bufLength)
 {
     // WARNING: This implementation is no longer async-safe!
     
@@ -91,7 +91,7 @@ bool ksthread_getQueueName(const KSThread thread, char* const buffer, int bufLen
     }
     
     dispatch_queue_t dispatch_queue = *dispatch_queue_ptr;
-    const char* queue_name = dispatch_queue_get_label(dispatch_queue);
+    const char *queue_name = dispatch_queue_get_label(dispatch_queue);
     if (queue_name == NULL)
     {
         KSLOG_TRACE("Error while getting dispatch queue name : %p", dispatch_queue);

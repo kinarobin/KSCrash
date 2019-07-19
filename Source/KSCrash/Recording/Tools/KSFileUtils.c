@@ -52,9 +52,9 @@
 #pragma mark - Utility -
 // ============================================================================
 
-static bool canDeletePath(const char* path)
+static bool canDeletePath(const char *path)
 {
-    const char* lastComponent = strrchr(path, '/');
+    const char *lastComponent = strrchr(path, '/');
     if (lastComponent == NULL)
     {
         lastComponent = path;
@@ -74,7 +74,7 @@ static bool canDeletePath(const char* path)
     return true;
 }
 
-static int dirContentsCount(const char* path)
+static int dirContentsCount(const char *path)
 {
     int count = 0;
     DIR* dir = opendir(path);
@@ -94,7 +94,7 @@ static int dirContentsCount(const char* path)
     return count;
 }
 
-static void dirContents(const char* path, char*** entries, int* count)
+static void dirContents(const char *path, char*** entries, int* count)
 {
     DIR* dir = NULL;
     char** entryList = NULL;
@@ -143,7 +143,7 @@ static void freeDirListing(char** entries, int count)
     {
         for(int i = 0; i < count; i++)
         {
-            char* ptr = entries[i];
+            char *ptr = entries[i];
             if (ptr != NULL)
             {
                 free(ptr);
@@ -153,7 +153,7 @@ static void freeDirListing(char** entries, int count)
     }
 }
 
-static bool deletePathContents(const char* path, bool deleteTopLevelPathAlso)
+static bool deletePathContents(const char *path, bool deleteTopLevelPathAlso)
 {
     struct stat statStruct = {0};
     if (stat(path, &statStruct) != 0)
@@ -168,14 +168,14 @@ static bool deletePathContents(const char* path, bool deleteTopLevelPathAlso)
         dirContents(path, &entries, &entryCount);
 
         int bufferLength = KSFU_MAX_PATH_LENGTH;
-        char* pathBuffer = malloc((unsigned)bufferLength);
+        char *pathBuffer = malloc((unsigned)bufferLength);
         snprintf(pathBuffer, bufferLength, "%s/", path);
-        char* pathPtr = pathBuffer + strlen(pathBuffer);
+        char *pathPtr = pathBuffer + strlen(pathBuffer);
         int pathRemainingLength = bufferLength - (int)(pathPtr - pathBuffer);
 
         for(int i = 0; i < entryCount; i++)
         {
-            char* entry = entries[i];
+            char *entry = entries[i];
             if (entry != NULL && canDeletePath(entry))
             {
                 strncpy(pathPtr, entry, pathRemainingLength);
@@ -206,20 +206,20 @@ static bool deletePathContents(const char* path, bool deleteTopLevelPathAlso)
 #pragma mark - API -
 // ============================================================================
 
-const char* ksfu_lastPathEntry(const char* const path)
+const char *ksfu_lastPathEntry(const char *const path)
 {
     if (path == NULL)
     {
         return NULL;
     }
 
-    char* lastFile = strrchr(path, '/');
+    char *lastFile = strrchr(path, '/');
     return lastFile == NULL ? path : lastFile + 1;
 }
 
-bool ksfu_writeBytesToFD(const int fd, const char* const bytes, int length)
+bool ksfu_writeBytesToFD(const int fd, const char *const bytes, int length)
 {
-    const char* pos = bytes;
+    const char *pos = bytes;
     while(length > 0)
     {
         int bytesWritten = (int)write(fd, pos, (unsigned)length);
@@ -234,9 +234,9 @@ bool ksfu_writeBytesToFD(const int fd, const char* const bytes, int length)
     return true;
 }
 
-bool ksfu_readBytesFromFD(const int fd, char* const bytes, int length)
+bool ksfu_readBytesFromFD(const int fd, char *const bytes, int length)
 {
-    char* pos = bytes;
+    char *pos = bytes;
     while(length > 0)
     {
         int bytesRead = (int)read(fd, pos, (unsigned)length);
@@ -251,11 +251,11 @@ bool ksfu_readBytesFromFD(const int fd, char* const bytes, int length)
     return true;
 }
 
-bool ksfu_readEntireFile(const char* const path, char** data, int* length, int maxLength)
+bool ksfu_readEntireFile(const char *const path, char** data, int* length, int maxLength)
 {
     bool isSuccessful = false;
     int bytesRead = 0;
-    char* mem = NULL;
+    char *mem = NULL;
     int fd = -1;
     int bytesToRead = maxLength;
 
@@ -322,12 +322,12 @@ done:
     return isSuccessful;
 }
 
-bool ksfu_writeStringToFD(const int fd, const char* const string)
+bool ksfu_writeStringToFD(const int fd, const char *const string)
 {
     if (*string != 0)
     {
         int bytesToWrite = (int)strlen(string);
-        const char* pos = string;
+        const char *pos = string;
         while(bytesToWrite > 0)
         {
             int bytesWritten = (int)write(fd, pos, (unsigned)bytesToWrite);
@@ -345,7 +345,7 @@ bool ksfu_writeStringToFD(const int fd, const char* const string)
     return false;
 }
 
-bool ksfu_writeFmtToFD(const int fd, const char* const fmt, ...)
+bool ksfu_writeFmtToFD(const int fd, const char *const fmt, ...)
 {
     if (*fmt != 0)
     {
@@ -359,7 +359,7 @@ bool ksfu_writeFmtToFD(const int fd, const char* const fmt, ...)
 }
 
 bool ksfu_writeFmtArgsToFD(const int fd,
-                           const char* const fmt,
+                           const char *const fmt,
                            va_list args)
 {
     if (*fmt != 0)
@@ -371,11 +371,11 @@ bool ksfu_writeFmtArgsToFD(const int fd,
     return false;
 }
 
-int ksfu_readLineFromFD(const int fd, char* const buffer, const int maxLength)
+int ksfu_readLineFromFD(const int fd, char *const buffer, const int maxLength)
 {
-    char* end = buffer + maxLength - 1;
+    char *end = buffer + maxLength - 1;
     *end = 0;
-    char* ch;
+    char *ch;
     for(ch = buffer; ch < end; ch++)
     {
         int bytesRead = (int)read(fd, ch, 1);
@@ -393,11 +393,11 @@ int ksfu_readLineFromFD(const int fd, char* const buffer, const int maxLength)
     return (int)(ch - buffer);
 }
 
-bool ksfu_makePath(const char* absolutePath)
+bool ksfu_makePath(const char *absolutePath)
 {
     bool isSuccessful = false;
-    char* pathCopy = strdup(absolutePath);
-    for(char* ptr = pathCopy+1; *ptr != '\0';ptr++)
+    char *pathCopy = strdup(absolutePath);
+    for(char *ptr = pathCopy+1; *ptr != '\0';ptr++)
     {
         if (*ptr == '/')
         {
@@ -422,7 +422,7 @@ done:
     return isSuccessful;
 }
 
-bool ksfu_removeFile(const char* path, bool mustExist)
+bool ksfu_removeFile(const char *path, bool mustExist)
 {
     if (remove(path) < 0)
     {
@@ -435,7 +435,7 @@ bool ksfu_removeFile(const char* path, bool mustExist)
     return true;
 }
 
-bool ksfu_deleteContentsOfPath(const char* path)
+bool ksfu_deleteContentsOfPath(const char *path)
 {
     if (path == NULL)
     {
@@ -449,7 +449,7 @@ bool ksfu_deleteContentsOfPath(const char* path)
     return deletePathContents(path, false);
 }
 
-bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char* const path, char* writeBuffer, int writeBufferLength)
+bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char *const path, char *writeBuffer, int writeBufferLength)
 {
     writer->buffer = writeBuffer;
     writer->bufferLength = writeBufferLength;
@@ -473,7 +473,7 @@ void ksfu_closeBufferedWriter(KSBufferedWriter* writer)
     }
 }
 
-bool ksfu_writeBufferedWriter(KSBufferedWriter* writer, const char* restrict const data, const int length)
+bool ksfu_writeBufferedWriter(KSBufferedWriter* writer, const char *restrict const data, const int length)
 {
     if (length > writer->bufferLength - writer->position)
     {
@@ -534,11 +534,11 @@ static bool fillReadBuffer(KSBufferedReader* reader)
     return true;
 }
 
-int ksfu_readBufferedReader(KSBufferedReader* reader, char* dstBuffer, int byteCount)
+int ksfu_readBufferedReader(KSBufferedReader* reader, char *dstBuffer, int byteCount)
 {
     int bytesRemaining = byteCount;
     int bytesConsumed = 0;
-    char* pDst = dstBuffer;
+    char *pDst = dstBuffer;
     while(bytesRemaining > 0)
     {
         int bytesInReader = reader->dataEndPos - reader->dataStartPos;
@@ -555,7 +555,7 @@ int ksfu_readBufferedReader(KSBufferedReader* reader, char* dstBuffer, int byteC
             }
         }
         int bytesToCopy = bytesInReader <= bytesRemaining ? bytesInReader : bytesRemaining;
-        char* pSrc = reader->buffer + reader->dataStartPos;
+        char *pSrc = reader->buffer + reader->dataStartPos;
         memcpy(pDst, pSrc, bytesToCopy);
         pDst += bytesToCopy;
         reader->dataStartPos += bytesToCopy;
@@ -566,17 +566,17 @@ int ksfu_readBufferedReader(KSBufferedReader* reader, char* dstBuffer, int byteC
     return bytesConsumed;
 }
 
-bool ksfu_readBufferedReaderUntilChar(KSBufferedReader* reader, int ch, char* dstBuffer, int* length)
+bool ksfu_readBufferedReaderUntilChar(KSBufferedReader* reader, int ch, char *dstBuffer, int* length)
 {
     int bytesRemaining = *length;
     int bytesConsumed = 0;
-    char* pDst = dstBuffer;
+    char *pDst = dstBuffer;
     while(bytesRemaining > 0)
     {
         int bytesInReader = reader->dataEndPos - reader->dataStartPos;
         int bytesToCopy = bytesInReader <= bytesRemaining ? bytesInReader : bytesRemaining;
-        char* pSrc = reader->buffer + reader->dataStartPos;
-        char* pChar = strchr(pSrc, ch);
+        char *pSrc = reader->buffer + reader->dataStartPos;
+        char *pChar = strchr(pSrc, ch);
         bool isFound = pChar != NULL;
         if (isFound)
         {
@@ -610,7 +610,7 @@ bool ksfu_readBufferedReaderUntilChar(KSBufferedReader* reader, int ch, char* ds
     return false;
 }
 
-bool ksfu_openBufferedReader(KSBufferedReader* reader, const char* const path, char* readBuffer, int readBufferLength)
+bool ksfu_openBufferedReader(KSBufferedReader* reader, const char *const path, char *readBuffer, int readBufferLength)
 {
     readBuffer[0] = '\0';
     readBuffer[readBufferLength - 1] = '\0';

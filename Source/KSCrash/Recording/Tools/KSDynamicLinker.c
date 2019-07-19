@@ -156,7 +156,7 @@ static uintptr_t segmentBaseOfImageIndex(const uint32_t idx)
     return 0;
 }
 
-uint32_t ksdl_imageNamed(const char* const imageName, bool exactMatch)
+uint32_t ksdl_imageNamed(const char *const imageName, bool exactMatch)
 {
     if (imageName != NULL)
     {
@@ -164,7 +164,7 @@ uint32_t ksdl_imageNamed(const char* const imageName, bool exactMatch)
 
         for(uint32_t iImg = 0; iImg < imageCount; iImg++)
         {
-            const char* name = _dyld_get_image_name(iImg);
+            const char *name = _dyld_get_image_name(iImg);
             if (exactMatch)
             {
                 if (strcmp(name, imageName) == 0)
@@ -184,7 +184,7 @@ uint32_t ksdl_imageNamed(const char* const imageName, bool exactMatch)
     return UINT32_MAX;
 }
 
-const uint8_t* ksdl_imageUUID(const char* const imageName, bool exactMatch)
+const uint8_t* ksdl_imageUUID(const char *const imageName, bool exactMatch)
 {
     if (imageName != NULL)
     {

@@ -29,7 +29,7 @@
 
 #define RETURN_NAME_FOR_ENUM(A) case A: return #A
 
-const char* ksmach_exceptionName(const int64_t exceptionType)
+const char *ksmach_exceptionName(const int64_t exceptionType)
 {
     switch (exceptionType)
     {
@@ -47,7 +47,7 @@ const char* ksmach_exceptionName(const int64_t exceptionType)
     return NULL;
 }
 
-const char* ksmach_kernelReturnCodeName(const int64_t returnCode)
+const char *ksmach_kernelReturnCodeName(const int64_t returnCode)
 {
     switch (returnCode)
     {

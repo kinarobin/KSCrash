@@ -36,6 +36,6 @@ void ksccd_setSearchQueueNames(bool searchQueueNames);
 
 KSThread* ksccd_getAllThreads(int* threadCount);
 
-const char* ksccd_getThreadName(KSThread thread);
+const char *ksccd_getThreadName(KSThread thread);
 
-const char* ksccd_getQueueName(KSThread thread);
+const char *ksccd_getQueueName(KSThread thread);

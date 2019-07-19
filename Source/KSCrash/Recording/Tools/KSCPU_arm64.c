@@ -38,7 +38,7 @@
 
 #define KSPACStrippingMask_ARM64e 0x0000000fffffffff
 
-static const char* g_registerNames[] =
+static const char *g_registerNames[] =
 {
      "x0",  "x1",  "x2",  "x3",  "x4",  "x5",  "x6",  "x7",
      "x8",  "x9", "x10", "x11", "x12", "x13", "x14", "x15",
@@ -50,7 +50,7 @@ static const int g_registerNamesCount =
 sizeof(g_registerNames) / sizeof(*g_registerNames);
 
 
-static const char* g_exceptionRegisterNames[] =
+static const char *g_exceptionRegisterNames[] =
 {
     "exception", "esr", "far"
 };
@@ -92,7 +92,7 @@ int kscpu_numRegisters(void)
     return g_registerNamesCount;
 }
 
-const char* kscpu_registerName(const int regNumber)
+const char *kscpu_registerName(const int regNumber)
 {
     if (regNumber < kscpu_numRegisters())
     {
@@ -126,7 +126,7 @@ int kscpu_numExceptionRegisters(void)
     return g_exceptionRegisterNamesCount;
 }
 
-const char* kscpu_exceptionRegisterName(const int regNumber)
+const char *kscpu_exceptionRegisterName(const int regNumber)
 {
     if (regNumber < kscpu_numExceptionRegisters())
     {

@@ -47,14 +47,14 @@ typedef struct KSStackCursor {
 
     /** The name (if any) of the binary image the current address falls inside.
      */
-    const char* imageName;
+    const char *imageName;
 
     /** The starting address of the binary image the current address falls
      * inside. */
     uintptr_t imageAddress;
 
     /** The name (if any) of the closest symbol to the current address. */
-    const char* symbolName;
+    const char *symbolName;
 
     /** The address of the closest symbol to the current address. */
     uintptr_t symbolAddress;

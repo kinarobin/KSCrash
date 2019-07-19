@@ -87,7 +87,7 @@ typedef struct {
  *
  * @param stateFilePath Where to store on-disk representation of state.
  */
-void kscrashstate_initialize(const char* stateFilePath);
+void kscrashstate_initialize(const char *stateFilePath);
 
 /** Reset the crash state.
  */

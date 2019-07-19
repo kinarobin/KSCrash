@@ -65,7 +65,7 @@ static char g_logFilename[1024];
  *
  * @param fmt The format string, followed by its arguments.
  */
-static void writeFmtToLog(const char* fmt, ...);
+static void writeFmtToLog(const char *fmt, ...);
 
 /** Write a formatted string to the log using a vararg list.
  *
@@ -73,20 +73,20 @@ static void writeFmtToLog(const char* fmt, ...);
  *
  * @param args The variable arguments.
  */
-static void writeFmtArgsToLog(const char* fmt, va_list args);
+static void writeFmtArgsToLog(const char *fmt, va_list args);
 
 /** Flush the log stream.
  */
 static void flushLog(void);
 
 
-static inline const char* lastPathEntry(const char* const path)
+static inline const char *lastPathEntry(const char *const path)
 {
-    const char* lastFile = strrchr(path, '/');
+    const char *lastFile = strrchr(path, '/');
     return lastFile == 0 ? path : lastFile + 1;
 }
 
-static inline void writeFmtToLog(const char* fmt, ...)
+static inline void writeFmtToLog(const char *fmt, ...)
 {
     va_list args;
     va_start(args,fmt);
@@ -100,12 +100,12 @@ static inline void writeFmtToLog(const char* fmt, ...)
 static int g_fd = -1;
 
 
-static void writeToLog(const char* const str)
+static void writeToLog(const char *const str)
 {
     if (g_fd >= 0)
     {
         int bytesToWrite = (int)strlen(str);
-        const char* pos = str;
+        const char *pos = str;
         while(bytesToWrite > 0)
         {
             int bytesWritten = (int)write(g_fd, pos, (unsigned)bytesToWrite);
@@ -120,7 +120,7 @@ static void writeToLog(const char* const str)
     write(STDOUT_FILENO, str, strlen(str));
 }
 
-static inline void writeFmtArgsToLog(const char* fmt, va_list args)
+static inline void writeFmtArgsToLog(const char *fmt, va_list args)
 {
     unlikely_if(fmt == NULL)
     {
@@ -148,7 +148,7 @@ static inline void setLogFD(int fd)
     g_fd = fd;
 }
 
-bool kslog_setLogFilename(const char* filename, bool overwrite)
+bool kslog_setLogFilename(const char *filename, bool overwrite)
 {
     static int fd = -1;
     if (filename != NULL)
@@ -187,7 +187,7 @@ static inline void setLogFD(FILE* file)
     g_file = file;
 }
 
-void writeToLog(const char* const str)
+void writeToLog(const char *const str)
 {
     if (g_file != NULL)
     {
@@ -196,7 +196,7 @@ void writeToLog(const char* const str)
     fprintf(stdout, "%s", str);
 }
 
-static inline void writeFmtArgsToLog(const char* fmt, va_list args)
+static inline void writeFmtArgsToLog(const char *fmt, va_list args)
 {
     unlikely_if(g_file == NULL)
     {
@@ -218,7 +218,7 @@ static inline void flushLog(void)
     fflush(g_file);
 }
 
-bool kslog_setLogFilename(const char* filename, bool overwrite)
+bool kslog_setLogFilename(const char *filename, bool overwrite)
 {
     static FILE* file = NULL;
     FILE* oldFile = file;
@@ -257,7 +257,7 @@ bool kslog_clearLogFile()
 #pragma mark - C -
 // ===========================================================================
 
-void i_kslog_logCBasic(const char* const fmt, ...)
+void i_kslog_logCBasic(const char *const fmt, ...)
 {
     va_list args;
     va_start(args,fmt);
@@ -267,11 +267,11 @@ void i_kslog_logCBasic(const char* const fmt, ...)
     flushLog();
 }
 
-void i_kslog_logC(const char* const level,
-                  const char* const file,
+void i_kslog_logC(const char *const level,
+                  const char *const file,
                   const int line,
-                  const char* const function,
-                  const char* const fmt, ...)
+                  const char *const function,
+                  const char *const fmt, ...)
 {
     writeFmtToLog("%s: %s (%u): %s: ", level, lastPathEntry(file), line, function);
     va_list args;
@@ -304,7 +304,7 @@ void i_kslog_logObjCBasic(CFStringRef fmt, ...)
     va_end(args);
     
     int bufferLength = (int)CFStringGetLength(entry) * 4 + 1;
-    char* stringBuffer = malloc((unsigned)bufferLength);
+    char *stringBuffer = malloc((unsigned)bufferLength);
     if (CFStringGetCString(entry, stringBuffer, (CFIndex)bufferLength, kCFStringEncodingUTF8))
     {
         writeToLog(stringBuffer);
@@ -319,10 +319,10 @@ void i_kslog_logObjCBasic(CFStringRef fmt, ...)
     CFRelease(entry);
 }
 
-void i_kslog_logObjC(const char* const level,
-                     const char* const file,
+void i_kslog_logObjC(const char *const level,
+                     const char *const file,
                      const int line,
-                     const char* const function,
+                     const char *const function,
                      CFStringRef fmt, ...)
 {
     CFStringRef logFmt = NULL;

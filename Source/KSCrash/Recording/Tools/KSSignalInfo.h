@@ -42,7 +42,7 @@ extern "C" {
  *
  * @return The signal's name or NULL if not found.
  */
-const char* kssignal_signalName(int signal);
+const char *kssignal_signalName(int signal);
 
 /** Get the name of a signal's subcode.
  *
@@ -52,7 +52,7 @@ const char* kssignal_signalName(int signal);
  *
  * @return The code's name or NULL if not found.
  */
-const char* kssignal_signalCodeName(int signal, int code);
+const char *kssignal_signalCodeName(int signal, int code);
 
 /** Get a list of fatal signals.
  *

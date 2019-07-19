@@ -163,7 +163,7 @@ static bool installSignalHandler()
         if (sigaction(fatalSignals[i], &action, &g_previousSignalHandlers[i]) != 0)
         {
             char sigNameBuff[30];
-            const char* sigName = kssignal_signalName(fatalSignals[i]);
+            const char *sigName = kssignal_signalName(fatalSignals[i]);
             if (sigName == NULL)
             {
                 snprintf(sigNameBuff, sizeof(sigNameBuff), "%d", fatalSignals[i]);

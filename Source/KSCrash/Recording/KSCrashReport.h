@@ -47,7 +47,7 @@ extern "C" {
  *
  * @param userInfoJSON The user information, in JSON format.
  */
-void kscrashreport_setUserInfoJSON(const char* const userInfoJSON);
+void kscrashreport_setUserInfoJSON(const char *const userInfoJSON);
 
 /** Configure whether to introspect any interesting memory locations.
  *  This can find things like strings or Objective-C classes.
@@ -86,7 +86,7 @@ void kscrashreport_setUserSectionWriteCallback(
  */
 void kscrashreport_writeStandardReport(
     const struct KSCrash_MonitorContext* const monitorContext,
-    const char* path);
+    const char *path);
 
 /** Write a minimal crash report to a file.
  *
@@ -97,7 +97,7 @@ void kscrashreport_writeStandardReport(
  */
 void kscrashreport_writeRecrashReport(
     const struct KSCrash_MonitorContext* const monitorContext,
-    const char* path);
+    const char *path);
 
 #ifdef __cplusplus
 }

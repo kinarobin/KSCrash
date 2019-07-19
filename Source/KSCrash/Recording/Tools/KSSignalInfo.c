@@ -34,13 +34,13 @@
 typedef struct
 {
     const int code;
-    const char* const name;
+    const char *const name;
 } KSSignalCodeInfo;
 
 typedef struct
 {
     const int sigNum;
-    const char* const name;
+    const char *const name;
     const KSSignalCodeInfo* const codes;
     const int numCodes;
 } KSSignalInfo;
@@ -133,7 +133,7 @@ static const int g_fatalSignals[] =
     SIGTRAP,
 };
 
-const char* kssignal_signalName(const int sigNum)
+const char *kssignal_signalName(const int sigNum)
 {
     for(int i = 0; i < g_fatalSignalsCount; i++)
     {
@@ -145,7 +145,7 @@ const char* kssignal_signalName(const int sigNum)
     return NULL;
 }
 
-const char* kssignal_signalCodeName(const int sigNum, const int code)
+const char *kssignal_signalCodeName(const int sigNum, const int code)
 {
     for(int si = 0; si < g_fatalSignalsCount; si++)
     {

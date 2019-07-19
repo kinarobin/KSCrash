@@ -55,7 +55,7 @@ bool ksstring_isNullTerminatedUTF8String(const void* memory, int minLength,
  *
  * @return true if the operation was successful.
  */
-bool ksstring_extractHexValue(const char* string, int stringLength,
+bool ksstring_extractHexValue(const char *string, int stringLength,
                               uint64_t* result);
 
 #ifdef __cplusplus

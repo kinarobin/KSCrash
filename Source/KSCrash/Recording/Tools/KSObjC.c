@@ -76,12 +76,12 @@ typedef enum
 
 typedef struct
 {
-    const char* name;
+    const char *name;
     KSObjCClassType type;
     ClassSubtype subtype;
     bool isMutable;
     bool (*isValidObject)(const void* object);
-    int (*description)(const void* object, char* buffer, int bufferLength);
+    int (*description)(const void* object, char *buffer, int bufferLength);
     const void* class;
 } ClassData;
 
@@ -102,16 +102,16 @@ static bool taggedDateIsValid(const void* object);
 static bool taggedNumberIsValid(const void* object);
 static bool taggedStringIsValid(const void* object);
 
-static int objectDescription(const void* object, char* buffer, int bufferLength);
-static int taggedObjectDescription(const void* object, char* buffer, int bufferLength);
-static int stringDescription(const void* object, char* buffer, int bufferLength);
-static int urlDescription(const void* object, char* buffer, int bufferLength);
-static int arrayDescription(const void* object, char* buffer, int bufferLength);
-static int dateDescription(const void* object, char* buffer, int bufferLength);
-static int numberDescription(const void* object, char* buffer, int bufferLength);
-static int taggedDateDescription(const void* object, char* buffer, int bufferLength);
-static int taggedNumberDescription(const void* object, char* buffer, int bufferLength);
-static int taggedStringDescription(const void* object, char* buffer, int bufferLength);
+static int objectDescription(const void* object, char *buffer, int bufferLength);
+static int taggedObjectDescription(const void* object, char *buffer, int bufferLength);
+static int stringDescription(const void* object, char *buffer, int bufferLength);
+static int urlDescription(const void* object, char *buffer, int bufferLength);
+static int arrayDescription(const void* object, char *buffer, int bufferLength);
+static int dateDescription(const void* object, char *buffer, int bufferLength);
+static int numberDescription(const void* object, char *buffer, int bufferLength);
+static int taggedDateDescription(const void* object, char *buffer, int bufferLength);
+static int taggedNumberDescription(const void* object, char *buffer, int bufferLength);
+static int taggedStringDescription(const void* object, char *buffer, int bufferLength);
 
 
 static ClassData g_classData[] =
@@ -147,7 +147,7 @@ static ClassData g_taggedClassData[] =
 };
 static int g_taggedClassDataCount = sizeof(g_taggedClassData) / sizeof(*g_taggedClassData);
 
-static const char* g_blockBaseClassName = "NSBlock";
+static const char *g_blockBaseClassName = "NSBlock";
 
 
 //======================================================================
@@ -246,7 +246,7 @@ static inline bool isRootClass(const void* const classPtr)
     return (getClassRO(classPtr)->flags & RO_ROOT) != 0;
 }
 
-static inline const char* getClassName(const void* classPtr)
+static inline const char *getClassName(const void* classPtr)
 {
     const struct class_ro_t* ro = getClassRO(classPtr);
     return ro->name;
@@ -306,13 +306,13 @@ static int getTaggedNSStringLength(const void* const object)
     return (int)(payload & 0xf);
 }
 
-static int extractTaggedNSString(const void* const object, char* buffer, int bufferLength)
+static int extractTaggedNSString(const void* const object, char *buffer, int bufferLength)
 {
     int length = getTaggedNSStringLength(object);
     int copyLength = ((length + 1) > bufferLength) ? (bufferLength - 1) : length;
     uintptr_t payload = getTaggedPayload(object);
     uintptr_t value = payload >> 4;
-    static char* alphabet = "eilotrm.apdnsIc ufkMShjTRxgC4013bDNvwyUL2O856P-B79AFKEWV_zGJ/HYX";
+    static char *alphabet = "eilotrm.apdnsIc ufkMShjTRxgC4013bDNvwyUL2O856P-B79AFKEWV_zGJ/HYX";
     if (length <=7)
     {
         for(int i = 0; i < copyLength; i++)
@@ -380,7 +380,7 @@ static CFAbsoluteTime extractTaggedNSDate(const void* const object)
  */
 static ClassData* getClassData(const void* class)
 {
-    const char* className = getClassName(class);
+    const char *className = getClassName(class);
     for(ClassData* data = g_classData;; data++)
     {
         unlikely_if(data->name == NULL)
@@ -409,7 +409,7 @@ static inline const ClassData* getClassDataFromObject(const void* object)
     return getClassData(getIsaPointer(obj));
 }
 
-static int stringPrintf(char* buffer, int bufferLength, const char* fmt, ...)
+static int stringPrintf(char *buffer, int bufferLength, const char *fmt, ...)
 {
     unlikely_if(bufferLength == 0)
     {
@@ -471,7 +471,7 @@ static const unsigned int g_nameChars[] =
 #define VALID_NAME_START_CHAR(A) ((g_nameChars[(uint8_t)(A)] & 2) != 0)
 #define VALID_TYPE_CHAR(A) ((g_nameChars[(uint8_t)(A)] & 7) != 0)
 
-static bool isValidName(const char* const name, const int maxLength)
+static bool isValidName(const char *const name, const int maxLength)
 {
     if ((uintptr_t)name + (unsigned)maxLength < (uintptr_t)name)
     {
@@ -499,7 +499,7 @@ static bool isValidName(const char* const name, const int maxLength)
     return false;
 }
 
-static bool isValidIvarType(const char* const type)
+static bool isValidIvarType(const char *const type)
 {
     char buffer[100];
     const int maxLength = sizeof(buffer);
@@ -674,12 +674,12 @@ bool ksobjc_isRootClass(const void* const classPtr)
     return isRootClass(classPtr);
 }
 
-const char* ksobjc_className(const void* classPtr)
+const char *ksobjc_className(const void* classPtr)
 {
     return getClassName(classPtr);
 }
 
-const char* ksobjc_objectClassName(const void* objectPtr)
+const char *ksobjc_objectClassName(const void* objectPtr)
 {
     if (isTaggedPointer(objectPtr))
     {
@@ -694,9 +694,9 @@ const char* ksobjc_objectClassName(const void* objectPtr)
     return getClassName(isaPtr);
 }
 
-bool ksobjc_isClassNamed(const void* const classPtr, const char* const className)
+bool ksobjc_isClassNamed(const void* const classPtr, const char *const className)
 {
-    const char* name = getClassName(classPtr);
+    const char *name = getClassName(classPtr);
     if (name == NULL || className == NULL)
     {
         return false;
@@ -704,7 +704,7 @@ bool ksobjc_isClassNamed(const void* const classPtr, const char* const className
     return strcmp(name, className) == 0;
 }
 
-bool ksobjc_isKindOfClass(const void* const classPtr, const char* const className)
+bool ksobjc_isKindOfClass(const void* const classPtr, const char *const className)
 {
     if (className == NULL)
     {
@@ -715,7 +715,7 @@ bool ksobjc_isKindOfClass(const void* const classPtr, const char* const classNam
     
     for(int i = 0; i < 20; i++)
     {
-        const char* name = getClassName(class);
+        const char *name = getClassName(class);
         if (name == NULL)
         {
             return false;
@@ -797,7 +797,7 @@ int ksobjc_ivarList(const void* const classPtr, KSObjCIvar* dstIvars, int ivarsC
     return count;
 }
 
-bool ksobjc_ivarNamed(const void* const classPtr, const char* name, KSObjCIvar* dst)
+bool ksobjc_ivarNamed(const void* const classPtr, const char *name, KSObjCIvar* dst)
 {
     if (name == NULL)
     {
@@ -871,7 +871,7 @@ static inline bool isBlockClass(const void* class)
     {
         return false;
     }
-    const char* name = getClassName(baseClass);
+    const char *name = getClassName(baseClass);
     if (name == NULL)
     {
         return false;
@@ -932,21 +932,21 @@ static bool taggedObjectIsValid(const void* object)
     return isValidTaggedPointer(object);
 }
 
-static int objectDescription(const void* object, char* buffer, int bufferLength)
+static int objectDescription(const void* object, char *buffer, int bufferLength)
 {
     const void* class = getIsaPointer(object);
-    const char* name = getClassName(class);
+    const char *name = getClassName(class);
     uintptr_t objPointer = (uintptr_t)object;
-    const char* fmt = sizeof(uintptr_t) == sizeof(uint32_t) ? "<%s: 0x%08x>" : "<%s: 0x%016x>";
+    const char *fmt = sizeof(uintptr_t) == sizeof(uint32_t) ? "<%s: 0x%08x>" : "<%s: 0x%016x>";
     return stringPrintf(buffer, bufferLength, fmt, name, objPointer);
 }
 
-static int taggedObjectDescription(const void* object, char* buffer, int bufferLength)
+static int taggedObjectDescription(const void* object, char *buffer, int bufferLength)
 {
     const ClassData* data = getClassDataFromTaggedPointer(object);
-    const char* name = data->name;
+    const char *name = data->name;
     uintptr_t objPointer = (uintptr_t)object;
-    const char* fmt = sizeof(uintptr_t) == sizeof(uint32_t) ? "<%s: 0x%08x>" : "<%s: 0x%016x>";
+    const char *fmt = sizeof(uintptr_t) == sizeof(uint32_t) ? "<%s: 0x%08x>" : "<%s: 0x%016x>";
     return stringPrintf(buffer, bufferLength, fmt, name, objPointer);
 }
 
@@ -955,7 +955,7 @@ static int taggedObjectDescription(const void* object, char* buffer, int bufferL
 #pragma mark - NSString -
 //======================================================================
 
-static inline const char* stringStart(const struct __CFString* str)
+static inline const char *stringStart(const struct __CFString* str)
 {
     return (const char*)__CFStrContents(str) + (__CFStrHasLengthByte(str) ? 1 : 0);
 }
@@ -1175,7 +1175,7 @@ static int copy8BitString(const void* const src, void* const dst, int charCount,
     return charCount;
 }
 
-int ksobjc_copyStringContents(const void* stringPtr, char* dst, int maxByteCount)
+int ksobjc_copyStringContents(const void* stringPtr, char *dst, int maxByteCount)
 {
     if (isTaggedPointer(stringPtr) && isTaggedPointerNSString(stringPtr))
     {
@@ -1184,7 +1184,7 @@ int ksobjc_copyStringContents(const void* stringPtr, char* dst, int maxByteCount
     const struct __CFString* string = stringPtr;
     int charCount = ksobjc_stringLength(string);
     
-    const char* src = stringStart(string);
+    const char *src = stringStart(string);
     if (__CFStrIsUnicode(string))
     {
         return copyAndConvertUTF16StringToUTF8(src, dst, charCount, maxByteCount);
@@ -1193,10 +1193,10 @@ int ksobjc_copyStringContents(const void* stringPtr, char* dst, int maxByteCount
     return copy8BitString(src, dst, charCount, maxByteCount);
 }
 
-static int stringDescription(const void* object, char* buffer, int bufferLength)
+static int stringDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
     
     pBuffer += objectDescription(object, pBuffer, (int)(pEnd - pBuffer));
     pBuffer += stringPrintf(pBuffer, (int)(pEnd - pBuffer), ": \"");
@@ -1211,7 +1211,7 @@ static bool taggedStringIsValid(const void* const object)
     return isValidTaggedPointer(object) && isTaggedPointerNSString(object);
 }
 
-static int taggedStringDescription(const void* object, char* buffer, __unused int bufferLength)
+static int taggedStringDescription(const void* object, char *buffer, __unused int bufferLength)
 {
     return extractTaggedNSString(object, buffer, bufferLength);
 }
@@ -1231,16 +1231,16 @@ static bool urlIsValid(const void* const urlPtr)
     return stringIsValid(url._string);
 }
 
-int ksobjc_copyURLContents(const void* const urlPtr, char* dst, int maxLength)
+int ksobjc_copyURLContents(const void* const urlPtr, char *dst, int maxLength)
 {
     const struct __CFURL* url = urlPtr;
     return ksobjc_copyStringContents(url->_string, dst, maxLength);
 }
 
-static int urlDescription(const void* object, char* buffer, int bufferLength)
+static int urlDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
     
     pBuffer += objectDescription(object, pBuffer, (int)(pEnd - pBuffer));
     pBuffer += stringPrintf(pBuffer, (int)(pEnd - pBuffer), ": \"");
@@ -1271,10 +1271,10 @@ CFAbsoluteTime ksobjc_dateContents(const void* const datePtr)
     return date->_time;
 }
 
-static int dateDescription(const void* object, char* buffer, int bufferLength)
+static int dateDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
     
     CFAbsoluteTime time = ksobjc_dateContents(object);
     pBuffer += objectDescription(object, pBuffer, (int)(pEnd - pBuffer));
@@ -1288,10 +1288,10 @@ static bool taggedDateIsValid(const void* const datePtr)
     return isValidTaggedPointer(datePtr) && isTaggedPointerNSDate(datePtr);
 }
 
-static int taggedDateDescription(const void* object, char* buffer, int bufferLength)
+static int taggedDateDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
 
     CFAbsoluteTime time = extractTaggedNSDate(object);
     pBuffer += taggedObjectDescription(object, pBuffer, (int)(pEnd - pBuffer));
@@ -1364,10 +1364,10 @@ static bool numberIsValid(const void* const datePtr)
     return ksmem_copySafely(datePtr, &temp, sizeof(temp));
 }
 
-static int numberDescription(const void* object, char* buffer, int bufferLength)
+static int numberDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
 
     pBuffer += objectDescription(object, pBuffer, (int)(pEnd - pBuffer));
 
@@ -1390,10 +1390,10 @@ static bool taggedNumberIsValid(const void* const object)
     return isValidTaggedPointer(object) && isTaggedPointerNSNumber(object);
 }
 
-static int taggedNumberDescription(const void* object, char* buffer, int bufferLength)
+static int taggedNumberDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
 
     int64_t value = extractTaggedNSNumber(object);
     pBuffer += taggedObjectDescription(object, pBuffer, (int)(pEnd - pBuffer));
@@ -1548,10 +1548,10 @@ bool arrayIsValid(const void* object)
     return nsarrayIsValid(object);
 }
 
-static int arrayDescription(const void* object, char* buffer, int bufferLength)
+static int arrayDescription(const void* object, char *buffer, int bufferLength)
 {
-    char* pBuffer = buffer;
-    char* pEnd = buffer + bufferLength;
+    char *pBuffer = buffer;
+    char *pEnd = buffer + bufferLength;
     
     pBuffer += objectDescription(object, pBuffer, (int)(pEnd - pBuffer));
     pBuffer += stringPrintf(pBuffer, (int)(pEnd - pBuffer), ": [");
@@ -1645,7 +1645,7 @@ int ksobjc_dictionaryCount(const void* dict)
 #pragma mark - General Queries -
 //======================================================================
 
-int ksobjc_getDescription(void* object, char* buffer, int bufferLength)
+int ksobjc_getDescription(void* object, char *buffer, int bufferLength)
 {
     const ClassData* data = getClassDataFromObject(object);
     return data->description(object, buffer, bufferLength);

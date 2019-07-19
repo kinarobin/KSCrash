@@ -117,7 +117,7 @@ typedef enum {
 
 #define KSCrashMonitorTypeNone 0
 
-const char* kscrashmonitortype_name(KSCrashMonitorType monitorType);
+const char *kscrashmonitortype_name(KSCrashMonitorType monitorType);
 
 #ifdef __cplusplus
 }
