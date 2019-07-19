@@ -70,7 +70,7 @@ bool ksdl_getBinaryImage(int index, KSBinaryImage* buffer);
  *
  * @return the index of the matched image, or UINT32_MAX if not found.
  */
-uint32_t ksdl_imageNamed(const char *const imageName, bool exactMatch);
+uint32_t ksdl_imageNamed(const char * const imageName, bool exactMatch);
 
 /** Get the UUID of a loaded binary image with the specified name.
  *
@@ -81,7 +81,7 @@ uint32_t ksdl_imageNamed(const char *const imageName, bool exactMatch);
  * @return A pointer to the binary (16 byte) UUID of the image, or NULL if it
  *         wasn't found.
  */
-const uint8_t* ksdl_imageUUID(const char *const imageName, bool exactMatch);
+const uint8_t* ksdl_imageUUID(const char * const imageName, bool exactMatch);
 
 /** async-safe version of dladdr.
  *

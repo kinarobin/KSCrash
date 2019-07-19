@@ -143,7 +143,7 @@
 
 #pragma mark Utility
 
-static inline NSString *stringFromCString(const char *const string) {
+static inline NSString *stringFromCString(const char * const string) {
     if (string == NULL) {
         return nil;
     }
@@ -184,30 +184,30 @@ static int onBeginContainer(KSJSONCodec *codec, NSString *name, id container) {
     return KSJSON_OK;
 }
 
-static int onBooleanElement(const char *const cName, const bool value, void *const userData) {
+static int onBooleanElement(const char * const cName, const bool value, void * const userData) {
     NSString *name = stringFromCString(cName);
     id element = [NSNumber numberWithBool:value];
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
     return onElement(codec, name, element);
 }
 
-static int onFloatingPointElement(const char *const cName, const double value, void *const userData) {
+static int onFloatingPointElement(const char * const cName, const double value, void * const userData) {
     NSString *name = stringFromCString(cName);
     id element = [NSNumber numberWithDouble:value];
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
     return onElement(codec, name, element);
 }
 
-static int onIntegerElement(const char *const cName,
+static int onIntegerElement(const char * const cName,
                             const int64_t value,
-                            void *const userData) {
+                            void * const userData) {
     NSString *name = stringFromCString(cName);
     id element = [NSNumber numberWithLongLong:value];
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
     return onElement(codec, name, element);
 }
 
-static int onNullElement(const char *const cName, void *const userData) {
+static int onNullElement(const char * const cName, void * const userData) {
     NSString *name = stringFromCString(cName);
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
 
@@ -221,7 +221,7 @@ static int onNullElement(const char *const cName, void *const userData) {
     return onElement(codec, name, [NSNull null]);
 }
 
-static int onStringElement(const char *const cName, const char *const value, void *const userData) {
+static int onStringElement(const char * const cName, const char * const value, void * const userData) {
     NSString *name = stringFromCString(cName);
     id element = [NSString stringWithCString:value
                                     encoding:NSUTF8StringEncoding];
@@ -229,21 +229,21 @@ static int onStringElement(const char *const cName, const char *const value, voi
     return onElement(codec, name, element);
 }
 
-static int onBeginObject(const char *const cName, void *const userData) {
+static int onBeginObject(const char * const cName, void * const userData) {
     NSString *name = stringFromCString(cName);
     id container = [NSMutableDictionary dictionary];
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
     return onBeginContainer(codec, name, container);
 }
 
-static int onBeginArray(const char *const cName, void *const userData) {
+static int onBeginArray(const char * const cName, void * const userData) {
     NSString *name = stringFromCString(cName);
     id container = [NSMutableArray array];
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
     return onBeginContainer(codec, name, container);
 }
 
-static int onEndContainer(void *const userData) {
+static int onEndContainer(void * const userData) {
     KSJSONCodec *codec = (__bridge KSJSONCodec *)userData;
 
     if ([codec->_containerStack count] == 0) {
@@ -262,11 +262,11 @@ static int onEndContainer(void *const userData) {
     return KSJSON_OK;
 }
 
-static int onEndData(__unused void *const userData) {
+static int onEndData(__unused void * const userData) {
     return KSJSON_OK;
 }
 
-static int addJSONData(const char *const bytes, const int length, void *const userData) {
+static int addJSONData(const char * const bytes, const int length, void * const userData) {
     NSMutableData *data = (__bridge NSMutableData *)userData;
     [data appendBytes:bytes length:(unsigned)length];
     return KSJSON_OK;

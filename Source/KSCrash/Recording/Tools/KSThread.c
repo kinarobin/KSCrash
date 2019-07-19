@@ -46,7 +46,7 @@ KSThread ksthread_self()
     return (KSThread)thread_self;
 }
 
-bool ksthread_getThreadName(const KSThread thread, char *const buffer, int bufLength)
+bool ksthread_getThreadName(const KSThread thread, char * const buffer, int bufLength)
 {
     // WARNING: This implementation is no longer async-safe!
     
@@ -54,7 +54,7 @@ bool ksthread_getThreadName(const KSThread thread, char *const buffer, int bufLe
     return pthread_getname_np(pthread, buffer, (unsigned)bufLength) == 0;
 }
 
-bool ksthread_getQueueName(const KSThread thread, char *const buffer, int bufLength)
+bool ksthread_getQueueName(const KSThread thread, char * const buffer, int bufLength)
 {
     // WARNING: This implementation is no longer async-safe!
     

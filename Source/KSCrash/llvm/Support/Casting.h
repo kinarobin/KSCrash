@@ -86,7 +86,7 @@ struct isa_impl_cl<To, From *> {
 };
 
 template <typename To, typename From>
-struct isa_impl_cl<To, From *const> {
+struct isa_impl_cl<To, From * const> {
   static inline bool doit(const From *Val) {
     assert(Val && "isa<> used on a null pointer");
     return isa_impl<To, From>::doit(*Val);
@@ -102,7 +102,7 @@ struct isa_impl_cl<To, const From *> {
 };
 
 template <typename To, typename From>
-struct isa_impl_cl<To, const From *const> {
+struct isa_impl_cl<To, const From * const> {
   static inline bool doit(const From *Val) {
     assert(Val && "isa<> used on a null pointer");
     return isa_impl<To, From>::doit(*Val);
@@ -168,7 +168,7 @@ struct cast_retty_impl<To, const From *> {
 };
 
 template <class To, class From>
-struct cast_retty_impl<To, const From *const> {
+struct cast_retty_impl<To, const From * const> {
   typedef const To *ret_type;  // Constant pointer arg case, return const Ty*
 };
 

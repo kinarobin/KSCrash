@@ -47,7 +47,7 @@ typedef uintptr_t KSThread;
  *
  * @return true if a name was found.
  */
-bool ksthread_getThreadName(const KSThread thread, char *const buffer,
+bool ksthread_getThreadName(const KSThread thread, char * const buffer,
                             int bufLength);
 
 /** Get the name of a thread's dispatch queue. Internally, a queue name will

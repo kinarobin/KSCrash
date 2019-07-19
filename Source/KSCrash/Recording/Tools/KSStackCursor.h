@@ -78,7 +78,7 @@ typedef struct KSStackCursor {
   bool (*symbolicate)(struct KSStackCursor*);
 
   /** Internal context-specific information. */
-  void* context[KSSC_CONTEXT_SIZE];
+  void *context[KSSC_CONTEXT_SIZE];
 } KSStackCursor;
 
 /** Common initialization routine for a stack cursor.

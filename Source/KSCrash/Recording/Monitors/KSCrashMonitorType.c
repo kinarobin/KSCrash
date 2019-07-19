@@ -31,7 +31,7 @@
 static const struct
 {
     const KSCrashMonitorType type;
-    const char *const name;
+    const char * const name;
 } g_monitorTypes[] =
 {
 #define MONITORTYPE(NAME) {NAME, #NAME}

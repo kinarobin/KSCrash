@@ -74,13 +74,13 @@ static KSStackCursor g_stackCursor;
 #pragma mark - Callbacks -
 // ============================================================================
 
-typedef void (*cxa_throw_type)(void*, std::type_info*, void (*)(void*));
+typedef void (*cxa_throw_type)(void*, std::type_info*, void (*)(void *));
 
 extern "C"
 {
-    void __cxa_throw(void* thrown_exception, std::type_info* tinfo, void (*dest)(void*)) __attribute__ ((weak));
+    void __cxa_throw(void *thrown_exception, std::type_info* tinfo, void (*dest)(void *)) __attribute__ ((weak));
 
-    void __cxa_throw(void* thrown_exception, std::type_info* tinfo, void (*dest)(void*)) {
+    void __cxa_throw(void *thrown_exception, std::type_info* tinfo, void (*dest)(void *)) {
         if (g_captureNextStackTrace) {
             kssc_initSelfThread(&g_stackCursor, 1);
         }

@@ -79,7 +79,7 @@ static char g_eventID[37];
  *
  * @param userContext Other contextual information.
  */
-static void handleSignal(int sigNum, siginfo_t* signalInfo, void* userContext)
+static void handleSignal(int sigNum, siginfo_t* signalInfo, void *userContext)
 {
     KSLOG_DEBUG("Trapped signal %d", sigNum);
     if (g_isEnabled) {

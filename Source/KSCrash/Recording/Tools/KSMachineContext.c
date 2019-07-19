@@ -122,7 +122,7 @@ bool ksmc_getContextForThread(KSThread thread, KSMachineContext* destinationCont
     return true;
 }
 
-bool ksmc_getContextForSignal(void* signalUserContext, KSMachineContext* destinationContext)
+bool ksmc_getContextForSignal(void *signalUserContext, KSMachineContext* destinationContext)
 {
     KSLOG_DEBUG("Get context from signal user context and put into %p.", destinationContext);
     _STRUCT_MCONTEXT* sourceContext = ((SignalUserContext*)signalUserContext)->UC_MCONTEXT;

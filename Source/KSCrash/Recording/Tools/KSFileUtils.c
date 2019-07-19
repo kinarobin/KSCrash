@@ -183,7 +183,7 @@ static bool deletePathContents(const char *path, bool deleteTopLevelPathAlso)
 #pragma mark - API -
 // ============================================================================
 
-const char *ksfu_lastPathEntry(const char *const path)
+const char *ksfu_lastPathEntry(const char * const path)
 {
     if (path == NULL) {
         return NULL;
@@ -193,7 +193,7 @@ const char *ksfu_lastPathEntry(const char *const path)
     return lastFile == NULL ? path : lastFile + 1;
 }
 
-bool ksfu_writeBytesToFD(const int fd, const char *const bytes, int length)
+bool ksfu_writeBytesToFD(const int fd, const char * const bytes, int length)
 {
     const char *pos = bytes;
     while(length > 0) {
@@ -208,7 +208,7 @@ bool ksfu_writeBytesToFD(const int fd, const char *const bytes, int length)
     return true;
 }
 
-bool ksfu_readBytesFromFD(const int fd, char *const bytes, int length)
+bool ksfu_readBytesFromFD(const int fd, char * const bytes, int length)
 {
     char *pos = bytes;
     while(length > 0) {
@@ -223,7 +223,7 @@ bool ksfu_readBytesFromFD(const int fd, char *const bytes, int length)
     return true;
 }
 
-bool ksfu_readEntireFile(const char *const path, char** data, int* length, int maxLength)
+bool ksfu_readEntireFile(const char * const path, char** data, int* length, int maxLength)
 {
     bool isSuccessful = false;
     int bytesRead = 0;
@@ -283,7 +283,7 @@ done:
     return isSuccessful;
 }
 
-bool ksfu_writeStringToFD(const int fd, const char *const string)
+bool ksfu_writeStringToFD(const int fd, const char * const string)
 {
     if (*string != 0) {
         int bytesToWrite = (int)strlen(string);
@@ -304,7 +304,7 @@ bool ksfu_writeStringToFD(const int fd, const char *const string)
     return false;
 }
 
-bool ksfu_writeFmtToFD(const int fd, const char *const fmt, ...)
+bool ksfu_writeFmtToFD(const int fd, const char * const fmt, ...)
 {
     if (*fmt != 0) {
         va_list args;
@@ -317,7 +317,7 @@ bool ksfu_writeFmtToFD(const int fd, const char *const fmt, ...)
 }
 
 bool ksfu_writeFmtArgsToFD(const int fd,
-                           const char *const fmt,
+                           const char * const fmt,
                            va_list args)
 {
     if (*fmt != 0) {
@@ -328,7 +328,7 @@ bool ksfu_writeFmtArgsToFD(const int fd,
     return false;
 }
 
-int ksfu_readLineFromFD(const int fd, char *const buffer, const int maxLength)
+int ksfu_readLineFromFD(const int fd, char * const buffer, const int maxLength)
 {
     char *end = buffer + maxLength - 1;
     *end = 0;
@@ -395,7 +395,7 @@ bool ksfu_deleteContentsOfPath(const char *path)
     return deletePathContents(path, false);
 }
 
-bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char *const path, char *writeBuffer, int writeBufferLength)
+bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char * const path, char *writeBuffer, int writeBufferLength)
 {
     writer->buffer = writeBuffer;
     writer->bufferLength = writeBufferLength;
@@ -539,7 +539,7 @@ bool ksfu_readBufferedReaderUntilChar(KSBufferedReader* reader, int ch, char *ds
     return false;
 }
 
-bool ksfu_openBufferedReader(KSBufferedReader* reader, const char *const path, char *readBuffer, int readBufferLength)
+bool ksfu_openBufferedReader(KSBufferedReader* reader, const char * const path, char *readBuffer, int readBufferLength)
 {
     readBuffer[0] = '\0';
     readBuffer[readBufferLength - 1] = '\0';

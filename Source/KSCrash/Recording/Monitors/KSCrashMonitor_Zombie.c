@@ -43,7 +43,7 @@
 
 typedef struct
 {
-    const void* object;
+    const void *object;
     const char *className;
 } Zombie;
 
@@ -55,24 +55,24 @@ static volatile bool g_isEnabled = false;
 static struct
 {
     Class class;
-    const void* address;
+    const void *address;
     char name[100];
     char reason[900];
 } g_lastDeallocedException;
 
-static inline unsigned hashIndex(const void* object)
+static inline unsigned hashIndex(const void *object)
 {
     uintptr_t objPtr = (uintptr_t)object;
     objPtr >>= (sizeof(object)-1);
     return objPtr & g_zombieHashMask;
 }
 
-static bool copyStringIvar(const void* self, const char *ivarName, char *buffer, int bufferLength)
+static bool copyStringIvar(const void *self, const char *ivarName, char *buffer, int bufferLength)
 {
     Class class = object_getClass((id)self);
     KSObjCIvar ivar = {0};
     likely_if(ksobjc_ivarNamed(class, ivarName, &ivar)) {
-        void* pointer;
+        void *pointer;
         likely_if(ksobjc_ivarValue(self, ivar.index, &pointer)) {
             likely_if(ksobjc_isValidObject(pointer))
             {
@@ -98,14 +98,14 @@ static bool copyStringIvar(const void* self, const char *ivarName, char *buffer,
     return false;
 }
 
-static void storeException(const void* exception)
+static void storeException(const void *exception)
 {
     g_lastDeallocedException.address = exception;
     copyStringIvar(exception, "name", g_lastDeallocedException.name, sizeof(g_lastDeallocedException.name));
     copyStringIvar(exception, "reason", g_lastDeallocedException.reason, sizeof(g_lastDeallocedException.reason));
 }
 
-static inline void handleDealloc(const void* self)
+static inline void handleDealloc(const void *self)
 {
     volatile Zombie* cache = g_zombieCache;
     likely_if(cache != NULL) {
@@ -172,7 +172,7 @@ static void install()
 //    uninstallDealloc_NSObject();
 //    uninstallDealloc_NSProxy();
 //
-//    void* ptr = (void*)g_zombieCache;
+//    void *ptr = (void *)g_zombieCache;
 //    g_zombieCache = NULL;
 //    dispatch_time_t tenSeconds = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC));
 //    dispatch_after(tenSeconds, dispatch_get_main_queue(), ^
@@ -181,7 +181,7 @@ static void install()
 //    });
 //}
 
-const char *kszombie_className(const void* object)
+const char *kszombie_className(const void *object)
 {
     volatile Zombie* cache = g_zombieCache;
     if (cache == NULL || object == NULL) {

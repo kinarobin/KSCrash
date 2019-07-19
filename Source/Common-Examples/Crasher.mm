@@ -103,17 +103,17 @@ int g_crasher_denominator = 0;
     // From http://landonf.bikemonkey.org/2011/09/14
     
     // Random data
-    void* pointers[] = {NULL, NULL, NULL};
-    void* randomData[] = {
-        (void*)"a",
-        (void*)"b",
-        (void*)pointers,
-        (void*)"d",
-        (void*)"e",
-        (void*)"f"};
+    void *pointers[] = {NULL, NULL, NULL};
+    void *randomData[] = {
+        (void *)"a",
+        (void *)"b",
+        (void *)pointers,
+        (void *)"d",
+        (void *)"e",
+        (void *)"f"};
     
     // A corrupted/under-retained/re-used piece of memory
-    struct {void* isa;} corruptObj = {randomData};
+    struct {void *isa;} corruptObj = {randomData};
     
     // Message an invalid/corrupt object.
     // This will deadlock if called in a crash handler.
@@ -158,7 +158,7 @@ int g_crasher_denominator = 0;
 {
 //    NSArray* array = [[NSArray alloc] initWithObjects:@"", nil];
 //    [array release];
-//    void* ptr = array;
+//    void *ptr = array;
 //    memset(ptr, 0xe1, 16);
 //    [array objectAtIndex:10];
 //    return;
@@ -206,9 +206,9 @@ int g_crasher_denominator = 0;
     size_t stringsize = sizeof(uintptr_t) * 2 + 2;
     NSString* string = [NSString stringWithFormat:@"%d", 1];
     NSLog(@"%@", string);
-    void* cast = (__bridge void*)string;
+    void *cast = (__bridge void *)string;
     uintptr_t address = (uintptr_t)cast;
-    void* ptr = (char*)address + stringsize;
+    void *ptr = (char*)address + stringsize;
     memset(ptr, 0xa1, 500);
 }
 

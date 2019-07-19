@@ -69,7 +69,7 @@ int32_t kssysctl_int32(const int major_cmd, const int minor_cmd)
     return value;
 }
 
-int32_t kssysctl_int32ForName(const char *const name)
+int32_t kssysctl_int32ForName(const char * const name)
 {
     int32_t value = 0;
     size_t size = sizeof(value);
@@ -95,7 +95,7 @@ uint32_t kssysctl_uint32(const int major_cmd, const int minor_cmd)
     return value;
 }
 
-uint32_t kssysctl_uint32ForName(const char *const name)
+uint32_t kssysctl_uint32ForName(const char * const name)
 {
     uint32_t value = 0;
     size_t size = sizeof(value);
@@ -121,7 +121,7 @@ int64_t kssysctl_int64(const int major_cmd, const int minor_cmd)
     return value;
 }
 
-int64_t kssysctl_int64ForName(const char *const name)
+int64_t kssysctl_int64ForName(const char * const name)
 {
     int64_t value = 0;
     size_t size = sizeof(value);
@@ -147,7 +147,7 @@ uint64_t kssysctl_uint64(const int major_cmd, const int minor_cmd)
     return value;
 }
 
-uint64_t kssysctl_uint64ForName(const char *const name)
+uint64_t kssysctl_uint64ForName(const char * const name)
 {
     uint64_t value = 0;
     size_t size = sizeof(value);
@@ -159,7 +159,7 @@ uint64_t kssysctl_uint64ForName(const char *const name)
 
 int kssysctl_string(const int major_cmd,
                        const int minor_cmd,
-                       char*const value,
+                       char* const value,
                        const int maxSize)
 {
     int cmd[2] = {major_cmd, minor_cmd};
@@ -175,8 +175,8 @@ int kssysctl_string(const int major_cmd,
     return (int)size;
 }
 
-int kssysctl_stringForName(const char *const  name,
-                              char *const value,
+int kssysctl_stringForName(const char * const  name,
+                              char * const value,
                               const int maxSize)
 {
     size_t size = value == NULL ? 0 : (size_t)maxSize;
@@ -200,7 +200,7 @@ struct timeval kssysctl_timeval(const int major_cmd, const int minor_cmd)
     return value;
 }
 
-struct timeval kssysctl_timevalForName(const char *const name)
+struct timeval kssysctl_timevalForName(const char * const name)
 {
     struct timeval value = {0};
     size_t size = sizeof(value);
@@ -227,8 +227,8 @@ bool kssysctl_getProcessInfo(const int pid,
     return true;
 }
 
-bool kssysctl_getMacAddress(const char *const name,
-                            char *const macAddressBuffer)
+bool kssysctl_getMacAddress(const char * const name,
+                            char * const macAddressBuffer)
 {
     // Based off http://iphonedevelopertips.com/device/determine-mac-address.html
 
@@ -253,7 +253,7 @@ bool kssysctl_getMacAddress(const char *const name,
         return false;
     }
 
-    void* ifBuffer = malloc(length);
+    void *ifBuffer = malloc(length);
     if (ifBuffer == NULL) {
         KSLOG_ERROR("Out of memory");
         return false;

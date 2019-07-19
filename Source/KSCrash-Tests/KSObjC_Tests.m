@@ -679,7 +679,7 @@ static NSArray *g_test_strings;
 - (void)testArrayDescription {
 #if 0
     NSArray* array = [NSArray arrayWithObjects:@"test", nil];
-    void* arrayPtr = (__bridge void*)array;
+    void *arrayPtr = (__bridge void *)array;
     NSString* expectedClassName = [NSString stringWithCString:class_getName([array class]) encoding:NSUTF8StringEncoding];
     NSString* expectedTheRest = @"\"test\"";
     char buffer[100];
@@ -958,7 +958,7 @@ static NSArray *g_test_strings;
 //- (void)testCopyDictionaryContents
 //{
 //    NSDictionary* dict = [NSDictionary dictionaryWithObject:@"value" forKey:@"key"];
-//    void* dictPtr = (__bridge void*)dict;
+//    void *dictPtr = (__bridge void *)dict;
 //    int expectedCount = [dict count];
 //    int count = ksobjc_dictionaryCount(dictPtr);
 //    XCTAssertEqual(count, expectedCount, @"");
@@ -966,13 +966,13 @@ static NSArray *g_test_strings;
 //    uintptr_t value;
 //    bool copied = ksobjc_dictionaryFirstEntry(dictPtr, &key, &value);
 //    XCTAssertTrue(copied, @"");
-//    bool isValid = ksobjc_objectType((void*)key) == KSObjCTypeObject;
+//    bool isValid = ksobjc_objectType((void *)key) == KSObjCTypeObject;
 //    XCTAssertTrue(isValid, @"");
-//    isValid = ksobjc_isValidObject((void*)key);
+//    isValid = ksobjc_isValidObject((void *)key);
 //    XCTAssertTrue(isValid, @"");
-//    isValid = ksobjc_objectType((void*)value) == KSObjCTypeObject;
+//    isValid = ksobjc_objectType((void *)value) == KSObjCTypeObject;
 //    XCTAssertTrue(isValid, @"");
-//    isValid = ksobjc_isValidObject((void*)value);
+//    isValid = ksobjc_isValidObject((void *)value);
 //    XCTAssertTrue(isValid, @"");
 //}
 

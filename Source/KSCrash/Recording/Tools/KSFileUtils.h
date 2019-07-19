@@ -179,7 +179,7 @@ typedef struct {
  *
  * @return True if the file was successfully opened.
  */
-bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char *const path,
+bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char * const path,
                              char *writeBuffer, int writeBufferLength);
 
 /** Close a buffered writer.
@@ -232,7 +232,7 @@ typedef struct {
  *
  * @return True if the file was successfully opened.
  */
-bool ksfu_openBufferedReader(KSBufferedReader* reader, const char *const path,
+bool ksfu_openBufferedReader(KSBufferedReader* reader, const char * const path,
                              char *readBuffer, int readBufferLength);
 
 /** Close a buffered reader.

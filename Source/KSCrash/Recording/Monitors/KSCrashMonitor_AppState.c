@@ -75,7 +75,7 @@ static volatile bool g_isEnabled = false;
 #pragma mark - JSON Encoding -
 // ============================================================================
 
-static int onBooleanElement(const char *const name, const bool value, void* const userData)
+static int onBooleanElement(const char * const name, const bool value, void * const userData)
 {
     KSCrash_AppState* state = userData;
 
@@ -86,7 +86,7 @@ static int onBooleanElement(const char *const name, const bool value, void* cons
     return KSJSON_OK;
 }
 
-static int onFloatingPointElement(const char *const name, const double value, void* const userData)
+static int onFloatingPointElement(const char * const name, const double value, void * const userData)
 {
     KSCrash_AppState* state = userData;
 
@@ -100,7 +100,7 @@ static int onFloatingPointElement(const char *const name, const double value, vo
     return KSJSON_OK;
 }
 
-static int onIntegerElement(const char *const name, const int64_t value, void* const userData)
+static int onIntegerElement(const char * const name, const int64_t value, void * const userData)
 {
     KSCrash_AppState* state = userData;
 
@@ -119,34 +119,34 @@ static int onIntegerElement(const char *const name, const int64_t value, void* c
     return onFloatingPointElement(name, value, userData);
 }
 
-static int onNullElement(__unused const char *const name, __unused void* const userData)
+static int onNullElement(__unused const char * const name, __unused void * const userData)
 {
     return KSJSON_OK;
 }
 
-static int onStringElement(__unused const char *const name,
-                           __unused const char *const value,
-                           __unused void* const userData)
+static int onStringElement(__unused const char * const name,
+                           __unused const char * const value,
+                           __unused void * const userData)
 {
     return KSJSON_OK;
 }
 
-static int onBeginObject(__unused const char *const name, __unused void* const userData)
+static int onBeginObject(__unused const char * const name, __unused void * const userData)
 {
     return KSJSON_OK;
 }
 
-static int onBeginArray(__unused const char *const name, __unused void* const userData)
+static int onBeginArray(__unused const char * const name, __unused void * const userData)
 {
     return KSJSON_OK;
 }
 
-static int onEndContainer(__unused void* const userData)
+static int onEndContainer(__unused void * const userData)
 {
     return KSJSON_OK;
 }
 
-static int onEndData(__unused void* const userData)
+static int onEndData(__unused void * const userData)
 {
     return KSJSON_OK;
 }
@@ -154,7 +154,7 @@ static int onEndData(__unused void* const userData)
 
 /** Callback for adding JSON data.
  */
-static int addJSONData(const char *const data, const int length, void* const userData)
+static int addJSONData(const char * const data, const int length, void * const userData)
 {
     const int fd = *((int*)userData);
     const bool success = ksfu_writeBytesToFD(fd, data, length);
@@ -184,7 +184,7 @@ static double timeSince(double timeInSeconds)
  *
  * @return true if the operation was successful.
  */
-static bool loadState(const char *const path)
+static bool loadState(const char * const path)
 {
     // Stop if the file doesn't exist.
     // This is expected on the first run of the app.
@@ -237,7 +237,7 @@ static bool loadState(const char *const path)
  *
  * @return true if the operation was successful.
  */
-static bool saveState(const char *const path)
+static bool saveState(const char * const path)
 {
     int fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
     if (fd < 0) {
@@ -322,7 +322,7 @@ static void updateAppState(void)
 #pragma mark - API -
 // ============================================================================
 
-void kscrashstate_initialize(const char *const stateFilePath)
+void kscrashstate_initialize(const char * const stateFilePath)
 {
     g_stateFilePath = strdup(stateFilePath);
     loadState(g_stateFilePath);
@@ -381,7 +381,7 @@ void kscrashstate_notifyAppActive(const bool isActive)
 void kscrashstate_notifyAppInForeground(const bool isInForeground)
 {
     if (g_isEnabled) {
-        const char *const stateFilePath = g_stateFilePath;
+        const char * const stateFilePath = g_stateFilePath;
 
         g_state.applicationIsInForeground = isInForeground;
         if (isInForeground) {
@@ -402,7 +402,7 @@ void kscrashstate_notifyAppInForeground(const bool isInForeground)
 void kscrashstate_notifyAppTerminate(void)
 {
     if (g_isEnabled) {
-        const char *const stateFilePath = g_stateFilePath;
+        const char * const stateFilePath = g_stateFilePath;
         updateAppState();
         saveState(stateFilePath);
     }
@@ -412,7 +412,7 @@ void kscrashstate_notifyAppCrash(void)
 {
     KSLOG_TRACE("Trying to update AppState. g_isEnabled: %d", g_isEnabled);
     if (g_isEnabled) {
-        const char *const stateFilePath = g_stateFilePath;
+        const char * const stateFilePath = g_stateFilePath;
         updateAppState();
         g_state.crashedThisLaunch = true;
         saveState(stateFilePath);

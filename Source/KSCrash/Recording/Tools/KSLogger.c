@@ -80,7 +80,7 @@ static void writeFmtArgsToLog(const char *fmt, va_list args);
 static void flushLog(void);
 
 
-static inline const char *lastPathEntry(const char *const path)
+static inline const char *lastPathEntry(const char * const path)
 {
     const char *lastFile = strrchr(path, '/');
     return lastFile == 0 ? path : lastFile + 1;
@@ -100,7 +100,7 @@ static inline void writeFmtToLog(const char *fmt, ...)
 static int g_fd = -1;
 
 
-static void writeToLog(const char *const str)
+static void writeToLog(const char * const str)
 {
     if (g_fd >= 0) {
         int bytesToWrite = (int)strlen(str);
@@ -176,7 +176,7 @@ static inline void setLogFD(FILE* file)
     g_file = file;
 }
 
-void writeToLog(const char *const str)
+void writeToLog(const char * const str)
 {
     if (g_file != NULL) {
         fprintf(g_file, "%s", str);
@@ -237,7 +237,7 @@ bool kslog_clearLogFile()
 #pragma mark - C -
 // ===========================================================================
 
-void i_kslog_logCBasic(const char *const fmt, ...)
+void i_kslog_logCBasic(const char * const fmt, ...)
 {
     va_list args;
     va_start(args,fmt);
@@ -247,11 +247,11 @@ void i_kslog_logCBasic(const char *const fmt, ...)
     flushLog();
 }
 
-void i_kslog_logC(const char *const level,
-                  const char *const file,
+void i_kslog_logC(const char * const level,
+                  const char * const file,
                   const int line,
-                  const char *const function,
-                  const char *const fmt, ...)
+                  const char * const function,
+                  const char * const fmt, ...)
 {
     writeFmtToLog("%s: %s (%u): %s: ", level, lastPathEntry(file), line, function);
     va_list args;
@@ -295,10 +295,10 @@ void i_kslog_logObjCBasic(CFStringRef fmt, ...)
     CFRelease(entry);
 }
 
-void i_kslog_logObjC(const char *const level,
-                     const char *const file,
+void i_kslog_logObjC(const char * const level,
+                     const char * const file,
                      const int line,
-                     const char *const function,
+                     const char * const function,
                      CFStringRef fmt, ...)
 {
     CFStringRef logFmt = NULL;

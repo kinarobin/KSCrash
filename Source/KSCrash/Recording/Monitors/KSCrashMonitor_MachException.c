@@ -253,7 +253,7 @@ static exception_type_t machExceptionForSignal(int sigNum)
  * Wait for an exception message, uninstall our exception port, record the
  * exception information, and write a report.
  */
-static void* handleExceptions(void* const userData)
+static void *handleExceptions(void * const userData)
 {
     MachExceptionMessage exceptionMessage = {{0}};
     MachReplyMessage replyMessage = {{0}};

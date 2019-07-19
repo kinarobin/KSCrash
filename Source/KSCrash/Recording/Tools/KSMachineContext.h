@@ -85,7 +85,7 @@ bool ksmc_getContextForThread(KSThread thread,
  *
  * @return true if successful.
  */
-bool ksmc_getContextForSignal(void* signalUserContext,
+bool ksmc_getContextForSignal(void *signalUserContext,
                               struct KSMachineContext* destinationContext);
 
 /** Get the thread associated with a machine context.

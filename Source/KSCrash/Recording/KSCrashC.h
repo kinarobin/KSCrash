@@ -47,7 +47,7 @@ extern "C" {
  * @return The crash types that are being handled.
  */
 KSCrashMonitorType kscrash_install(const char *appName,
-                                   const char *const installPath);
+                                   const char * const installPath);
 
 /** Set the crash types that will be handled.
  * Some crash types may not be enabled depending on circumstances (e.g. running
@@ -67,7 +67,7 @@ KSCrashMonitorType kscrash_setMonitoring(KSCrashMonitorType monitors);
  * @param userInfoJSON Pre-baked JSON containing user-supplied information.
  *                     NULL = delete.
  */
-void kscrash_setUserInfoJSON(const char *const userInfoJSON);
+void kscrash_setUserInfoJSON(const char * const userInfoJSON);
 
 /** Set the maximum time to allow the main thread to run without returning.
  * If a task occupies the main thread for longer than this interval, the

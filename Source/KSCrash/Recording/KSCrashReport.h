@@ -47,7 +47,7 @@ extern "C" {
  *
  * @param userInfoJSON The user information, in JSON format.
  */
-void kscrashreport_setUserInfoJSON(const char *const userInfoJSON);
+void kscrashreport_setUserInfoJSON(const char * const userInfoJSON);
 
 /** Configure whether to introspect any interesting memory locations.
  *  This can find things like strings or Objective-C classes.

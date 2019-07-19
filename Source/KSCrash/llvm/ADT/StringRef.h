@@ -41,7 +41,7 @@ bool getAsSignedInteger(StringRef Str, unsigned Radix, long long &Result);
 class StringRef {
  public:
   typedef const char *iterator;
-  typedef const char *const_iterator;
+  typedef const char * const_iterator;
   static const size_t npos = ~size_t(0);
   typedef size_t size_type;
 

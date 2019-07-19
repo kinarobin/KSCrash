@@ -67,14 +67,14 @@ typedef struct {
  * @param pointer The pointer to check.
  * @return true if it's a tagged pointer.
  */
-bool ksobjc_isTaggedPointer(const void* const pointer);
+bool ksobjc_isTaggedPointer(const void * const pointer);
 
 /** Check if a pointer is a valid tagged pointer.
  *
  * @param pointer The pointer to check.
  * @return true if it's a valid tagged pointer.
  */
-bool ksobjc_isValidTaggedPointer(const void* const pointer);
+bool ksobjc_isValidTaggedPointer(const void * const pointer);
 
 /** Query a pointer to see what kind of object it points to.
  * If the pointer points to a class, this method will verify that its basic
@@ -93,7 +93,7 @@ bool ksobjc_isValidTaggedPointer(const void* const pointer);
  * @return The type of object, or KSObjCTypeNone if it was not an object or
  *         was inaccessible.
  */
-KSObjCType ksobjc_objectType(const void* objectOrClassPtr);
+KSObjCType ksobjc_objectType(const void *objectOrClassPtr);
 
 /** Check that an object contains valid data.
  * If the object is of a recognized type (string, date, array, etc),
@@ -105,7 +105,7 @@ KSObjCType ksobjc_objectType(const void* objectOrClassPtr);
  *
  * @return true if the object is valid.
  */
-bool ksobjc_isValidObject(const void* object);
+bool ksobjc_isValidObject(const void *object);
 
 /** Fetch the isa pointer from an object or class.
  *
@@ -113,7 +113,7 @@ bool ksobjc_isValidObject(const void* object);
  *
  * @return The isa pointer.
  */
-const void* ksobjc_isaPointer(const void* objectOrClassPtr);
+const void *ksobjc_isaPointer(const void *objectOrClassPtr);
 
 /** Fetch the super class pointer from a class.
  *
@@ -121,7 +121,7 @@ const void* ksobjc_isaPointer(const void* objectOrClassPtr);
  *
  * @return the super class.
  */
-const void* ksobjc_superClass(const void* classPtr);
+const void *ksobjc_superClass(const void *classPtr);
 
 /** Get the base class this class is derived from.
  * It will always return the highest level non-root class in the hierarchy
@@ -132,7 +132,7 @@ const void* ksobjc_superClass(const void* classPtr);
  *
  * @return The base class.
  */
-const void* ksobjc_baseClass(const void* const classPtr);
+const void *ksobjc_baseClass(const void * const classPtr);
 
 /** Check if a class is a meta class.
  *
@@ -140,7 +140,7 @@ const void* ksobjc_baseClass(const void* const classPtr);
  *
  * @return true if the class is a meta class.
  */
-bool ksobjc_isMetaClass(const void* classPtr);
+bool ksobjc_isMetaClass(const void *classPtr);
 
 /** Check if a class is a root class.
  *
@@ -148,7 +148,7 @@ bool ksobjc_isMetaClass(const void* classPtr);
  *
  * @return true if the class is a root class.
  */
-bool ksobjc_isRootClass(const void* classPtr);
+bool ksobjc_isRootClass(const void *classPtr);
 
 /** Get the name of a class.
  *
@@ -156,7 +156,7 @@ bool ksobjc_isRootClass(const void* classPtr);
  *
  * @return the name, or NULL if the name inaccessible.
  */
-const char *ksobjc_className(const void* classPtr);
+const char *ksobjc_className(const void *classPtr);
 
 /** Get the name of an object's class.
  * This also handles tagged pointers.
@@ -165,7 +165,7 @@ const char *ksobjc_className(const void* classPtr);
  *
  * @return the name, or NULL if the name is inaccessible.
  */
-const char *ksobjc_objectClassName(const void* objectPtr);
+const char *ksobjc_objectClassName(const void *objectPtr);
 
 /** Check if a class has a specific name.
  *
@@ -175,8 +175,8 @@ const char *ksobjc_objectClassName(const void* objectPtr);
  *
  * @return true if the class has the specified name.
  */
-bool ksobjc_isClassNamed(const void* const classPtr,
-                         const char *const className);
+bool ksobjc_isClassNamed(const void * const classPtr,
+                         const char * const className);
 
 /** Check if a class is of the specified type or a subclass thereof.
  * Note: This function is considerably slower than ksobjc_baseClassName().
@@ -188,7 +188,7 @@ bool ksobjc_isClassNamed(const void* const classPtr,
  * @return true if the class is of the specified type or a subclass of that
  * type.
  */
-bool ksobjc_isKindOfClass(const void* classPtr, const char *className);
+bool ksobjc_isKindOfClass(const void *classPtr, const char *className);
 
 /** Get the number of ivars registered with a class.
  *
@@ -196,7 +196,7 @@ bool ksobjc_isKindOfClass(const void* classPtr, const char *className);
  *
  * @return The number of ivars.
  */
-int ksobjc_ivarCount(const void* classPtr);
+int ksobjc_ivarCount(const void *classPtr);
 
 /** Get information about ivars in a class.
  *
@@ -208,7 +208,7 @@ int ksobjc_ivarCount(const void* classPtr);
  *
  * @return The number of ivars copied.
  */
-int ksobjc_ivarList(const void* classPtr, KSObjCIvar* dstIvars, int ivarsCount);
+int ksobjc_ivarList(const void *classPtr, KSObjCIvar* dstIvars, int ivarsCount);
 
 /** Get ivar information by name/
  *
@@ -220,7 +220,7 @@ int ksobjc_ivarList(const void* classPtr, KSObjCIvar* dstIvars, int ivarsCount);
  *
  * @return true if the operation was successful.
  */
-bool ksobjc_ivarNamed(const void* const classPtr, const char *name,
+bool ksobjc_ivarNamed(const void * const classPtr, const char *name,
                       KSObjCIvar* dst);
 
 /** Get the value of an ivar in an object.
@@ -233,7 +233,7 @@ bool ksobjc_ivarNamed(const void* const classPtr, const char *name,
  *
  * @return true if the operation was successful.
  */
-bool ksobjc_ivarValue(const void* objectPtr, int ivarIndex, void* dst);
+bool ksobjc_ivarValue(const void *objectPtr, int ivarIndex, void *dst);
 
 /* Get the payload from a tagged pointer.
  *
@@ -241,7 +241,7 @@ bool ksobjc_ivarValue(const void* objectPtr, int ivarIndex, void* dst);
  *
  * @return the payload value.
  */
-uintptr_t ksobjc_taggedPointerPayload(const void* taggedObjectPtr);
+uintptr_t ksobjc_taggedPointerPayload(const void *taggedObjectPtr);
 
 /** Generate a description of an object.
  *
@@ -261,7 +261,7 @@ uintptr_t ksobjc_taggedPointerPayload(const void* taggedObjectPtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int ksobjc_getDescription(void* object, char *buffer, int bufferLength);
+int ksobjc_getDescription(void *object, char *buffer, int bufferLength);
 
 /** Get the class type of an object.
  * There are a number of common class types that KSObjC understamds,
@@ -272,7 +272,7 @@ int ksobjc_getDescription(void* object, char *buffer, int bufferLength);
  * @return The class type, or KSObjCClassTypeUnknown if it couldn't be
  * determined.
  */
-KSObjCClassType ksobjc_objectClassType(const void* object);
+KSObjCClassType ksobjc_objectClassType(const void *object);
 
 //======================================================================
 #pragma mark - Object-Specific Queries -
@@ -283,14 +283,14 @@ KSObjCClassType ksobjc_objectClassType(const void* object);
  * @param object The number to query.
  * @return true if the number is floating point.
  */
-bool ksobjc_numberIsFloat(const void* object);
+bool ksobjc_numberIsFloat(const void *object);
 
 /** Get the contents of a number as a floating point value.
  *
  * @param object The number.
  * @return The value.
  */
-double ksobjc_numberAsFloat(const void* object);
+double ksobjc_numberAsFloat(const void *object);
 
 /** Get the contents of a number as an integer value.
  * If the number was stored as floating point, it will be
@@ -299,7 +299,7 @@ double ksobjc_numberAsFloat(const void* object);
  * @param object The number.
  * @return The value.
  */
-int64_t ksobjc_numberAsInteger(const void* object);
+int64_t ksobjc_numberAsInteger(const void *object);
 
 /** Copy the contents of a date object.
  *
@@ -307,7 +307,7 @@ int64_t ksobjc_numberAsInteger(const void* object);
  *
  * @return Time interval since Jan 1 2001 00:00:00 GMT.
  */
-double ksobjc_dateContents(const void* datePtr);
+double ksobjc_dateContents(const void *datePtr);
 
 /** Copy the contents of a URL object.
  *
@@ -322,7 +322,7 @@ double ksobjc_dateContents(const void* datePtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int ksobjc_copyURLContents(const void* nsurl, char *dst, int maxLength);
+int ksobjc_copyURLContents(const void *nsurl, char *dst, int maxLength);
 
 /** Get the length of a string in characters.
  *
@@ -330,7 +330,7 @@ int ksobjc_copyURLContents(const void* nsurl, char *dst, int maxLength);
  *
  * @return The length of the string.
  */
-int ksobjc_stringLength(const void* const stringPtr);
+int ksobjc_stringLength(const void * const stringPtr);
 
 /** Copy the contents of a string object.
  *
@@ -345,7 +345,7 @@ int ksobjc_stringLength(const void* const stringPtr);
  *
  * @return the number of bytes copied (not including null terminator).
  */
-int ksobjc_copyStringContents(const void* string, char *dst, int maxLength);
+int ksobjc_copyStringContents(const void *string, char *dst, int maxLength);
 
 /** Get an NSArray's count.
  *
@@ -353,7 +353,7 @@ int ksobjc_copyStringContents(const void* string, char *dst, int maxLength);
  *
  * @return The array's count.
  */
-int ksobjc_arrayCount(const void* arrayPtr);
+int ksobjc_arrayCount(const void *arrayPtr);
 
 /** Get an NSArray's contents.
  *
@@ -365,7 +365,7 @@ int ksobjc_arrayCount(const void* arrayPtr);
  *
  * @return The number of items copied.
  */
-int ksobjc_arrayContents(const void* arrayPtr, uintptr_t* contents, int count);
+int ksobjc_arrayContents(const void *arrayPtr, uintptr_t* contents, int count);
 
 //======================================================================
 #pragma mark - Broken/Unimplemented Stuff -
@@ -383,12 +383,12 @@ int ksobjc_arrayContents(const void* arrayPtr, uintptr_t* contents, int count);
  *
  * @return true if the operation was successful.
  */
-bool ksobjc_dictionaryFirstEntry(const void* dict, uintptr_t* key,
+bool ksobjc_dictionaryFirstEntry(const void *dict, uintptr_t* key,
                                  uintptr_t* value);
 
 /** UNIMPLEMENTED
  */
-int ksobjc_dictionaryCount(const void* dict);
+int ksobjc_dictionaryCount(const void *dict);
 
 #ifdef __cplusplus
 }

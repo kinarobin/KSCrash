@@ -83,7 +83,7 @@ typedef struct KSCrash_MonitorContext {
   /** The stack cursor for the trace leading up to the crash.
    *  Note: Actual type is KSStackCursor*
    */
-  void* stackCursor;
+  void *stackCursor;
 
   struct {
     /** The mach exception type. */
@@ -112,7 +112,7 @@ typedef struct KSCrash_MonitorContext {
 
   struct {
     /** User context information. */
-    const void* userContext;
+    const void *userContext;
     int signum;
     int sigcode;
   } signal;

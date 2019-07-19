@@ -152,7 +152,7 @@ static const char *dateSysctl(const char *name) {
  *
  * @return true if the operation was successful.
  */
-static bool VMStats(vm_statistics_data_t *const vmStats, vm_size_t *const pageSize) {
+static bool VMStats(vm_statistics_data_t * const vmStats, vm_size_t * const pageSize) {
     kern_return_t kr;
     const mach_port_t hostPort = mach_host_self();
 

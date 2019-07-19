@@ -39,7 +39,7 @@
 
 #define SWAP_POINTERS(A, B) \
 { \
-    void* temp = A; \
+    void *temp = A; \
     A = B; \
     B = temp; \
 }
@@ -109,7 +109,7 @@ static void updateThreadList()
             const char *name = allThreadNames[i];
             if (name != NULL)
             {
-                free((void*)name);
+                free((void *)name);
             }
         }
         free(allThreadNames);
@@ -119,7 +119,7 @@ static void updateThreadList()
             const char *name = allQueueNames[i];
             if (name != NULL)
             {
-                free((void*)name);
+                free((void *)name);
             }
         }
         free(allQueueNames);
@@ -131,7 +131,7 @@ static void updateThreadList()
     vm_deallocate(thisTask, (vm_address_t)threads, sizeof(thread_t) * allThreadsCount);
 }
 
-static void* monitorCachedData(__unused void* const userData)
+static void *monitorCachedData(__unused void * const userData)
 {
     static int quickPollCount = 4;
     usleep(1);

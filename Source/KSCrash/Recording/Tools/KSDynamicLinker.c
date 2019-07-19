@@ -148,7 +148,7 @@ static uintptr_t segmentBaseOfImageIndex(const uint32_t idx)
     return 0;
 }
 
-uint32_t ksdl_imageNamed(const char *const imageName, bool exactMatch)
+uint32_t ksdl_imageNamed(const char * const imageName, bool exactMatch)
 {
     if (imageName != NULL) {
         const uint32_t imageCount = _dyld_image_count();
@@ -174,7 +174,7 @@ uint32_t ksdl_imageNamed(const char *const imageName, bool exactMatch)
     return UINT32_MAX;
 }
 
-const uint8_t* ksdl_imageUUID(const char *const imageName, bool exactMatch)
+const uint8_t* ksdl_imageUUID(const char * const imageName, bool exactMatch)
 {
     if (imageName != NULL) {
         const uint32_t iImg = ksdl_imageNamed(imageName, exactMatch);
@@ -222,7 +222,7 @@ bool ksdl_dladdr(const uintptr_t address, Dl_info* const info)
     }
 
     info->dli_fname = _dyld_get_image_name(idx);
-    info->dli_fbase = (void*)header;
+    info->dli_fbase = (void *)header;
 
     // Find symbol tables and get whichever symbol is closest to the address.
     const STRUCT_NLIST* bestMatch = NULL;
@@ -255,7 +255,7 @@ bool ksdl_dladdr(const uintptr_t address, Dl_info* const info)
             }
             if (bestMatch != NULL)
             {
-                info->dli_saddr = (void*)(bestMatch->n_value + imageVMAddrSlide);
+                info->dli_saddr = (void *)(bestMatch->n_value + imageVMAddrSlide);
                 if (bestMatch->n_desc == 16)
                 {
                     // This image has been stripped. The name is meaningless, and

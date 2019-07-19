@@ -118,32 +118,32 @@ static KSReportWriteCallback g_userSectionWriteCallback;
 
 #pragma mark Callbacks
 
-static void addBooleanElement(const KSCrashReportWriter* const writer, const char *const key, const bool value)
+static void addBooleanElement(const KSCrashReportWriter* const writer, const char * const key, const bool value)
 {
     ksjson_addBooleanElement(getJsonContext(writer), key, value);
 }
 
-static void addFloatingPointElement(const KSCrashReportWriter* const writer, const char *const key, const double value)
+static void addFloatingPointElement(const KSCrashReportWriter* const writer, const char * const key, const double value)
 {
     ksjson_addFloatingPointElement(getJsonContext(writer), key, value);
 }
 
-static void addIntegerElement(const KSCrashReportWriter* const writer, const char *const key, const int64_t value)
+static void addIntegerElement(const KSCrashReportWriter* const writer, const char * const key, const int64_t value)
 {
     ksjson_addIntegerElement(getJsonContext(writer), key, value);
 }
 
-static void addUIntegerElement(const KSCrashReportWriter* const writer, const char *const key, const uint64_t value)
+static void addUIntegerElement(const KSCrashReportWriter* const writer, const char * const key, const uint64_t value)
 {
     ksjson_addIntegerElement(getJsonContext(writer), key, (int64_t)value);
 }
 
-static void addStringElement(const KSCrashReportWriter* const writer, const char *const key, const char *const value)
+static void addStringElement(const KSCrashReportWriter* const writer, const char * const key, const char * const value)
 {
     ksjson_addStringElement(getJsonContext(writer), key, value, KSJSON_SIZE_AUTOMATIC);
 }
 
-static void addTextFileElement(const KSCrashReportWriter* const writer, const char *const key, const char *const filePath)
+static void addTextFileElement(const KSCrashReportWriter* const writer, const char * const key, const char * const filePath)
 {
     const int fd = open(filePath, O_RDONLY);
     if (fd < 0) {
@@ -173,19 +173,19 @@ done:
 }
 
 static void addDataElement(const KSCrashReportWriter* const writer,
-                           const char *const key,
-                           const char *const value,
+                           const char * const key,
+                           const char * const value,
                            const int length)
 {
     ksjson_addDataElement(getJsonContext(writer), key, value, length);
 }
 
-static void beginDataElement(const KSCrashReportWriter* const writer, const char *const key)
+static void beginDataElement(const KSCrashReportWriter* const writer, const char * const key)
 {
     ksjson_beginDataElement(getJsonContext(writer), key);
 }
 
-static void appendDataElement(const KSCrashReportWriter* const writer, const char *const value, const int length)
+static void appendDataElement(const KSCrashReportWriter* const writer, const char * const value, const int length)
 {
     ksjson_appendDataElement(getJsonContext(writer), value, length);
 }
@@ -195,7 +195,7 @@ static void endDataElement(const KSCrashReportWriter* const writer)
     ksjson_endDataElement(getJsonContext(writer));
 }
 
-static void addUUIDElement(const KSCrashReportWriter* const writer, const char *const key, const unsigned char *const value)
+static void addUUIDElement(const KSCrashReportWriter* const writer, const char * const key, const unsigned char * const value)
 {
     if (value == NULL) {
         ksjson_addNullElement(getJsonContext(writer), key);
@@ -233,8 +233,8 @@ static void addUUIDElement(const KSCrashReportWriter* const writer, const char *
 }
 
 static void addJSONElement(const KSCrashReportWriter* const writer,
-                           const char *const key,
-                           const char *const jsonElement,
+                           const char * const key,
+                           const char * const jsonElement,
                            bool closeLastContainer)
 {
     int jsonResult = ksjson_addJSONElement(getJsonContext(writer),
@@ -262,19 +262,19 @@ static void addJSONElement(const KSCrashReportWriter* const writer,
 }
 
 static void addJSONElementFromFile(const KSCrashReportWriter* const writer,
-                                   const char *const key,
-                                   const char *const filePath,
+                                   const char * const key,
+                                   const char * const filePath,
                                    bool closeLastContainer)
 {
     ksjson_addJSONFromFile(getJsonContext(writer), key, filePath, closeLastContainer);
 }
 
-static void beginObject(const KSCrashReportWriter* const writer, const char *const key)
+static void beginObject(const KSCrashReportWriter* const writer, const char * const key)
 {
     ksjson_beginObject(getJsonContext(writer), key);
 }
 
-static void beginArray(const KSCrashReportWriter* const writer, const char *const key)
+static void beginArray(const KSCrashReportWriter* const writer, const char * const key)
 {
     ksjson_beginArray(getJsonContext(writer), key);
 }
@@ -285,7 +285,7 @@ static void endContainer(const KSCrashReportWriter* const writer)
 }
 
 
-static void addTextLinesFromFile(const KSCrashReportWriter* const writer, const char *const key, const char *const filePath)
+static void addTextLinesFromFile(const KSCrashReportWriter* const writer, const char * const key, const char * const filePath)
 {
     char readBuffer[1024];
     KSBufferedReader reader;
@@ -309,7 +309,7 @@ static void addTextLinesFromFile(const KSCrashReportWriter* const writer, const 
     ksfu_closeBufferedReader(&reader);
 }
 
-static int addJSONData(const char *restrict const data, const int length, void* restrict userData)
+static int addJSONData(const char *restrict const data, const int length, void *restrict userData)
 {
     KSBufferedWriter* writer = (KSBufferedWriter*)userData;
     const bool success = ksfu_writeBufferedWriter(writer, data, length);
@@ -327,9 +327,9 @@ static int addJSONData(const char *restrict const data, const int length, void* 
  *
  * @return true if the address points to a string.
  */
-static bool isValidString(const void* const address)
+static bool isValidString(const void * const address)
 {
-    if ((void*)address == NULL) {
+    if ((void *)address == NULL) {
         return false;
     }
 
@@ -389,7 +389,7 @@ static bool getStackCursor(const KSCrash_MonitorContext* const crash,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeMemoryContents(const KSCrashReportWriter* const writer,
-                                const char *const key,
+                                const char * const key,
                                 const uintptr_t address,
                                 int* limit);
 
@@ -405,11 +405,11 @@ static void writeMemoryContents(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeNSStringContents(const KSCrashReportWriter* const writer,
-                                  const char *const key,
+                                  const char * const key,
                                   const uintptr_t objectAddress,
                                   __unused int* limit)
 {
-    const void* object = (const void*)objectAddress;
+    const void *object = (const void *)objectAddress;
     char buffer[200];
     if (ksobjc_copyStringContents(object, buffer, sizeof(buffer))) {
         writer->addStringElement(writer, key, buffer);
@@ -428,11 +428,11 @@ static void writeNSStringContents(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeURLContents(const KSCrashReportWriter* const writer,
-                             const char *const key,
+                             const char * const key,
                              const uintptr_t objectAddress,
                              __unused int* limit)
 {
-    const void* object = (const void*)objectAddress;
+    const void *object = (const void *)objectAddress;
     char buffer[200];
     if (ksobjc_copyStringContents(object, buffer, sizeof(buffer))) {
         writer->addStringElement(writer, key, buffer);
@@ -451,11 +451,11 @@ static void writeURLContents(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeDateContents(const KSCrashReportWriter* const writer,
-                              const char *const key,
+                              const char * const key,
                               const uintptr_t objectAddress,
                               __unused int* limit)
 {
-    const void* object = (const void*)objectAddress;
+    const void *object = (const void *)objectAddress;
     writer->addFloatingPointElement(writer, key, ksobjc_dateContents(object));
 }
 
@@ -471,11 +471,11 @@ static void writeDateContents(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeNumberContents(const KSCrashReportWriter* const writer,
-                                const char *const key,
+                                const char * const key,
                                 const uintptr_t objectAddress,
                                 __unused int* limit)
 {
-    const void* object = (const void*)objectAddress;
+    const void *object = (const void *)objectAddress;
     writer->addFloatingPointElement(writer, key, ksobjc_numberAsFloat(object));
 }
 
@@ -491,11 +491,11 @@ static void writeNumberContents(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeArrayContents(const KSCrashReportWriter* const writer,
-                               const char *const key,
+                               const char * const key,
                                const uintptr_t objectAddress,
                                int* limit)
 {
-    const void* object = (const void*)objectAddress;
+    const void *object = (const void *)objectAddress;
     uintptr_t firstObject;
     if (ksobjc_arrayContents(object, &firstObject, 1) == 1) {
         writeMemoryContents(writer, key, firstObject, limit);
@@ -513,12 +513,12 @@ static void writeArrayContents(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeUnknownObjectContents(const KSCrashReportWriter* const writer,
-                                       const char *const key,
+                                       const char * const key,
                                        const uintptr_t objectAddress,
                                        int* limit)
 {
     (*limit)--;
-    const void* object = (const void*)objectAddress;
+    const void *object = (const void *)objectAddress;
     KSObjCIvar ivars[10];
     int8_t s8;
     int16_t s16;
@@ -533,14 +533,14 @@ static void writeUnknownObjectContents(const KSCrashReportWriter* const writer,
     float f32;
     double f64;
     bool b;
-    void* pointer;
+    void *pointer;
     
     
     writer->beginObject(writer, key); {
         if (ksobjc_isTaggedPointer(object)) {
             writer->addIntegerElement(writer, "tagged_payload", (int64_t)ksobjc_taggedPointerPayload(object));
         } else {
-            const void* class = ksobjc_isaPointer(object);
+            const void *class = ksobjc_isaPointer(object);
             int ivarCount = ksobjc_ivarList(class, ivars, sizeof(ivars)/sizeof(*ivars));
             *limit -= ivarCount;
             for(int i = 0; i < ivarCount; i++)
@@ -630,11 +630,11 @@ static bool isRestrictedClass(const char *name)
 }
 
 static void writeZombieIfPresent(const KSCrashReportWriter* const writer,
-                                 const char *const key,
+                                 const char * const key,
                                  const uintptr_t address)
 {
 #if KSCRASH_HAS_OBJC
-    const void* object = (const void*)address;
+    const void *object = (const void *)address;
     const char *zombieClassName = kszombie_className(object);
     if (zombieClassName != NULL) {
         writer->addStringElement(writer, key, zombieClassName);
@@ -647,7 +647,7 @@ static bool writeObjCObject(const KSCrashReportWriter* const writer,
                             int* limit)
 {
 #if KSCRASH_HAS_OBJC
-    const void* object = (const void*)address;
+    const void *object = (const void *)address;
     switch(ksobjc_objectType(object)) {
         case KSObjCTypeClass:
             writer->addStringElement(writer, KSCrashField_Type, KSCrashMemType_Class);
@@ -723,12 +723,12 @@ static bool writeObjCObject(const KSCrashReportWriter* const writer,
  * @param limit How many more subreferenced objects to write, if any.
  */
 static void writeMemoryContents(const KSCrashReportWriter* const writer,
-                                const char *const key,
+                                const char * const key,
                                 const uintptr_t address,
                                 int* limit)
 {
     (*limit)--;
-    const void* object = (const void*)address;
+    const void *object = (const void *)address;
     writer->beginObject(writer, key); {
         writer->addUIntegerElement(writer, KSCrashField_Address, address);
         writeZombieIfPresent(writer, KSCrashField_LastDeallocObject, address);
@@ -758,8 +758,8 @@ static bool isValidPointer(const uintptr_t address)
     }
 
 #if KSCRASH_HAS_OBJC
-    if (ksobjc_isTaggedPointer((const void*)address)) {
-        if (!ksobjc_isValidTaggedPointer((const void*)address)) {
+    if (ksobjc_isTaggedPointer((const void *)address)) {
+        if (!ksobjc_isValidTaggedPointer((const void *)address)) {
             return false;
         }
     }
@@ -774,7 +774,7 @@ static bool isNotableAddress(const uintptr_t address)
         return false;
     }
     
-    const void* object = (const void*)address;
+    const void *object = (const void *)address;
 
 #if KSCRASH_HAS_OBJC
     if (kszombie_className(object) != NULL) {
@@ -803,7 +803,7 @@ static bool isNotableAddress(const uintptr_t address)
  * @param address The memory address.
  */
 static void writeMemoryContentsIfNotable(const KSCrashReportWriter* const writer,
-                                         const char *const key,
+                                         const char * const key,
                                          const uintptr_t address)
 {
     if (isNotableAddress(address)) {
@@ -821,7 +821,7 @@ static void writeMemoryContentsIfNotable(const KSCrashReportWriter* const writer
  * @param string The string to search.
  */
 static void writeAddressReferencedByString(const KSCrashReportWriter* const writer,
-                                           const char *const key,
+                                           const char * const key,
                                            const char *string)
 {
     uint64_t address = 0;
@@ -844,7 +844,7 @@ static void writeAddressReferencedByString(const KSCrashReportWriter* const writ
  * @param stackCursor The stack cursor to read from.
  */
 static void writeBacktrace(const KSCrashReportWriter* const writer,
-                           const char *const key,
+                           const char * const key,
                            KSStackCursor* stackCursor)
 {
     writer->beginObject(writer, key); {
@@ -892,12 +892,12 @@ static void writeBacktrace(const KSCrashReportWriter* const writer,
  * @param isStackOverflow If true, the stack has overflowed.
  */
 static void writeStackContents(const KSCrashReportWriter* const writer,
-                               const char *const key,
+                               const char * const key,
                                const struct KSMachineContext* const machineContext,
                                const bool isStackOverflow)
 {
     uintptr_t sp = kscpu_stackPointer(machineContext);
-    if ((void*)sp == NULL) {
+    if ((void *)sp == NULL) {
         return;
     }
 
@@ -916,8 +916,8 @@ static void writeStackContents(const KSCrashReportWriter* const writer,
         writer->addBooleanElement(writer, KSCrashField_Overflow, isStackOverflow);
         uint8_t stackBuffer[kStackContentsTotalDistance * sizeof(sp)];
         int copyLength = (int)(highAddress - lowAddress);
-        if (ksmem_copySafely((void*)lowAddress, stackBuffer, copyLength)) {
-            writer->addDataElement(writer, KSCrashField_Contents, (void*)stackBuffer, copyLength);
+        if (ksmem_copySafely((void *)lowAddress, stackBuffer, copyLength)) {
+            writer->addDataElement(writer, KSCrashField_Contents, (void *)stackBuffer, copyLength);
         } else {
             writer->addStringElement(writer, KSCrashField_Error, "Stack contents not accessible");
         }
@@ -941,7 +941,7 @@ static void writeNotableStackContents(const KSCrashReportWriter* const writer,
                                       const int forwardDistance)
 {
     uintptr_t sp = kscpu_stackPointer(machineContext);
-    if ((void*)sp == NULL) {
+    if ((void *)sp == NULL) {
         return;
     }
 
@@ -955,8 +955,8 @@ static void writeNotableStackContents(const KSCrashReportWriter* const writer,
     uintptr_t contentsAsPointer;
     char nameBuffer[40];
     for(uintptr_t address = lowAddress; address < highAddress; address += sizeof(address)) {
-        if (ksmem_copySafely((void*)address, &contentsAsPointer, sizeof(contentsAsPointer))) {
-            sprintf(nameBuffer, "stack@%p", (void*)address);
+        if (ksmem_copySafely((void *)address, &contentsAsPointer, sizeof(contentsAsPointer))) {
+            sprintf(nameBuffer, "stack@%p", (void *)address);
             writeMemoryContentsIfNotable(writer, nameBuffer, contentsAsPointer);
         }
     }
@@ -974,7 +974,7 @@ static void writeNotableStackContents(const KSCrashReportWriter* const writer,
  * @param machineContext The context to retrieve the registers from.
  */
 static void writeBasicRegisters(const KSCrashReportWriter* const writer,
-                                const char *const key,
+                                const char * const key,
                                 const struct KSMachineContext* const machineContext)
 {
     char registerNameBuff[30];
@@ -1004,7 +1004,7 @@ static void writeBasicRegisters(const KSCrashReportWriter* const writer,
  * @param machineContext The context to retrieve the registers from.
  */
 static void writeExceptionRegisters(const KSCrashReportWriter* const writer,
-                                    const char *const key,
+                                    const char * const key,
                                     const struct KSMachineContext* const machineContext)
 {
     char registerNameBuff[30];
@@ -1034,7 +1034,7 @@ static void writeExceptionRegisters(const KSCrashReportWriter* const writer,
  * @param machineContext The context to retrieve the registers from.
  */
 static void writeRegisters(const KSCrashReportWriter* const writer,
-                           const char *const key,
+                           const char * const key,
                            const struct KSMachineContext* const machineContext)
 {
     writer->beginObject(writer, key); {
@@ -1081,7 +1081,7 @@ static void writeNotableRegisters(const KSCrashReportWriter* const writer,
  * @param machineContext The context to retrieve the registers from.
  */
 static void writeNotableAddresses(const KSCrashReportWriter* const writer,
-                                  const char *const key,
+                                  const char * const key,
                                   const struct KSMachineContext* const machineContext)
 {
     writer->beginObject(writer, key); {
@@ -1107,7 +1107,7 @@ static void writeNotableAddresses(const KSCrashReportWriter* const writer,
  * @param shouldWriteNotableAddresses If true, write any notable addresses found.
  */
 static void writeThread(const KSCrashReportWriter* const writer,
-                        const char *const key,
+                        const char * const key,
                         const KSCrash_MonitorContext* const crash,
                         const struct KSMachineContext* const machineContext,
                         const int threadIndex,
@@ -1158,7 +1158,7 @@ static void writeThread(const KSCrashReportWriter* const writer,
  * @param crash The crash handler context.
  */
 static void writeAllThreads(const KSCrashReportWriter* const writer,
-                            const char *const key,
+                            const char * const key,
                             const KSCrash_MonitorContext* const crash,
                             bool writeNotableAddresses)
 {
@@ -1197,7 +1197,7 @@ static void writeAllThreads(const KSCrashReportWriter* const writer,
  * @param index Which image to write about.
  */
 static void writeBinaryImage(const KSCrashReportWriter* const writer,
-                             const char *const key,
+                             const char * const key,
                              const int index)
 {
     KSBinaryImage image = {0};
@@ -1226,7 +1226,7 @@ static void writeBinaryImage(const KSCrashReportWriter* const writer,
  *
  * @param key The object key, if needed.
  */
-static void writeBinaryImages(const KSCrashReportWriter* const writer, const char *const key)
+static void writeBinaryImages(const KSCrashReportWriter* const writer, const char * const key)
 {
     const int imageCount = ksdl_imageCount();
 
@@ -1245,7 +1245,7 @@ static void writeBinaryImages(const KSCrashReportWriter* const writer, const cha
  * @param key The object key, if needed.
  */
 static void writeMemoryInfo(const KSCrashReportWriter* const writer,
-                            const char *const key,
+                            const char * const key,
                             const KSCrash_MonitorContext* const monitorContext)
 {
     writer->beginObject(writer, key); {
@@ -1265,7 +1265,7 @@ static void writeMemoryInfo(const KSCrashReportWriter* const writer,
  * @param crash The crash handler context.
  */
 static void writeError(const KSCrashReportWriter* const writer,
-                       const char *const key,
+                       const char * const key,
                        const KSCrash_MonitorContext* const crash)
 {
     writer->beginObject(writer, key);
@@ -1388,7 +1388,7 @@ static void writeError(const KSCrashReportWriter* const writer,
  * @param monitorContext The event monitor context.
  */
 static void writeAppStats(const KSCrashReportWriter* const writer,
-                          const char *const key,
+                          const char * const key,
                           const KSCrash_MonitorContext* const monitorContext)
 {
     writer->beginObject(writer, key); {
@@ -1414,7 +1414,7 @@ static void writeAppStats(const KSCrashReportWriter* const writer,
  * @param key The object key, if needed.
  */
 static void writeProcessState(const KSCrashReportWriter* const writer,
-                              const char *const key,
+                              const char * const key,
                               const KSCrash_MonitorContext* const monitorContext)
 {
     writer->beginObject(writer, key); {
@@ -1443,10 +1443,10 @@ static void writeProcessState(const KSCrashReportWriter* const writer,
  * @param reportID The report ID.
  */
 static void writeReportInfo(const KSCrashReportWriter* const writer,
-                            const char *const key,
-                            const char *const type,
-                            const char *const reportID,
-                            const char *const processName)
+                            const char * const key,
+                            const char * const type,
+                            const char * const reportID,
+                            const char * const processName)
 {
     writer->beginObject(writer, key); {
         struct timeval tp;
@@ -1463,7 +1463,7 @@ static void writeReportInfo(const KSCrashReportWriter* const writer,
 }
 
 static void writeRecrash(const KSCrashReportWriter* const writer,
-                         const char *const key,
+                         const char * const key,
                          const char *crashReportPath)
 {
     writer->addJSONFileElement(writer, key, crashReportPath, true);
@@ -1505,7 +1505,7 @@ static void prepareReportWriter(KSCrashReportWriter* const writer, KSJSONEncodeC
 #pragma mark - Main API -
 // ============================================================================
 
-void kscrashreport_writeRecrashReport(const KSCrash_MonitorContext* const monitorContext, const char *const path)
+void kscrashreport_writeRecrashReport(const KSCrash_MonitorContext* const monitorContext, const char * const path)
 {
     char writeBuffer[1024];
     KSBufferedWriter bufferedWriter;
@@ -1568,7 +1568,7 @@ void kscrashreport_writeRecrashReport(const KSCrash_MonitorContext* const monito
 }
 
 static void writeSystemInfo(const KSCrashReportWriter* const writer,
-                            const char *const key,
+                            const char * const key,
                             const KSCrash_MonitorContext* const monitorContext)
 {
     writer->beginObject(writer, key); {
@@ -1609,7 +1609,7 @@ static void writeSystemInfo(const KSCrashReportWriter* const writer,
 }
 
 static void writeDebugInfo(const KSCrashReportWriter* const writer,
-                            const char *const key,
+                            const char * const key,
                             const KSCrash_MonitorContext* const monitorContext)
 {
     writer->beginObject(writer, key); {
@@ -1621,7 +1621,7 @@ static void writeDebugInfo(const KSCrashReportWriter* const writer,
     
 }
 
-void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monitorContext, const char *const path)
+void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monitorContext, const char * const path)
 {
     KSLOG_INFO("Writing crash report to %s", path);
     char writeBuffer[1024];
@@ -1696,14 +1696,14 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
 
 
 
-void kscrashreport_setUserInfoJSON(const char *const userInfoJSON)
+void kscrashreport_setUserInfoJSON(const char * const userInfoJSON)
 {
     static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     KSLOG_TRACE("set userInfoJSON to %p", userInfoJSON);
 
     pthread_mutex_lock(&mutex);
     if (g_userInfoJSON != NULL) {
-        free((void*)g_userInfoJSON);
+        free((void *)g_userInfoJSON);
     }
     if (userInfoJSON == NULL) {
         g_userInfoJSON = NULL;
@@ -1743,7 +1743,7 @@ void kscrashreport_setDoNotIntrospectClasses(const char** doNotIntrospectClasses
     
     if (oldClasses != NULL) {
         for(int i = 0; i < oldClassesLength; i++) {
-            free((void*)oldClasses[i]);
+            free((void *)oldClasses[i]);
         }
         free(oldClasses);
     }

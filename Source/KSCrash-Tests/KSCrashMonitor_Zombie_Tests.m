@@ -63,7 +63,7 @@
 
 - (void)testZombieClassNameNotFound {
     // TODO: Figure out why this causes an endless call loop.
-    //    const char *className = kszombie_className((void*)1);
+    //    const char *className = kszombie_className((void *)1);
     //    XCTAssertTrue(className == NULL, @"");
 }
 

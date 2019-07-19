@@ -47,7 +47,7 @@ static const char *g_appName;
 static const char *g_reportsPath;
 static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static int compareInt64(const void* a, const void* b)
+static int compareInt64(const void *a, const void *b)
 {
     int64_t diff = *(int64_t*)a - *(int64_t*)b;
     if (diff < 0) {

@@ -150,25 +150,25 @@ static bool shouldSaveVersion(FixupContext* context, const char *name)
     return matchesAPath(context, name, versionPaths, versionPathsCount);
 }
 
-static int onBooleanElement(const char *const name,
+static int onBooleanElement(const char * const name,
                             const bool value,
-                            void* const userData)
+                            void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     return ksjson_addBooleanElement(context->encodeContext, name, value);
 }
 
-static int onFloatingPointElement(const char *const name,
+static int onFloatingPointElement(const char * const name,
                                   const double value,
-                                  void* const userData)
+                                  void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     return ksjson_addFloatingPointElement(context->encodeContext, name, value);
 }
 
-static int onIntegerElement(const char *const name,
+static int onIntegerElement(const char * const name,
                             const int64_t value,
-                            void* const userData)
+                            void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     int result = KSJSON_OK;
@@ -188,16 +188,16 @@ static int onIntegerElement(const char *const name,
     return result;
 }
 
-static int onNullElement(const char *const name,
-                         void* const userData)
+static int onNullElement(const char * const name,
+                         void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     return ksjson_addNullElement(context->encodeContext, name);
 }
 
-static int onStringElement(const char *const name,
-                           const char *const value,
-                           void* const userData)
+static int onStringElement(const char * const name,
+                           const char * const value,
+                           void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     const char *stringValue = value;
@@ -231,8 +231,8 @@ static int onStringElement(const char *const name,
     return result;
 }
 
-static int onBeginObject(const char *const name,
-                         void* const userData)
+static int onBeginObject(const char * const name,
+                         void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     int result = ksjson_beginObject(context->encodeContext, name);
@@ -242,8 +242,8 @@ static int onBeginObject(const char *const name,
     return result;
 }
 
-static int onBeginArray(const char *const name,
-                        void* const userData)
+static int onBeginArray(const char * const name,
+                        void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     int result = ksjson_beginArray(context->encodeContext, name);
@@ -253,7 +253,7 @@ static int onBeginArray(const char *const name,
     return result;
 }
 
-static int onEndContainer(void* const userData)
+static int onEndContainer(void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     int result = ksjson_endContainer(context->encodeContext);
@@ -263,13 +263,13 @@ static int onEndContainer(void* const userData)
     return result;
 }
 
-static int onEndData(__unused void* const userData)
+static int onEndData(__unused void * const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     return ksjson_endEncode(context->encodeContext);
 }
 
-static int addJSONData(const char *data, int length, void* userData)
+static int addJSONData(const char *data, int length, void *userData)
 {
     FixupContext* context = (FixupContext*)userData;
     if (length > context->outputBytesLeft) {

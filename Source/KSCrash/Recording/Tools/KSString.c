@@ -59,12 +59,12 @@ static const int g_continuationByteCount[0x40] =
     3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 0, 0,
 };
 
-bool ksstring_isNullTerminatedUTF8String(const void* memory,
+bool ksstring_isNullTerminatedUTF8String(const void *memory,
                                         int minLength,
                                         int maxLength)
 {
     const unsigned char *ptr = memory;
-    const unsigned char *const end = ptr + maxLength;
+    const unsigned char * const end = ptr + maxLength;
 
     for(; ptr < end; ptr++) {
         unsigned char ch = *ptr;
@@ -127,7 +127,7 @@ bool ksstring_extractHexValue(const char *string, int stringLength, uint64_t* co
 {
     if (stringLength > 0) {
         const unsigned char *current = (const unsigned char*)string;
-        const unsigned char *const end = current + stringLength;
+        const unsigned char * const end = current + stringLength;
         for(;;)
         {
 #if KSCRASH_HAS_STRNSTR

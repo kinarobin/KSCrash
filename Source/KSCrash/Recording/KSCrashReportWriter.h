@@ -222,7 +222,7 @@ typedef struct KSCrashReportWriter {
   void (*endContainer)(const struct KSCrashReportWriter* writer);
 
   /** Internal contextual data for the writer */
-  void* context;
+  void *context;
 
 } KSCrashReportWriter;
 
