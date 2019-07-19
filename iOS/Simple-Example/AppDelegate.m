@@ -55,7 +55,7 @@ didFinishLaunchingWithOptions:(__unused NSDictionary *) launchOptions
     // displaying the main view controller until crash reporting completes.
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error)
      {
-         if(completed)
+         if (completed)
          {
              NSLog(@"Sent %d reports", (int)[reports count]);
          }

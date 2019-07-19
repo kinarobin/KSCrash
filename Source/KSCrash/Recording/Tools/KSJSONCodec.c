@@ -64,8 +64,8 @@
 // ============================================================================
 
 // Compiler hints for "if" statements
-#define likely_if(x) if(__builtin_expect(x,1))
-#define unlikely_if(x) if(__builtin_expect(x,0))
+#define likely_if(x) if (__builtin_expect(x,1))
+#define unlikely_if(x) if (__builtin_expect(x,0))
 
 /** Used for writing hex string values. */
 static char g_hexNybbles[] =
@@ -282,7 +282,7 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char* const na
     }
 
     // Add a name field if we're in an object.
-    if(context->isObject[context->containerLevel])
+    if (context->isObject[context->containerLevel])
     {
         unlikely_if(name == NULL)
         {
@@ -327,7 +327,7 @@ int ksjson_addBooleanElement(KSJSONEncodeContext* const context,
     {
         return result;
     }
-    if(value)
+    if (value)
     {
         return addJSONData(context, "true", 4);
     }
@@ -390,7 +390,7 @@ int ksjson_addStringElement(KSJSONEncodeContext* const context,
     {
         return result;
     }
-    if(length == KSJSON_SIZE_AUTOMATIC)
+    if (length == KSJSON_SIZE_AUTOMATIC)
     {
         length = (int)strlen(value);
     }
@@ -427,11 +427,11 @@ int ksjson_addDataElement(KSJSONEncodeContext* const context,
 {
     int result = KSJSON_OK;
     result = ksjson_beginDataElement(context, name);
-    if(result == KSJSON_OK)
+    if (result == KSJSON_OK)
     {
         result = ksjson_appendDataElement(context, value, length);
     }
-    if(result == KSJSON_OK)
+    if (result == KSJSON_OK)
     {
         result = ksjson_endDataElement(context);
     }
@@ -457,7 +457,7 @@ int ksjson_appendDataElement(KSJSONEncodeContext* const context,
         chars[0] = g_hexNybbles[(*currentByte>>4)&15];
         chars[1] = g_hexNybbles[*currentByte&15];
         result = addJSONData(context, chars, sizeof(chars));
-        if(result != KSJSON_OK)
+        if (result != KSJSON_OK)
         {
             break;
         }
@@ -690,14 +690,14 @@ static int writeUTF8(unsigned int character, char** dst)
         (*dst)++;
         return KSJSON_OK;
     }
-    if(character <= 0x7ff)
+    if (character <= 0x7ff)
     {
         (*dst)[0] = (char)(0xc0 | (character >> 6));
         (*dst)[1] = (char)(0x80 | (character & 0x3f));
         *dst += 2;
         return KSJSON_OK;
     }
-    if(character <= 0xffff)
+    if (character <= 0xffff)
     {
         (*dst)[0] = (char)(0xe0 | (character >> 12));
         (*dst)[1] = (char)(0x80 | ((character >> 6) & 0x3f));
@@ -706,7 +706,7 @@ static int writeUTF8(unsigned int character, char** dst)
         return KSJSON_OK;
     }
     // RFC3629 restricts UTF-8 to end at 0x10ffff.
-    if(character <= 0x10ffff)
+    if (character <= 0x10ffff)
     {
         (*dst)[0] = (char)(0xf0 | (character >> 18));
         (*dst)[1] = (char)(0x80 | ((character >> 12) & 0x3f));
@@ -749,7 +749,7 @@ static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBu
     const char* srcEnd = src;
     src = context->bufferPtr + 1;
     int length = (int)(srcEnd - src);
-    if(length >= dstBufferLength)
+    if (length >= dstBufferLength)
     {
         KSLOG_DEBUG("String is too long");
         return KSJSON_ERROR_DATA_TOO_LONG;
@@ -1068,7 +1068,7 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
                 return KSJSON_ERROR_INCOMPLETE;
             }
 
-            if(!isFPChar(*context->bufferPtr) && accum >= 0)
+            if (!isFPChar(*context->bufferPtr) && accum >= 0)
             {
                 accum *= sign;
                 return context->callbacks->onIntegerElement(name, accum, context->userData);
@@ -1090,7 +1090,7 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
             // instead we create a temporary string.
             double value;
             int len = (int)(context->bufferPtr - start);
-            if(len >= context->stringBufferLength)
+            if (len >= context->stringBufferLength)
             {
                 KSLOG_DEBUG("Number is too long.");
                 return KSJSON_ERROR_DATA_TOO_LONG;
@@ -1184,7 +1184,7 @@ static void updateDecoder_readFile(struct JSONFromFileContext* context)
             int bytesRead = (int)read(context->fd, start+remainingLength, (unsigned)fillLength);
             unlikely_if(bytesRead < fillLength)
             {
-                if(bytesRead < 0)
+                if (bytesRead < 0)
                 {
                     KSLOG_ERROR("Error reading file %s: %s", context->sourceFilename, strerror(errno));
                 }
@@ -1265,7 +1265,7 @@ static int addJSONFromFile_onEndContainer(void* const userData)
 {
     JSONFromFileContext* context = (JSONFromFileContext*)userData;
     int result = KSJSON_OK;
-    if(context->closeLastContainer || context->encodeContext->containerLevel > 2)
+    if (context->closeLastContainer || context->encodeContext->containerLevel > 2)
     {
         result = ksjson_endContainer(context->encodeContext);
     }

@@ -67,7 +67,7 @@ static void updateThreadList()
     mach_msg_type_number_t allThreadsCount;
     thread_act_array_t threads;
     kern_return_t kr;
-    if((kr = task_threads(thisTask, &threads, &allThreadsCount)) != KERN_SUCCESS)
+    if ((kr = task_threads(thisTask, &threads, &allThreadsCount)) != KERN_SUCCESS)
     {
         KSLOG_ERROR("task_threads: %s", mach_error_string(kr));
         return;
@@ -85,11 +85,11 @@ static void updateThreadList()
         pthread_t pthread = pthread_from_mach_thread_np(thread);
         allMachThreads[i] = (KSThread)thread;
         allPThreads[i] = (KSThread)pthread;
-        if(pthread != 0 && pthread_getname_np(pthread, buffer, sizeof(buffer)) == 0 && buffer[0] != 0)
+        if (pthread != 0 && pthread_getname_np(pthread, buffer, sizeof(buffer)) == 0 && buffer[0] != 0)
         {
             allThreadNames[i] = strdup(buffer);
         }
-        if(g_searchQueueNames && ksthread_getQueueName((KSThread)thread, buffer, sizeof(buffer)) && buffer[0] != 0)
+        if (g_searchQueueNames && ksthread_getQueueName((KSThread)thread, buffer, sizeof(buffer)) && buffer[0] != 0)
         {
             allQueueNames[i] = strdup(buffer);
         }
@@ -102,32 +102,32 @@ static void updateThreadList()
     SWAP_POINTERS(g_allQueueNames, allQueueNames);
     g_allThreadsCount = (int)allThreadsCount;
 
-    if(allMachThreads != NULL)
+    if (allMachThreads != NULL)
     {
         free(allMachThreads);
     }
-    if(allPThreads != NULL)
+    if (allPThreads != NULL)
     {
         free(allPThreads);
     }
-    if(allThreadNames != NULL)
+    if (allThreadNames != NULL)
     {
         for(int i = 0; i < oldThreadsCount; i++)
         {
             const char* name = allThreadNames[i];
-            if(name != NULL)
+            if (name != NULL)
             {
                 free((void*)name);
             }
         }
         free(allThreadNames);
     }
-    if(allQueueNames != NULL)
+    if (allQueueNames != NULL)
     {
         for(int i = 0; i < oldThreadsCount; i++)
         {
             const char* name = allQueueNames[i];
-            if(name != NULL)
+            if (name != NULL)
             {
                 free((void*)name);
             }
@@ -148,12 +148,12 @@ static void* monitorCachedData(__unused void* const userData)
     usleep(1);
     for(;;)
     {
-        if(g_semaphoreCount <= 0)
+        if (g_semaphoreCount <= 0)
         {
             updateThreadList();
         }
         unsigned pollintInterval = (unsigned)g_pollingIntervalInSeconds;
-        if(quickPollCount > 0)
+        if (quickPollCount > 0)
         {
             // Lots can happen in the first few seconds of operation.
             quickPollCount--;
@@ -178,7 +178,7 @@ void ksccd_init(int pollingIntervalInSeconds)
                            &attr,
                            &monitorCachedData,
                            "KSCrash Cached Data Monitor");
-    if(error != 0)
+    if (error != 0)
     {
         KSLOG_ERROR("pthread_create_suspended_np: %s", strerror(error));
     }
@@ -187,7 +187,7 @@ void ksccd_init(int pollingIntervalInSeconds)
 
 void ksccd_freeze()
 {
-    if(g_semaphoreCount++ <= 0)
+    if (g_semaphoreCount++ <= 0)
     {
         // Sleep just in case the cached data thread is in the middle of an update.
         usleep(1);
@@ -196,7 +196,7 @@ void ksccd_freeze()
 
 void ksccd_unfreeze()
 {
-    if(--g_semaphoreCount < 0)
+    if (--g_semaphoreCount < 0)
     {
         // Handle extra calls to unfreeze somewhat gracefully.
         g_semaphoreCount++;
@@ -210,7 +210,7 @@ void ksccd_setSearchQueueNames(bool searchQueueNames)
 
 KSThread* ksccd_getAllThreads(int* threadCount)
 {
-    if(threadCount != NULL)
+    if (threadCount != NULL)
     {
         *threadCount = g_allThreadsCount;
     }
@@ -219,11 +219,11 @@ KSThread* ksccd_getAllThreads(int* threadCount)
 
 const char* ksccd_getThreadName(KSThread thread)
 {
-    if(g_allThreadNames != NULL)
+    if (g_allThreadNames != NULL)
     {
         for(int i = 0; i < g_allThreadsCount; i++)
         {
-            if(g_allMachThreads[i] == thread)
+            if (g_allMachThreads[i] == thread)
             {
                 return g_allThreadNames[i];
             }
@@ -234,11 +234,11 @@ const char* ksccd_getThreadName(KSThread thread)
 
 const char* ksccd_getQueueName(KSThread thread)
 {
-    if(g_allQueueNames != NULL)
+    if (g_allQueueNames != NULL)
     {
         for(int i = 0; i < g_allThreadsCount; i++)
         {
-            if(g_allMachThreads[i] == thread)
+            if (g_allMachThreads[i] == thread)
             {
                 return g_allQueueNames[i];
             }

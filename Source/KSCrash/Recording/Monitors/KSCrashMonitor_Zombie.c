@@ -159,7 +159,7 @@ static void install()
     unsigned cacheSize = CACHE_SIZE;
     g_zombieHashMask = cacheSize - 1;
     g_zombieCache = calloc(cacheSize, sizeof(*g_zombieCache));
-    if(g_zombieCache == NULL)
+    if (g_zombieCache == NULL)
     {
         KSLOG_ERROR("Error: Could not allocate %u bytes of memory. KSZombie NOT installed!",
               cacheSize * sizeof(*g_zombieCache));
@@ -193,13 +193,13 @@ static void install()
 const char* kszombie_className(const void* object)
 {
     volatile Zombie* cache = g_zombieCache;
-    if(cache == NULL || object == NULL)
+    if (cache == NULL || object == NULL)
     {
         return NULL;
     }
 
     Zombie* zombie = (Zombie*)cache + hashIndex(object);
-    if(zombie->object == object)
+    if (zombie->object == object)
     {
         return zombie->className;
     }
@@ -208,10 +208,10 @@ const char* kszombie_className(const void* object)
 
 static void setEnabled(bool isEnabled)
 {
-    if(isEnabled != g_isEnabled)
+    if (isEnabled != g_isEnabled)
     {
         g_isEnabled = isEnabled;
-        if(isEnabled)
+        if (isEnabled)
         {
             install();
         }
@@ -231,7 +231,7 @@ static bool isEnabled()
 
 static void addContextualInfoToEvent(KSCrash_MonitorContext* eventContext)
 {
-    if(g_isEnabled)
+    if (g_isEnabled)
     {
         eventContext->ZombieException.address = (uintptr_t)g_lastDeallocedException.address;
         eventContext->ZombieException.name = g_lastDeallocedException.name;

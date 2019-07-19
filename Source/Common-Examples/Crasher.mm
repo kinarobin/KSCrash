@@ -73,7 +73,7 @@ public:
 
 - (id) init
 {
-    if((self = [super init]))
+    if ((self = [super init]))
     {
         self.lock = [[NSLock alloc] init];
     }

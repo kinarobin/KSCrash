@@ -83,7 +83,7 @@ static void printPreviousLog(const char* filePath)
 {
     char* data;
     int length;
-    if(ksfu_readEntireFile(filePath, &data, &length, 0))
+    if (ksfu_readEntireFile(filePath, &data, &length, 0))
     {
         printf("\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv Previous Log vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n\n");
         printf("%s\n", data);
@@ -129,7 +129,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
     }
     monitorContext->consoleLogPath = g_shouldAddConsoleLogToReport ? g_consoleLogPath : NULL;
 
-    if(monitorContext->crashedDuringCrashHandling)
+    if (monitorContext->crashedDuringCrashHandling)
     {
         kscrashreport_writeRecrashReport(monitorContext, g_lastCrashReportFilePath);
     }
@@ -140,7 +140,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
         strncpy(g_lastCrashReportFilePath, crashReportFilePath, sizeof(g_lastCrashReportFilePath));
         kscrashreport_writeStandardReport(monitorContext, crashReportFilePath);
 
-        if(g_reportWrittenCallback)
+        if (g_reportWrittenCallback)
         {
             g_reportWrittenCallback(reportID);
         }
@@ -156,7 +156,7 @@ KSCrashMonitorType kscrash_install(const char* appName, const char* const instal
 {
     KSLOG_DEBUG("Installing crash reporter.");
 
-    if(g_installed)
+    if (g_installed)
     {
         KSLOG_DEBUG("Crash reporter already installed.");
         return g_monitoring;
@@ -174,7 +174,7 @@ KSCrashMonitorType kscrash_install(const char* appName, const char* const instal
     kscrashstate_initialize(path);
 
     snprintf(g_consoleLogPath, sizeof(g_consoleLogPath), "%s/Data/ConsoleLog.txt", installPath);
-    if(g_shouldPrintPreviousLog)
+    if (g_shouldPrintPreviousLog)
     {
         printPreviousLog(g_consoleLogPath);
     }
@@ -196,7 +196,7 @@ KSCrashMonitorType kscrash_setMonitoring(KSCrashMonitorType monitors)
 {
     g_monitoring = monitors;
     
-    if(g_installed)
+    if (g_installed)
     {
         kscm_setActiveMonitors(monitors);
         return kscm_getActiveMonitors();
@@ -272,7 +272,7 @@ void kscrash_reportUserException(const char* name,
                              stackTrace,
                              logAllThreads,
                              terminateProgram);
-    if(g_shouldAddConsoleLogToReport)
+    if (g_shouldAddConsoleLogToReport)
     {
         kslog_clearLogFile();
     }
@@ -331,21 +331,21 @@ int kscrash_getReportIDs(int64_t* reportIDs, int count)
 
 char* kscrash_readReport(int64_t reportID)
 {
-    if(reportID <= 0)
+    if (reportID <= 0)
     {
         KSLOG_ERROR("Report ID was %" PRIx64, reportID);
         return NULL;
     }
 
     char* rawReport = kscrs_readReport(reportID);
-    if(rawReport == NULL)
+    if (rawReport == NULL)
     {
         KSLOG_ERROR("Failed to load report ID %" PRIx64, reportID);
         return NULL;
     }
 
     char* fixedReport = kscrf_fixupCrashReport(rawReport);
-    if(fixedReport == NULL)
+    if (fixedReport == NULL)
     {
         KSLOG_ERROR("Failed to fixup report ID %" PRIx64, reportID);
     }

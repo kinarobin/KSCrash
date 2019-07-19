@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         installation?.install()
 
         installation?.sendAllReports { (reports, completed, error) -> Void in
-            if(completed) {
+            if (completed) {
                 print("Sent \(reports?.count) reports")
             } else {
                 print("Failed to send reports: \(error)")

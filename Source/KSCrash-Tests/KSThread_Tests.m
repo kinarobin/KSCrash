@@ -50,7 +50,7 @@
 //    for(mach_msg_type_number_t i = 0; i < numThreads; i++)
 //    {
 //        thread_t thread = threads[i];
-//        if(ksthread_getQueueName(thread, buffer, sizeof(buffer)))
+//        if (ksthread_getQueueName(thread, buffer, sizeof(buffer)))
 //        {
 //            success = true;
 //            break;

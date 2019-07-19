@@ -96,7 +96,7 @@ int kscpu_numRegisters(void)
 
 const char* kscpu_registerName(const int regNumber)
 {
-    if(regNumber < kscpu_numRegisters())
+    if (regNumber < kscpu_numRegisters())
     {
         return g_registerNames[regNumber];
     }
@@ -162,7 +162,7 @@ int kscpu_numExceptionRegisters(void)
 
 const char* kscpu_exceptionRegisterName(const int regNumber)
 {
-    if(regNumber < kscpu_numExceptionRegisters())
+    if (regNumber < kscpu_numExceptionRegisters())
     {
         return g_exceptionRegisterNames[regNumber];
     }

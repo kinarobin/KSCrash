@@ -278,7 +278,7 @@ MAKE_CATEGORIES_LOADABLE(AppDelegate_UI)
                             completed:(BOOL) completed
                                 error:(NSError*) error
 {
-    if(completed)
+    if (completed)
     {
         [CrashTesterCommands showAlertWithTitle:@"Success" message:@"Sent %d reports", [reports count]];
         [(CommandTVC*)controller reloadTitle];

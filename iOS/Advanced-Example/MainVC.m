@@ -39,7 +39,7 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
-    if((self = [super initWithCoder:aDecoder]))
+    if ((self = [super initWithCoder:aDecoder]))
     {
         // This info could be leaked during introspection unless you tell KSCrash to ignore it.
         // See -[AppDelegate configureAdvancedSettings] for more info.
@@ -78,7 +78,7 @@
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
 
     [appDelegate.crashInstallation sendAllReportsWithCompletion:^(NSArray *filteredReports, BOOL completed, NSError *error) {
-        if(completed) {
+        if (completed) {
             NSLog(@"\n****Sent %lu reports", (unsigned long)[filteredReports count]);
             NSLog(@"\n%@", filteredReports);
             //        [[KSCrash sharedInstance] deleteAllReports];

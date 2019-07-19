@@ -119,7 +119,7 @@ static void (*g_onExceptionEvent)(struct KSCrash_MonitorContext* monitorContext)
 
 static inline KSCrashMonitorAPI* getAPI(Monitor* monitor)
 {
-    if(monitor != NULL && monitor->getAPI != NULL)
+    if (monitor != NULL && monitor->getAPI != NULL)
     {
         return monitor->getAPI();
     }
@@ -129,7 +129,7 @@ static inline KSCrashMonitorAPI* getAPI(Monitor* monitor)
 static inline void setMonitorEnabled(Monitor* monitor, bool isEnabled)
 {
     KSCrashMonitorAPI* api = getAPI(monitor);
-    if(api != NULL && api->setEnabled != NULL)
+    if (api != NULL && api->setEnabled != NULL)
     {
         api->setEnabled(isEnabled);
     }
@@ -138,7 +138,7 @@ static inline void setMonitorEnabled(Monitor* monitor, bool isEnabled)
 static inline bool isMonitorEnabled(Monitor* monitor)
 {
     KSCrashMonitorAPI* api = getAPI(monitor);
-    if(api != NULL && api->isEnabled != NULL)
+    if (api != NULL && api->isEnabled != NULL)
     {
         return api->isEnabled();
     }
@@ -148,7 +148,7 @@ static inline bool isMonitorEnabled(Monitor* monitor)
 static inline void addContextualInfoToEvent(Monitor* monitor, struct KSCrash_MonitorContext* eventContext)
 {
     KSCrashMonitorAPI* api = getAPI(monitor);
-    if(api != NULL && api->addContextualInfoToEvent != NULL)
+    if (api != NULL && api->addContextualInfoToEvent != NULL)
     {
         api->addContextualInfoToEvent(eventContext);
     }
@@ -161,10 +161,10 @@ void kscm_setEventCallback(void (*onEvent)(struct KSCrash_MonitorContext* monito
 
 void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
 {
-    if(ksdebug_isBeingTraced() && (monitorTypes & KSCrashMonitorTypeDebuggerUnsafe))
+    if (ksdebug_isBeingTraced() && (monitorTypes & KSCrashMonitorTypeDebuggerUnsafe))
     {
         static bool hasWarned = false;
-        if(!hasWarned)
+        if (!hasWarned)
         {
             hasWarned = true;
             KSLOGBASIC_WARN("    ************************ Crash Handler Notice ************************");
@@ -174,7 +174,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
         }
         monitorTypes &= KSCrashMonitorTypeDebuggerSafe;
     }
-    if(g_requiresAsyncSafety && (monitorTypes & KSCrashMonitorTypeAsyncUnsafe))
+    if (g_requiresAsyncSafety && (monitorTypes & KSCrashMonitorTypeAsyncUnsafe))
     {
         KSLOG_DEBUG("Async-safe environment detected. Masking out unsafe monitors.");
         monitorTypes &= KSCrashMonitorTypeAsyncSafe;
@@ -188,7 +188,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
         Monitor* monitor = &g_monitors[i];
         bool isEnabled = monitor->monitorType & monitorTypes;
         setMonitorEnabled(monitor, isEnabled);
-        if(isMonitorEnabled(monitor))
+        if (isMonitorEnabled(monitor))
         {
             activeMonitors |= monitor->monitorType;
         }
@@ -215,12 +215,12 @@ KSCrashMonitorType kscm_getActiveMonitors()
 bool kscm_notifyFatalExceptionCaptured(bool isAsyncSafeEnvironment)
 {
     g_requiresAsyncSafety |= isAsyncSafeEnvironment; // Don't let it be unset.
-    if(g_handlingFatalException)
+    if (g_handlingFatalException)
     {
         g_crashedDuringExceptionHandling = true;
     }
     g_handlingFatalException = true;
-    if(g_crashedDuringExceptionHandling)
+    if (g_crashedDuringExceptionHandling)
     {
         KSLOG_INFO("Detected crash in the crash reporter. Uninstalling KSCrash.");
         kscm_setActiveMonitors(KSCrashMonitorTypeNone);
@@ -231,14 +231,14 @@ bool kscm_notifyFatalExceptionCaptured(bool isAsyncSafeEnvironment)
 void kscm_handleException(struct KSCrash_MonitorContext* context)
 {
     context->requiresAsyncSafety = g_requiresAsyncSafety;
-    if(g_crashedDuringExceptionHandling)
+    if (g_crashedDuringExceptionHandling)
     {
         context->crashedDuringCrashHandling = true;
     }
     for(int i = 0; i < g_monitorsCount; i++)
     {
         Monitor* monitor = &g_monitors[i];
-        if(isMonitorEnabled(monitor))
+        if (isMonitorEnabled(monitor))
         {
             addContextualInfoToEvent(monitor, context);
         }
@@ -249,7 +249,7 @@ void kscm_handleException(struct KSCrash_MonitorContext* context)
     if (context->currentSnapshotUserReported) {
         g_handlingFatalException = false;
     } else {
-        if(g_handlingFatalException && !g_crashedDuringExceptionHandling) {
+        if (g_handlingFatalException && !g_crashedDuringExceptionHandling) {
             KSLOG_DEBUG("Exception is fatal. Restoring original handlers.");
             kscm_setActiveMonitors(KSCrashMonitorTypeNone);
         }

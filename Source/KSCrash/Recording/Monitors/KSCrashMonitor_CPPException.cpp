@@ -45,8 +45,8 @@
 
 
 // Compiler hints for "if" statements
-#define likely_if(x) if(__builtin_expect(x,1))
-#define unlikely_if(x) if(__builtin_expect(x,0))
+#define likely_if(x) if (__builtin_expect(x,1))
+#define unlikely_if(x) if (__builtin_expect(x,0))
 
 
 // ============================================================================
@@ -82,7 +82,7 @@ extern "C"
 
     void __cxa_throw(void* thrown_exception, std::type_info* tinfo, void (*dest)(void*))
     {
-        if(g_captureNextStackTrace)
+        if (g_captureNextStackTrace)
         {
             kssc_initSelfThread(&g_stackCursor, 1);
         }
@@ -103,12 +103,12 @@ static void CPPExceptionTerminate(void)
     KSLOG_DEBUG("Trapped c++ exception");
     const char* name = NULL;
     std::type_info* tinfo = __cxxabiv1::__cxa_current_exception_type();
-    if(tinfo != NULL)
+    if (tinfo != NULL)
     {
         name = tinfo->name();
     }
     
-    if(name == NULL || strcmp(name, "NSException") != 0)
+    if (name == NULL || strcmp(name, "NSException") != 0)
     {
         kscm_notifyFatalExceptionCaptured(false);
         KSCrash_MonitorContext* crashContext = &g_monitorContext;
@@ -187,7 +187,7 @@ catch(TYPE value)\
 static void initialize()
 {
     static bool isInitialized = false;
-    if(!isInitialized)
+    if (!isInitialized)
     {
         isInitialized = true;
         kssc_initCursor(&g_stackCursor, NULL, NULL);
@@ -196,10 +196,10 @@ static void initialize()
 
 static void setEnabled(bool isEnabled)
 {
-    if(isEnabled != g_isEnabled)
+    if (isEnabled != g_isEnabled)
     {
         g_isEnabled = isEnabled;
-        if(isEnabled)
+        if (isEnabled)
         {
             initialize();
 

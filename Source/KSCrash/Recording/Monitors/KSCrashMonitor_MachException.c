@@ -156,7 +156,7 @@ static char g_secondaryEventID[37];
 static void restoreExceptionPorts(void)
 {
     KSLOG_DEBUG("Restoring original exception ports.");
-    if(g_previousExceptionPorts.count == 0)
+    if (g_previousExceptionPorts.count == 0)
     {
         KSLOG_DEBUG("Original exception ports were already restored.");
         return;
@@ -174,7 +174,7 @@ static void restoreExceptionPorts(void)
                                       g_previousExceptionPorts.ports[i],
                                       g_previousExceptionPorts.behaviors[i],
                                       g_previousExceptionPorts.flavors[i]);
-        if(kr != KERN_SUCCESS)
+        if (kr != KERN_SUCCESS)
         {
             KSLOG_ERROR("task_set_exception_ports: %s",
                         mach_error_string(kr));
@@ -266,7 +266,7 @@ static void* handleExceptions(void* const userData)
 
     const char* threadName = (const char*) userData;
     pthread_setname_np(threadName);
-    if(threadName == kThreadSecondary)
+    if (threadName == kThreadSecondary)
     {
         KSLOG_DEBUG("This is the secondary thread. Suspending.");
         thread_suspend((thread_t)ksthread_self());
@@ -285,7 +285,7 @@ static void* handleExceptions(void* const userData)
                                     g_exceptionPort,
                                     MACH_MSG_TIMEOUT_NONE,
                                     MACH_PORT_NULL);
-        if(kr == KERN_SUCCESS)
+        if (kr == KERN_SUCCESS)
         {
             break;
         }
@@ -296,7 +296,7 @@ static void* handleExceptions(void* const userData)
 
     KSLOG_DEBUG("Trapped mach exception code 0x%x, subcode 0x%x",
                 exceptionMessage.code[0], exceptionMessage.code[1]);
-    if(g_isEnabled)
+    if (g_isEnabled)
     {
         ksmc_suspendEnvironment();
         g_isHandlingCrash = true;
@@ -307,12 +307,12 @@ static void* handleExceptions(void* const userData)
 
         // Switch to the secondary thread if necessary, or uninstall the handler
         // to avoid a death loop.
-        if(ksthread_self() == g_primaryMachThread)
+        if (ksthread_self() == g_primaryMachThread)
         {
             KSLOG_DEBUG("This is the primary exception thread. Activating secondary thread.");
 // TODO: This was put here to avoid a freeze. Does secondary thread ever fire?
             restoreExceptionPorts();
-            if(thread_resume(g_secondaryMachThread) != KERN_SUCCESS)
+            if (thread_resume(g_secondaryMachThread) != KERN_SUCCESS)
             {
                 KSLOG_DEBUG("Could not activate secondary thread. Restoring original exception ports.");
             }
@@ -329,11 +329,11 @@ static void* handleExceptions(void* const userData)
         KSCrash_MonitorContext* crashContext = &g_monitorContext;
         crashContext->offendingMachineContext = machineContext;
         kssc_initCursor(&g_stackCursor, NULL, NULL);
-        if(ksmc_getContextForThread(exceptionMessage.thread.name, machineContext, true))
+        if (ksmc_getContextForThread(exceptionMessage.thread.name, machineContext, true))
         {
             kssc_initWithMachineContext(&g_stackCursor, 100, machineContext);
             KSLOG_TRACE("Fault address 0x%x, instruction address 0x%x", kscpu_faultAddress(machineContext), kscpu_instructionAddress(machineContext));
-            if(exceptionMessage.exception == EXC_BAD_ACCESS)
+            if (exceptionMessage.exception == EXC_BAD_ACCESS)
             {
                 crashContext->faultAddress = kscpu_faultAddress(machineContext);
             }
@@ -350,7 +350,7 @@ static void* handleExceptions(void* const userData)
         crashContext->mach.type = exceptionMessage.exception;
         crashContext->mach.code = exceptionMessage.code[0];
         crashContext->mach.subcode = exceptionMessage.code[1];
-        if(crashContext->mach.code == KERN_PROTECTION_FAILURE && crashContext->isStackOverflow)
+        if (crashContext->mach.code == KERN_PROTECTION_FAILURE && crashContext->isStackOverflow)
         {
             // A stack overflow should return KERN_INVALID_ADDRESS, but
             // when a stack blasts through the guard pages at the top of the stack,
@@ -400,10 +400,10 @@ static void uninstallExceptionHandler()
     
     thread_t thread_self = (thread_t)ksthread_self();
     
-    if(g_primaryPThread != 0 && g_primaryMachThread != thread_self)
+    if (g_primaryPThread != 0 && g_primaryMachThread != thread_self)
     {
         KSLOG_DEBUG("Canceling primary exception thread.");
-        if(g_isHandlingCrash)
+        if (g_isHandlingCrash)
         {
             thread_terminate(g_primaryMachThread);
         }
@@ -414,10 +414,10 @@ static void uninstallExceptionHandler()
         g_primaryMachThread = 0;
         g_primaryPThread = 0;
     }
-    if(g_secondaryPThread != 0 && g_secondaryMachThread != thread_self)
+    if (g_secondaryPThread != 0 && g_secondaryMachThread != thread_self)
     {
         KSLOG_DEBUG("Canceling secondary exception thread.");
-        if(g_isHandlingCrash)
+        if (g_isHandlingCrash)
         {
             thread_terminate(g_secondaryMachThread);
         }
@@ -458,19 +458,19 @@ static bool installExceptionHandler()
                                   g_previousExceptionPorts.ports,
                                   g_previousExceptionPorts.behaviors,
                                   g_previousExceptionPorts.flavors);
-    if(kr != KERN_SUCCESS)
+    if (kr != KERN_SUCCESS)
     {
         KSLOG_ERROR("task_get_exception_ports: %s", mach_error_string(kr));
         goto failed;
     }
 
-    if(g_exceptionPort == MACH_PORT_NULL)
+    if (g_exceptionPort == MACH_PORT_NULL)
     {
         KSLOG_DEBUG("Allocating new port with receive rights.");
         kr = mach_port_allocate(thisTask,
                                 MACH_PORT_RIGHT_RECEIVE,
                                 &g_exceptionPort);
-        if(kr != KERN_SUCCESS)
+        if (kr != KERN_SUCCESS)
         {
             KSLOG_ERROR("mach_port_allocate: %s", mach_error_string(kr));
             goto failed;
@@ -481,7 +481,7 @@ static bool installExceptionHandler()
                                     g_exceptionPort,
                                     g_exceptionPort,
                                     MACH_MSG_TYPE_MAKE_SEND);
-        if(kr != KERN_SUCCESS)
+        if (kr != KERN_SUCCESS)
         {
             KSLOG_ERROR("mach_port_insert_right: %s", mach_error_string(kr));
             goto failed;
@@ -494,7 +494,7 @@ static bool installExceptionHandler()
                                   g_exceptionPort,
                                   EXCEPTION_DEFAULT,
                                   THREAD_STATE_NONE);
-    if(kr != KERN_SUCCESS)
+    if (kr != KERN_SUCCESS)
     {
         KSLOG_ERROR("task_set_exception_ports: %s", mach_error_string(kr));
         goto failed;
@@ -508,7 +508,7 @@ static bool installExceptionHandler()
                            &attr,
                            &handleExceptions,
                            kThreadSecondary);
-    if(error != 0)
+    if (error != 0)
     {
         KSLOG_ERROR("pthread_create_suspended_np: %s", strerror(error));
         goto failed;
@@ -521,7 +521,7 @@ static bool installExceptionHandler()
                            &attr,
                            &handleExceptions,
                            kThreadPrimary);
-    if(error != 0)
+    if (error != 0)
     {
         KSLOG_ERROR("pthread_create: %s", strerror(error));
         goto failed;
@@ -536,7 +536,7 @@ static bool installExceptionHandler()
 
 failed:
     KSLOG_DEBUG("Failed to install mach exception handler.");
-    if(attributes_created)
+    if (attributes_created)
     {
         pthread_attr_destroy(&attr);
     }
@@ -546,14 +546,14 @@ failed:
 
 static void setEnabled(bool isEnabled)
 {
-    if(isEnabled != g_isEnabled)
+    if (isEnabled != g_isEnabled)
     {
         g_isEnabled = isEnabled;
-        if(isEnabled)
+        if (isEnabled)
         {
             ksid_generate(g_primaryEventID);
             ksid_generate(g_secondaryEventID);
-            if(!installExceptionHandler())
+            if (!installExceptionHandler())
             {
                 return;
             }
@@ -572,11 +572,11 @@ static bool isEnabled()
 
 static void addContextualInfoToEvent(struct KSCrash_MonitorContext* eventContext)
 {
-    if(eventContext->crashType == KSCrashMonitorTypeSignal)
+    if (eventContext->crashType == KSCrashMonitorTypeSignal)
     {
         eventContext->mach.type = machExceptionForSignal(eventContext->signal.signum);
     }
-    else if(eventContext->crashType != KSCrashMonitorTypeMachException)
+    else if (eventContext->crashType != KSCrashMonitorTypeMachException)
     {
         eventContext->mach.type = EXC_CRASH;
     }

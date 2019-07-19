@@ -197,14 +197,14 @@ public:
 
   /// Claim the next character if it exists and equals the given
   /// character.
-  bool nextIf(char c) {
+  bool nextif (char c) {
     if (isEmpty() || peek() != c) return false;
     advanceOffset(1);
     return true;
   }
 
   /// Claim the next few characters if they exactly match the given string.
-  bool nextIf(StringRef str) {
+  bool nextif (StringRef str) {
     if (!Text.startswith(str)) return false;
     advanceOffset(str.size());
     return true;
@@ -328,35 +328,35 @@ public:
   ///
   /// \return true if the mangling succeeded
   NodePointer demangleTopLevel() {
-    if (!Mangled.nextIf("_T"))
+    if (!Mangled.nextif ("_T"))
       return nullptr;
 
     NodePointer topLevel = NodeFactory::create(Node::Kind::Global);
 
     // First demangle any specialization prefixes.
-    if (Mangled.nextIf("TS")) {
+    if (Mangled.nextif ("TS")) {
       do {
         DEMANGLE_CHILD_OR_RETURN(topLevel, SpecializedAttribute);
 
         // The Substitution header does not share state with the rest
         // of the mangling.
         Substitutions.clear();
-      } while (Mangled.nextIf("_TTS"));
+      } while (Mangled.nextif ("_TTS"));
 
       // Then check that we have a global.
-      if (!Mangled.nextIf("_T"))
+      if (!Mangled.nextif ("_T"))
         return nullptr;
 
-    } else if (Mangled.nextIf("To")) {
+    } else if (Mangled.nextif ("To")) {
       topLevel->addChild(NodeFactory::create(Node::Kind::ObjCAttribute));
-    } else if (Mangled.nextIf("TO")) {
+    } else if (Mangled.nextif ("TO")) {
       topLevel->addChild(NodeFactory::create(Node::Kind::NonObjCAttribute));
-    } else if (Mangled.nextIf("TD")) {
+    } else if (Mangled.nextif ("TD")) {
       topLevel->addChild(NodeFactory::create(Node::Kind::DynamicAttribute));
-    } else if (Mangled.nextIf("Td")) {
+    } else if (Mangled.nextif ("Td")) {
       topLevel->addChild(NodeFactory::create(
                                    Node::Kind::DirectMethodReferenceAttribute));
-    } else if (Mangled.nextIf("TV")) {
+    } else if (Mangled.nextif ("TV")) {
       topLevel->addChild(NodeFactory::create(Node::Kind::VTableAttribute));
     }
 
@@ -381,9 +381,9 @@ private:
   };
 
   Optional<Directness> demangleDirectness() {
-    if (Mangled.nextIf('d'))
+    if (Mangled.nextif ('d'))
       return Directness::Direct;
-    if (Mangled.nextIf('i'))
+    if (Mangled.nextif ('i'))
       return Directness::Indirect;
     return None;
   }
@@ -412,7 +412,7 @@ private:
   bool demangleBuiltinSize(Node::IndexType &num) {
     if (!demangleNatural(num))
       return false;
-    if (Mangled.nextIf('_'))
+    if (Mangled.nextif ('_'))
       return true;
     return false;
   }
@@ -474,41 +474,41 @@ private:
       return nullptr;
 
     // Type metadata.
-    if (Mangled.nextIf('M')) {
-      if (Mangled.nextIf('P')) {
+    if (Mangled.nextif ('M')) {
+      if (Mangled.nextif ('P')) {
         auto pattern =
             NodeFactory::create(Node::Kind::GenericTypeMetadataPattern);
         DEMANGLE_CHILD_OR_RETURN(pattern, Type);
         return pattern;
       }
-      if (Mangled.nextIf('a')) {
+      if (Mangled.nextif ('a')) {
         auto accessor =
           NodeFactory::create(Node::Kind::TypeMetadataAccessFunction);
         DEMANGLE_CHILD_OR_RETURN(accessor, Type);
         return accessor;
       }
-      if (Mangled.nextIf('L')) {
+      if (Mangled.nextif ('L')) {
         auto cache = NodeFactory::create(Node::Kind::TypeMetadataLazyCache);
         DEMANGLE_CHILD_OR_RETURN(cache, Type);
         return cache;
       }
-      if (Mangled.nextIf('m')) {
+      if (Mangled.nextif ('m')) {
         auto metaclass = NodeFactory::create(Node::Kind::Metaclass);
         DEMANGLE_CHILD_OR_RETURN(metaclass, Type);
         return metaclass;
       }
-      if (Mangled.nextIf('n')) {
+      if (Mangled.nextif ('n')) {
         auto nominalType =
             NodeFactory::create(Node::Kind::NominalTypeDescriptor);
         DEMANGLE_CHILD_OR_RETURN(nominalType, Type);
         return nominalType;
       }
-      if (Mangled.nextIf('f')) {
+      if (Mangled.nextif ('f')) {
         auto metadata = NodeFactory::create(Node::Kind::FullTypeMetadata);
         DEMANGLE_CHILD_OR_RETURN(metadata, Type);
         return metadata;
       }
-      if (Mangled.nextIf('p')) {
+      if (Mangled.nextif ('p')) {
         auto metadata = NodeFactory::create(Node::Kind::ProtocolDescriptor);
         DEMANGLE_CHILD_OR_RETURN(metadata, ProtocolName);
         return metadata;
@@ -519,26 +519,26 @@ private:
     }
 
     // Partial application thunks.
-    if (Mangled.nextIf('P')) {
-      if (!Mangled.nextIf('A')) return nullptr;
+    if (Mangled.nextif ('P')) {
+      if (!Mangled.nextif ('A')) return nullptr;
       Node::Kind kind = Node::Kind::PartialApplyForwarder;
-      if (Mangled.nextIf('o'))
+      if (Mangled.nextif ('o'))
         kind = Node::Kind::PartialApplyObjCForwarder;
       auto forwarder = NodeFactory::create(kind);
-      if (Mangled.nextIf("__T"))
+      if (Mangled.nextif ("__T"))
         DEMANGLE_CHILD_OR_RETURN(forwarder, Global);
       return forwarder;
     }
 
     // Top-level types, for various consumers.
-    if (Mangled.nextIf('t')) {
+    if (Mangled.nextif ('t')) {
       auto type = NodeFactory::create(Node::Kind::TypeMangling);
       DEMANGLE_CHILD_OR_RETURN(type, Type);
       return type;
     }
 
     // Value witnesses.
-    if (Mangled.nextIf('w')) {
+    if (Mangled.nextif ('w')) {
       Optional<ValueWitnessKind> w = demangleValueWitnessKind();
       if (!w.hasValue())
         return nullptr;
@@ -549,70 +549,70 @@ private:
     }
 
     // Offsets, value witness tables, and protocol witnesses.
-    if (Mangled.nextIf('W')) {
-      if (Mangled.nextIf('V')) {
+    if (Mangled.nextif ('W')) {
+      if (Mangled.nextif ('V')) {
         auto witnessTable = NodeFactory::create(Node::Kind::ValueWitnessTable);
         DEMANGLE_CHILD_OR_RETURN(witnessTable, Type);
         return witnessTable;
       }
-      if (Mangled.nextIf('o')) {
+      if (Mangled.nextif ('o')) {
         auto witnessTableOffset =
             NodeFactory::create(Node::Kind::WitnessTableOffset);
         DEMANGLE_CHILD_OR_RETURN(witnessTableOffset, Entity);
         return witnessTableOffset;
       }
-      if (Mangled.nextIf('v')) {
+      if (Mangled.nextif ('v')) {
         auto fieldOffset = NodeFactory::create(Node::Kind::FieldOffset);
         DEMANGLE_CHILD_AS_NODE_OR_RETURN(fieldOffset, Directness);
         DEMANGLE_CHILD_OR_RETURN(fieldOffset, Entity);
         return fieldOffset;
       }
-      if (Mangled.nextIf('P')) {
+      if (Mangled.nextif ('P')) {
         auto witnessTable =
             NodeFactory::create(Node::Kind::ProtocolWitnessTable);
         DEMANGLE_CHILD_OR_RETURN(witnessTable, ProtocolConformance);
         return witnessTable;
       }
-      if (Mangled.nextIf('G')) {
+      if (Mangled.nextif ('G')) {
         auto witnessTable =
             NodeFactory::create(Node::Kind::GenericProtocolWitnessTable);
         DEMANGLE_CHILD_OR_RETURN(witnessTable, ProtocolConformance);
         return witnessTable;
       }
-      if (Mangled.nextIf('I')) {
+      if (Mangled.nextif ('I')) {
         auto witnessTable = NodeFactory::create(
             Node::Kind::GenericProtocolWitnessTableInstantiationFunction);
         DEMANGLE_CHILD_OR_RETURN(witnessTable, ProtocolConformance);
         return witnessTable;
       }
-      if (Mangled.nextIf('l')) {
+      if (Mangled.nextif ('l')) {
         auto accessor =
           NodeFactory::create(Node::Kind::LazyProtocolWitnessTableAccessor);
         DEMANGLE_CHILD_OR_RETURN(accessor, Type);
         DEMANGLE_CHILD_OR_RETURN(accessor, ProtocolConformance);
         return accessor;
       }
-      if (Mangled.nextIf('L')) {
+      if (Mangled.nextif ('L')) {
         auto accessor =
           NodeFactory::create(Node::Kind::LazyProtocolWitnessTableCacheVariable);
         DEMANGLE_CHILD_OR_RETURN(accessor, Type);
         DEMANGLE_CHILD_OR_RETURN(accessor, ProtocolConformance);
         return accessor;
       }
-      if (Mangled.nextIf('a')) {
+      if (Mangled.nextif ('a')) {
         auto tableTemplate =
           NodeFactory::create(Node::Kind::ProtocolWitnessTableAccessor);
         DEMANGLE_CHILD_OR_RETURN(tableTemplate, ProtocolConformance);
         return tableTemplate;
       }
-      if (Mangled.nextIf('t')) {
+      if (Mangled.nextif ('t')) {
         auto accessor = NodeFactory::create(
             Node::Kind::AssociatedTypeMetadataAccessor);
         DEMANGLE_CHILD_OR_RETURN(accessor, ProtocolConformance);
         DEMANGLE_CHILD_OR_RETURN(accessor, DeclName);
         return accessor;
       }
-      if (Mangled.nextIf('T')) {
+      if (Mangled.nextif ('T')) {
         auto accessor = NodeFactory::create(
             Node::Kind::AssociatedTypeWitnessTableAccessor);
         DEMANGLE_CHILD_OR_RETURN(accessor, ProtocolConformance);
@@ -624,20 +624,20 @@ private:
     }
 
     // Other thunks.
-    if (Mangled.nextIf('T')) {
-      if (Mangled.nextIf('R')) {
+    if (Mangled.nextif ('T')) {
+      if (Mangled.nextif ('R')) {
         auto thunk = NodeFactory::create(Node::Kind::ReabstractionThunkHelper);
         if (!demangleReabstractSignature(thunk))
           return nullptr;
         return thunk;
       }
-      if (Mangled.nextIf('r')) {
+      if (Mangled.nextif ('r')) {
         auto thunk = NodeFactory::create(Node::Kind::ReabstractionThunk);
         if (!demangleReabstractSignature(thunk))
           return nullptr;
         return thunk;
       }
-      if (Mangled.nextIf('W')) {
+      if (Mangled.nextif ('W')) {
         NodePointer thunk = NodeFactory::create(Node::Kind::ProtocolWitness);
         DEMANGLE_CHILD_OR_RETURN(thunk, ProtocolConformance);
         // The entity is mangled in its own generic context.
@@ -652,14 +652,14 @@ private:
   }
 
   NodePointer demangleGenericSpecialization(NodePointer specialization) {
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       // Otherwise, we have another parameter. Demangle the type.
       NodePointer param = NodeFactory::create(Node::Kind::GenericSpecializationParam);
       DEMANGLE_CHILD_OR_RETURN(param, Type);
 
       // Then parse any conformances until we find an underscore. Pop off the
       // underscore since it serves as the end of our mangling list.
-      while (!Mangled.nextIf('_')) {
+      while (!Mangled.nextif ('_')) {
         DEMANGLE_CHILD_OR_RETURN(param, ProtocolConformance);
       }
 
@@ -681,48 +681,48 @@ private:
   bool demangleFuncSigSpecializationConstantProp(NodePointer parent) {
     // Then figure out what was actually constant propagated. First check if
     // we have a function.
-    if (Mangled.nextIf("fr")) {
+    if (Mangled.nextif ("fr")) {
       // Demangle the identifier
       NodePointer name = demangleIdentifier();
-      if (!name || !Mangled.nextIf('_'))
+      if (!name || !Mangled.nextif ('_'))
         return false;
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_KIND(ConstantPropFunction));
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_PAYLOAD(name->getText()));
       return true;
     }
 
-    if (Mangled.nextIf('g')) {
+    if (Mangled.nextif ('g')) {
       NodePointer name = demangleIdentifier();
-      if (!name || !Mangled.nextIf('_'))
+      if (!name || !Mangled.nextif ('_'))
         return false;
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_KIND(ConstantPropGlobal));
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_PAYLOAD(name->getText()));
       return true;
     }
 
-    if (Mangled.nextIf('i')) {
+    if (Mangled.nextif ('i')) {
       std::string Str;
-      if (!Mangled.readUntil('_', Str) || !Mangled.nextIf('_'))
+      if (!Mangled.readUntil('_', Str) || !Mangled.nextif ('_'))
         return false;
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_KIND(ConstantPropInteger));
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_PAYLOAD(Str));
       return true;
     }
 
-    if (Mangled.nextIf("fl")) {
+    if (Mangled.nextif ("fl")) {
       std::string Str;
-      if (!Mangled.readUntil('_', Str) || !Mangled.nextIf('_'))
+      if (!Mangled.readUntil('_', Str) || !Mangled.nextif ('_'))
         return false;
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_KIND(ConstantPropFloat));
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_PAYLOAD(Str));
       return true;
     }
 
-    if (Mangled.nextIf("s")) {
+    if (Mangled.nextif ("s")) {
       // Skip: 'e' encoding 'v' str. encoding is a 0 or 1 and str is a string of
       // length less than or equal to 32. We do not specialize strings with a
       // length greater than 32.
-      if (!Mangled.nextIf('e'))
+      if (!Mangled.nextif ('e'))
         return false;
       char encoding = Mangled.peek();
       if (encoding != '0' && encoding != '1')
@@ -734,10 +734,10 @@ private:
         encodingStr += "u16";
       Mangled.advanceOffset(1);
 
-      if (!Mangled.nextIf('v'))
+      if (!Mangled.nextif ('v'))
         return false;
       NodePointer str = demangleIdentifier();
-      if (!str || !Mangled.nextIf('_'))
+      if (!str || !Mangled.nextif ('_'))
         return false;
 
       parent->addChild(FUNCSIGSPEC_CREATE_PARAM_KIND(ConstantPropString));
@@ -768,7 +768,7 @@ private:
     }
 
     // Eat last '_'
-    if (!Mangled.nextIf('_'))
+    if (!Mangled.nextif ('_'))
       return false;
 
     return true;
@@ -779,27 +779,27 @@ private:
     unsigned paramCount = 0;
 
     // Until we hit the last '_' in our specialization info...
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       // Create the parameter.
       NodePointer param =
         NodeFactory::create(Node::Kind::FunctionSignatureSpecializationParam,
                             paramCount);
 
       // First handle options.
-      if (Mangled.nextIf("n_")) {
+      if (Mangled.nextif ("n_")) {
         // Leave the parameter empty.
-      } else if (Mangled.nextIf("cp")) {
+      } else if (Mangled.nextif ("cp")) {
         if (!demangleFuncSigSpecializationConstantProp(param))
           return nullptr;
-      } else if (Mangled.nextIf("cl")) {
+      } else if (Mangled.nextif ("cl")) {
         if (!demangleFuncSigSpecializationClosureProp(param))
           return nullptr;
-      } else if (Mangled.nextIf("i_")) {
+      } else if (Mangled.nextif ("i_")) {
         auto result = FUNCSIGSPEC_CREATE_PARAM_KIND(BoxToValue);
         if (!result)
           return nullptr;
         param->addChild(result);
-      } else if (Mangled.nextIf("k_")) {
+      } else if (Mangled.nextif ("k_")) {
         auto result = FUNCSIGSPEC_CREATE_PARAM_KIND(BoxToStack);
         if (!result)
           return nullptr;
@@ -807,21 +807,21 @@ private:
       } else {
         // Otherwise handle option sets.
         unsigned Value = 0;
-        if (Mangled.nextIf('d')) {
+        if (Mangled.nextif ('d')) {
           Value |=
             unsigned(FunctionSigSpecializationParamKind::Dead);
         }
 
-        if (Mangled.nextIf('g')) {
+        if (Mangled.nextif ('g')) {
           Value |=
               unsigned(FunctionSigSpecializationParamKind::OwnedToGuaranteed);
         }
 
-        if (Mangled.nextIf('s')) {
+        if (Mangled.nextif ('s')) {
           Value |= unsigned(FunctionSigSpecializationParamKind::SROA);
         }
 
-        if (!Mangled.nextIf('_'))
+        if (!Mangled.nextif ('_'))
           return nullptr;
 
         if (!Value)
@@ -846,13 +846,13 @@ private:
 
   NodePointer demangleSpecializedAttribute() {
     bool isNotReAbstracted = false;
-    if (Mangled.nextIf("g") || (isNotReAbstracted = Mangled.nextIf("r"))) {
+    if (Mangled.nextif ("g") || (isNotReAbstracted = Mangled.nextif ("r"))) {
       auto spec = NodeFactory::create(isNotReAbstracted ?
                               Node::Kind::GenericSpecializationNotReAbstracted :
                               Node::Kind::GenericSpecialization);
 
       // Create a node if the specialization is externally inlineable.
-      if (Mangled.nextIf("q")) {
+      if (Mangled.nextif ("q")) {
         auto kind = Node::Kind::SpecializationIsFragile;
         spec->addChild(NodeFactory::create(kind));
       }
@@ -864,12 +864,12 @@ private:
       // And then mangle the generic specialization.
       return demangleGenericSpecialization(spec);
     }
-    if (Mangled.nextIf("f")) {
+    if (Mangled.nextif ("f")) {
       auto spec =
           NodeFactory::create(Node::Kind::FunctionSignatureSpecialization);
 
       // Create a node if the specialization is externally inlineable.
-      if (Mangled.nextIf("q")) {
+      if (Mangled.nextif ("q")) {
         auto kind = Node::Kind::SpecializationIsFragile;
         spec->addChild(NodeFactory::create(kind));
       }
@@ -889,7 +889,7 @@ private:
   NodePointer demangleDeclName() {
     // decl-name ::= local-decl-name
     // local-decl-name ::= 'L' index identifier
-    if (Mangled.nextIf('L')) {
+    if (Mangled.nextif ('L')) {
       NodePointer discriminator = demangleIndexAsNode();
       if (!discriminator) return nullptr;
 
@@ -901,7 +901,7 @@ private:
       localName->addChild(std::move(name));
       return localName;
 
-    } else if (Mangled.nextIf('P')) {
+    } else if (Mangled.nextif ('P')) {
       NodePointer discriminator = demangleIdentifier();
       if (!discriminator) return nullptr;
 
@@ -921,7 +921,7 @@ private:
     if (!Mangled)
       return nullptr;
     
-    bool isPunycoded = Mangled.nextIf('X');
+    bool isPunycoded = Mangled.nextif ('X');
     std::string decodeBuffer;
 
     auto decode = [&](StringRef s) -> StringRef {
@@ -933,7 +933,7 @@ private:
     };
     
     bool isOperator = false;
-    if (Mangled.nextIf('o')) {
+    if (Mangled.nextif ('o')) {
       isOperator = true;
       // Operator identifiers aren't valid in the contexts that are
       // building more specific identifiers.
@@ -998,12 +998,12 @@ private:
   }
 
   bool demangleIndex(Node::IndexType &natural) {
-    if (Mangled.nextIf('_')) {
+    if (Mangled.nextif ('_')) {
       natural = 0;
       return true;
     }
     if (demangleNatural(natural)) {
-      if (!Mangled.nextIf('_'))
+      if (!Mangled.nextif ('_'))
         return false;
       natural++;
       return true;
@@ -1030,41 +1030,41 @@ private:
   NodePointer demangleSubstitutionIndex() {
     if (!Mangled)
       return nullptr;
-    if (Mangled.nextIf('o'))
+    if (Mangled.nextif ('o'))
       return NodeFactory::create(Node::Kind::Module, MANGLING_MODULE_OBJC);
-    if (Mangled.nextIf('C'))
+    if (Mangled.nextif ('C'))
       return NodeFactory::create(Node::Kind::Module, MANGLING_MODULE_C);
-    if (Mangled.nextIf('a'))
+    if (Mangled.nextif ('a'))
       return createSwiftType(Node::Kind::Structure, "Array");
-    if (Mangled.nextIf('b'))
+    if (Mangled.nextif ('b'))
       return createSwiftType(Node::Kind::Structure, "Bool");
-    if (Mangled.nextIf('c'))
+    if (Mangled.nextif ('c'))
       return createSwiftType(Node::Kind::Structure, "UnicodeScalar");
-    if (Mangled.nextIf('d'))
+    if (Mangled.nextif ('d'))
       return createSwiftType(Node::Kind::Structure, "Double");
-    if (Mangled.nextIf('f'))
+    if (Mangled.nextif ('f'))
       return createSwiftType(Node::Kind::Structure, "Float");
-    if (Mangled.nextIf('i'))
+    if (Mangled.nextif ('i'))
       return createSwiftType(Node::Kind::Structure, "Int");
-    if (Mangled.nextIf('V'))
+    if (Mangled.nextif ('V'))
       return createSwiftType(Node::Kind::Structure, "UnsafeRawPointer");
-    if (Mangled.nextIf('v'))
+    if (Mangled.nextif ('v'))
       return createSwiftType(Node::Kind::Structure, "UnsafeMutableRawPointer");
-    if (Mangled.nextIf('P'))
+    if (Mangled.nextif ('P'))
       return createSwiftType(Node::Kind::Structure, "UnsafePointer");
-    if (Mangled.nextIf('p'))
+    if (Mangled.nextif ('p'))
       return createSwiftType(Node::Kind::Structure, "UnsafeMutablePointer");
-    if (Mangled.nextIf('q'))
+    if (Mangled.nextif ('q'))
       return createSwiftType(Node::Kind::Enum, "Optional");
-    if (Mangled.nextIf('Q'))
+    if (Mangled.nextif ('Q'))
       return createSwiftType(Node::Kind::Enum, "ImplicitlyUnwrappedOptional");
-    if (Mangled.nextIf('R'))
+    if (Mangled.nextif ('R'))
       return createSwiftType(Node::Kind::Structure, "UnsafeBufferPointer");
-    if (Mangled.nextIf('r'))
+    if (Mangled.nextif ('r'))
       return createSwiftType(Node::Kind::Structure, "UnsafeMutableBufferPointer");
-    if (Mangled.nextIf('S'))
+    if (Mangled.nextif ('S'))
       return createSwiftType(Node::Kind::Structure, "String");
-    if (Mangled.nextIf('u'))
+    if (Mangled.nextif ('u'))
       return createSwiftType(Node::Kind::Structure, "UInt");
     Node::IndexType index_sub;
     if (!demangleIndex(index_sub))
@@ -1075,10 +1075,10 @@ private:
   }
 
   NodePointer demangleModule() {
-    if (Mangled.nextIf('s')) {
+    if (Mangled.nextif ('s')) {
       return NodeFactory::create(Node::Kind::Module, STDLIB_NAME);
     }
-    if (Mangled.nextIf('S')) {
+    if (Mangled.nextif ('S')) {
       NodePointer module = demangleSubstitutionIndex();
       if (!module)
         return nullptr;
@@ -1132,7 +1132,7 @@ private:
     // the protocol and a substitution of the protocol's context, so
     // we have to duplicate some of the logic from
     // demangleDeclarationName.
-    if (Mangled.nextIf('S')) {
+    if (Mangled.nextif ('S')) {
       NodePointer sub = demangleSubstitutionIndex();
       if (!sub) return nullptr;
       if (sub->getKind() == Node::Kind::Protocol)
@@ -1144,7 +1144,7 @@ private:
       return demangleProtocolNameGivenContext(sub);
     }
 
-    if (Mangled.nextIf('s')) {
+    if (Mangled.nextif ('s')) {
       NodePointer stdlib = NodeFactory::create(Node::Kind::Module, STDLIB_NAME);
 
       return demangleProtocolNameGivenContext(stdlib);
@@ -1154,15 +1154,15 @@ private:
   }
 
   NodePointer demangleNominalType() {
-    if (Mangled.nextIf('S'))
+    if (Mangled.nextif ('S'))
       return demangleSubstitutionIndex();
-    if (Mangled.nextIf('V'))
+    if (Mangled.nextif ('V'))
       return demangleDeclarationName(Node::Kind::Structure);
-    if (Mangled.nextIf('O'))
+    if (Mangled.nextif ('O'))
       return demangleDeclarationName(Node::Kind::Enum);
-    if (Mangled.nextIf('C'))
+    if (Mangled.nextif ('C'))
       return demangleDeclarationName(Node::Kind::Class);
-    if (Mangled.nextIf('P'))
+    if (Mangled.nextif ('P'))
       return demangleDeclarationName(Node::Kind::Protocol);
     return nullptr;
   }
@@ -1186,7 +1186,7 @@ private:
     }
 
     NodePointer args = NodeFactory::create(Node::Kind::TypeList);
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       NodePointer type = demangleType();
       if (!type)
         return nullptr;
@@ -1243,7 +1243,7 @@ private:
     // context ::= 'E' module context (extension defined in a different module)
     // context ::= 'e' module context generic-signature (constrained extension)
     if (!Mangled) return nullptr;
-    if (Mangled.nextIf('E')) {
+    if (Mangled.nextif ('E')) {
       NodePointer ext = NodeFactory::create(Node::Kind::Extension);
       NodePointer def_module = demangleModule();
       if (!def_module) return nullptr;
@@ -1253,7 +1253,7 @@ private:
       ext->addChild(type);
       return ext;
     }
-    if (Mangled.nextIf('e')) {
+    if (Mangled.nextif ('e')) {
       NodePointer ext = NodeFactory::create(Node::Kind::Extension);
       NodePointer def_module = demangleModule();
       if (!def_module) return nullptr;
@@ -1270,11 +1270,11 @@ private:
       ext->addChild(sig);
       return ext;
     }
-    if (Mangled.nextIf('S'))
+    if (Mangled.nextif ('S'))
       return demangleSubstitutionIndex();
-    if (Mangled.nextIf('s'))
+    if (Mangled.nextif ('s'))
       return NodeFactory::create(Node::Kind::Module, STDLIB_NAME);
-    if (Mangled.nextIf('G'))
+    if (Mangled.nextif ('G'))
       return demangleBoundGenericType();
     if (isStartOfEntity(Mangled.peek()))
       return demangleEntity();
@@ -1285,7 +1285,7 @@ private:
     NodePointer proto_list = NodeFactory::create(Node::Kind::ProtocolList);
     NodePointer type_list = NodeFactory::create(Node::Kind::TypeList);
     proto_list->addChild(type_list);
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       NodePointer proto = demangleProtocolName();
       if (!proto)
         return nullptr;
@@ -1316,17 +1316,17 @@ private:
   // entity ::= nominal-type
   NodePointer demangleEntity() {
     // static?
-    bool isStatic = Mangled.nextIf('Z');
+    bool isStatic = Mangled.nextif ('Z');
   
     // entity-kind
     Node::Kind entityBasicKind;
-    if (Mangled.nextIf('F')) {
+    if (Mangled.nextif ('F')) {
       entityBasicKind = Node::Kind::Function;
-    } else if (Mangled.nextIf('v')) {
+    } else if (Mangled.nextif ('v')) {
       entityBasicKind = Node::Kind::Variable;
-    } else if (Mangled.nextIf('I')) {
+    } else if (Mangled.nextif ('I')) {
       entityBasicKind = Node::Kind::Initializer;
-    } else if (Mangled.nextIf('i')) {
+    } else if (Mangled.nextif ('i')) {
       entityBasicKind = Node::Kind::Subscript;
     } else {
       return demangleNominalType();
@@ -1339,90 +1339,90 @@ private:
     Node::Kind entityKind;
     bool hasType = true;
     NodePointer name;
-    if (Mangled.nextIf('D')) {
+    if (Mangled.nextif ('D')) {
       entityKind = Node::Kind::Deallocator;
       hasType = false;
-    } else if (Mangled.nextIf('d')) {
+    } else if (Mangled.nextif ('d')) {
       entityKind = Node::Kind::Destructor;
       hasType = false;
-    } else if (Mangled.nextIf('e')) {
+    } else if (Mangled.nextif ('e')) {
       entityKind = Node::Kind::IVarInitializer;
       hasType = false;
-    } else if (Mangled.nextIf('E')) {
+    } else if (Mangled.nextif ('E')) {
       entityKind = Node::Kind::IVarDestroyer;
       hasType = false;
-    } else if (Mangled.nextIf('C')) {
+    } else if (Mangled.nextif ('C')) {
       entityKind = Node::Kind::Allocator;
-    } else if (Mangled.nextIf('c')) {
+    } else if (Mangled.nextif ('c')) {
       entityKind = Node::Kind::Constructor;
-    } else if (Mangled.nextIf('a')) {
-      if (Mangled.nextIf('O')) {
+    } else if (Mangled.nextif ('a')) {
+      if (Mangled.nextif ('O')) {
         entityKind = Node::Kind::OwningMutableAddressor;
-      } else if (Mangled.nextIf('o')) {
+      } else if (Mangled.nextif ('o')) {
         entityKind = Node::Kind::NativeOwningMutableAddressor;
-      } else if (Mangled.nextIf('p')) {
+      } else if (Mangled.nextif ('p')) {
         entityKind = Node::Kind::NativePinningMutableAddressor;
-      } else if (Mangled.nextIf('u')) {
+      } else if (Mangled.nextif ('u')) {
         entityKind = Node::Kind::UnsafeMutableAddressor;
       } else {
         return nullptr;
       }
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('l')) {
-      if (Mangled.nextIf('O')) {
+    } else if (Mangled.nextif ('l')) {
+      if (Mangled.nextif ('O')) {
         entityKind = Node::Kind::OwningAddressor;
-      } else if (Mangled.nextIf('o')) {
+      } else if (Mangled.nextif ('o')) {
         entityKind = Node::Kind::NativeOwningAddressor;
-      } else if (Mangled.nextIf('p')) {
+      } else if (Mangled.nextif ('p')) {
         entityKind = Node::Kind::NativePinningAddressor;
-      } else if (Mangled.nextIf('u')) {
+      } else if (Mangled.nextif ('u')) {
         entityKind = Node::Kind::UnsafeAddressor;
       } else {
         return nullptr;
       }
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('g')) {
+    } else if (Mangled.nextif ('g')) {
       entityKind = Node::Kind::Getter;
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('G')) {
+    } else if (Mangled.nextif ('G')) {
       entityKind = Node::Kind::GlobalGetter;
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('s')) {
+    } else if (Mangled.nextif ('s')) {
       entityKind = Node::Kind::Setter;
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('m')) {
+    } else if (Mangled.nextif ('m')) {
       entityKind = Node::Kind::MaterializeForSet;
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('w')) {
+    } else if (Mangled.nextif ('w')) {
       entityKind = Node::Kind::WillSet;
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('W')) {
+    } else if (Mangled.nextif ('W')) {
       entityKind = Node::Kind::DidSet;
       name = demangleDeclName();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('U')) {
+    } else if (Mangled.nextif ('U')) {
       entityKind = Node::Kind::ExplicitClosure;
       name = demangleIndexAsNode();
       if (!name) return nullptr;
-    } else if (Mangled.nextIf('u')) {
+    } else if (Mangled.nextif ('u')) {
       entityKind = Node::Kind::ImplicitClosure;
       name = demangleIndexAsNode();
       if (!name) return nullptr;
     } else if (entityBasicKind == Node::Kind::Initializer) {
       // entity-name ::= 'A' index
-      if (Mangled.nextIf('A')) {
+      if (Mangled.nextif ('A')) {
         entityKind = Node::Kind::DefaultArgumentInitializer;
         name = demangleIndexAsNode();
         if (!name) return nullptr;
       // entity-name ::= 'i'
-      } else if (Mangled.nextIf('i')) {
+      } else if (Mangled.nextif ('i')) {
         entityKind = Node::Kind::Initializer;
       } else {
         return nullptr;
@@ -1478,13 +1478,13 @@ private:
   NodePointer demangleGenericParamIndex() {
     Node::IndexType depth, index;
 
-    if (Mangled.nextIf('d')) {
+    if (Mangled.nextif ('d')) {
       if (!demangleIndex(depth))
         return nullptr;
       depth += 1;
       if (!demangleIndex(index))
         return nullptr;
-    } else if (Mangled.nextIf('x')) {
+    } else if (Mangled.nextif ('x')) {
       depth = 0;
       index = 0;
     } else {
@@ -1501,7 +1501,7 @@ private:
            && "base should be a type");
     NodePointer assocTy;
 
-    if (Mangled.nextIf('S')) {
+    if (Mangled.nextif ('S')) {
       assocTy = demangleSubstitutionIndex();
       if (!assocTy)
         return nullptr;
@@ -1509,7 +1509,7 @@ private:
         return nullptr;
     } else {
       NodePointer protocol = nullptr;
-      if (Mangled.nextIf('P')) {
+      if (Mangled.nextif ('P')) {
         protocol = demangleProtocolName();
         if (!protocol) return nullptr;
       }
@@ -1551,7 +1551,7 @@ private:
       return nullptr;
 
     // Demangle the associated type chain.
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       NodePointer nodeType = NodeFactory::create(Node::Kind::Type);
       nodeType->addChild(base);
       
@@ -1582,10 +1582,10 @@ private:
   NodePointer demangleConstrainedTypeImpl() {
     // The constrained type can only be a generic parameter or an associated
     // type thereof. The 'q' introducer is thus left off of generic params.
-    if (Mangled.nextIf('w')) {
+    if (Mangled.nextif ('w')) {
       return demangleAssociatedTypeSimple();
     }
-    if (Mangled.nextIf('W')) {
+    if (Mangled.nextif ('W')) {
       return demangleAssociatedTypeCompound();
     }
     return demangleGenericParamIndex();
@@ -1616,7 +1616,7 @@ private:
     };
     
     while (Mangled.peek() != 'R' && Mangled.peek() != 'r') {
-      if (Mangled.nextIf('z')) {
+      if (Mangled.nextif ('z')) {
         count = 0;
       } else if (demangleIndex(count)) {
         count += 1;
@@ -1633,13 +1633,13 @@ private:
     }
     
     // Next read in the generic requirements, if any.
-    if (Mangled.nextIf('r'))
+    if (Mangled.nextif ('r'))
       return sig;
     
-    if (!Mangled.nextIf('R'))
+    if (!Mangled.nextif ('R'))
       return nullptr;
     
-    while (!Mangled.nextIf('r')) {
+    while (!Mangled.nextif ('r')) {
       NodePointer reqt = demangleGenericRequirement();
       if (!reqt) return nullptr;
       sig->addChild(reqt);
@@ -1649,13 +1649,13 @@ private:
   }
 
   NodePointer demangleMetatypeRepresentation() {
-    if (Mangled.nextIf('t'))
+    if (Mangled.nextif ('t'))
       return NodeFactory::create(Node::Kind::MetatypeRepresentation, "@thin");
 
-    if (Mangled.nextIf('T'))
+    if (Mangled.nextif ('T'))
       return NodeFactory::create(Node::Kind::MetatypeRepresentation, "@thick");
 
-    if (Mangled.nextIf('o'))
+    if (Mangled.nextif ('o'))
       return NodeFactory::create(Node::Kind::MetatypeRepresentation,
                                  "@objc_metatype");
 
@@ -1666,7 +1666,7 @@ private:
     NodePointer constrainedType = demangleConstrainedType();
     if (!constrainedType)
       return nullptr;
-    if (Mangled.nextIf('z')) {
+    if (Mangled.nextif ('z')) {
       NodePointer second = demangleType();
       if (!second) return nullptr;
       auto reqt = NodeFactory::create(
@@ -1736,18 +1736,18 @@ private:
       return assocType;
     };
     
-    if (Mangled.nextIf('P')) {
+    if (Mangled.nextif ('P')) {
       NodePointer proto = demangleProtocolName();
       if (!proto) return nullptr;
       return makeSelfType(proto);
     }
     
-    if (Mangled.nextIf('Q')) {
+    if (Mangled.nextif ('Q')) {
       NodePointer root = demangleArchetypeType();
       if (!root) return nullptr;
       return makeAssociatedType(root);
     }
-    if (Mangled.nextIf('S')) {
+    if (Mangled.nextif ('S')) {
       NodePointer sub = demangleSubstitutionIndex();
       if (!sub) return nullptr;
       if (sub->getKind() == Node::Kind::Protocol)
@@ -1755,11 +1755,11 @@ private:
       else
         return makeAssociatedType(sub);
     }
-    if (Mangled.nextIf('s')) {
+    if (Mangled.nextif ('s')) {
       NodePointer stdlib = NodeFactory::create(Node::Kind::Module, STDLIB_NAME);
       return makeAssociatedType(stdlib);
     }
-    if (Mangled.nextIf('d')) {
+    if (Mangled.nextif ('d')) {
       Node::IndexType depth, index;
       if (!demangleIndex(depth))
         return nullptr;
@@ -1767,7 +1767,7 @@ private:
         return nullptr;
       return demangleArchetypeRef(depth + 1, index);
     }
-    if (Mangled.nextIf('q')) {
+    if (Mangled.nextif ('q')) {
       NodePointer index = demangleIndexAsNode();
       if (!index)
         return nullptr;
@@ -1791,7 +1791,7 @@ private:
     NodePointer tuple = NodeFactory::create(
         isV == IsVariadic::yes ? Node::Kind::VariadicTuple
                                : Node::Kind::NonVariadicTuple);
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       if (!Mangled)
         return nullptr;
       NodePointer elt = NodeFactory::create(Node::Kind::TupleElement);
@@ -1831,7 +1831,7 @@ private:
   NodePointer demangleFunctionType(Node::Kind kind) {
     bool throws = false;
     if (Mangled &&
-        Mangled.nextIf('z')) {
+        Mangled.nextif ('z')) {
       throws = true;
     }
     NodePointer in_args = demangleType();
@@ -1886,9 +1886,9 @@ private:
       if (c == 'v') {
         Node::IndexType elts;
         if (demangleNatural(elts)) {
-          if (!Mangled.nextIf('B'))
+          if (!Mangled.nextif ('B'))
             return nullptr;
-          if (Mangled.nextIf('i')) {
+          if (Mangled.nextif ('i')) {
             Node::IndexType size;
             if (!demangleBuiltinSize(size))
               return nullptr;
@@ -1897,7 +1897,7 @@ private:
                 (DemanglerPrinter() << "Builtin.Vec" << elts << "xInt" << size)
                     .str());
           }
-          if (Mangled.nextIf('f')) {
+          if (Mangled.nextif ('f')) {
             Node::IndexType size;
             if (!demangleBuiltinSize(size))
               return nullptr;
@@ -1906,7 +1906,7 @@ private:
                 (DemanglerPrinter() << "Builtin.Vec" << elts << "xFloat"
                                     << size).str());
           }
-          if (Mangled.nextIf('p'))
+          if (Mangled.nextif ('p'))
             return NodeFactory::create(
                 Node::Kind::BuiltinTypeName,
                 (DemanglerPrinter() << "Builtin.Vec" << elts << "xRawPointer")
@@ -1946,9 +1946,9 @@ private:
       return dynamicSelf;
     }
     if (c == 'E') {
-      if (!Mangled.nextIf('R'))
+      if (!Mangled.nextif ('R'))
         return nullptr;
-      if (!Mangled.nextIf('R'))
+      if (!Mangled.nextif ('R'))
         return nullptr;
       return NodeFactory::create(Node::Kind::ErrorType, std::string());
     }
@@ -1962,7 +1962,7 @@ private:
       return demangleBoundGenericType();
     }
     if (c == 'X') {
-      if (Mangled.nextIf('b')) {
+      if (Mangled.nextif ('b')) {
         NodePointer type = demangleType();
         if (!type)
           return nullptr;
@@ -1983,7 +1983,7 @@ private:
       return metatype;
     }
     if (c == 'X') {
-      if (Mangled.nextIf('M')) {
+      if (Mangled.nextif ('M')) {
         NodePointer metatypeRepr = demangleMetatypeRepresentation();
         if (!metatypeRepr) return nullptr;
 
@@ -1997,7 +1997,7 @@ private:
       }
     }
     if (c == 'P') {
-      if (Mangled.nextIf('M')) {
+      if (Mangled.nextif ('M')) {
         NodePointer type = demangleType();
         if (!type) return nullptr;
         auto metatype = NodeFactory::create(Node::Kind::ExistentialMetatype);
@@ -2009,8 +2009,8 @@ private:
     }
 
     if (c == 'X') {
-      if (Mangled.nextIf('P')) {
-        if (Mangled.nextIf('M')) {
+      if (Mangled.nextif ('P')) {
+        if (Mangled.nextif ('M')) {
           NodePointer metatypeRepr = demangleMetatypeRepresentation();
           if (!metatypeRepr) return nullptr;
 
@@ -2071,10 +2071,10 @@ private:
       return dependentGenericType;
     }
     if (c == 'X') {
-      if (Mangled.nextIf('f')) {
+      if (Mangled.nextif ('f')) {
         return demangleFunctionType(Node::Kind::ThinFunctionType);
       }
-      if (Mangled.nextIf('o')) {
+      if (Mangled.nextif ('o')) {
         NodePointer type = demangleType();
         if (!type)
           return nullptr;
@@ -2082,7 +2082,7 @@ private:
         unowned->addChild(type);
         return unowned;
       }
-      if (Mangled.nextIf('u')) {
+      if (Mangled.nextif ('u')) {
         NodePointer type = demangleType();
         if (!type)
           return nullptr;
@@ -2090,7 +2090,7 @@ private:
         unowned->addChild(type);
         return unowned;
       }
-      if (Mangled.nextIf('w')) {
+      if (Mangled.nextif ('w')) {
         NodePointer type = demangleType();
         if (!type)
           return nullptr;
@@ -2100,7 +2100,7 @@ private:
       }
 
       // type ::= 'XF' impl-function-type
-      if (Mangled.nextIf('F')) {
+      if (Mangled.nextif ('F')) {
         return demangleImplFunctionType();
       }
 
@@ -2112,7 +2112,7 @@ private:
   }
 
   bool demangleReabstractSignature(NodePointer signature) {
-    if (Mangled.nextIf('G')) {
+    if (Mangled.nextif ('G')) {
       NodePointer generics = demangleGenericSignature();
       if (!generics) return false;
       signature->addChild(std::move(generics));
@@ -2143,16 +2143,16 @@ private:
     if (!demangleImplCalleeConvention(type))
       return nullptr;
 
-    if (Mangled.nextIf('C')) {
-      if (Mangled.nextIf('b'))
+    if (Mangled.nextif ('C')) {
+      if (Mangled.nextif ('b'))
         addImplFunctionAttribute(type, "@convention(block)");
-      else if (Mangled.nextIf('c'))
+      else if (Mangled.nextif ('c'))
         addImplFunctionAttribute(type, "@convention(c)");
-      else if (Mangled.nextIf('m'))
+      else if (Mangled.nextif ('m'))
         addImplFunctionAttribute(type, "@convention(method)");
-      else if (Mangled.nextIf('O'))
+      else if (Mangled.nextif ('O'))
         addImplFunctionAttribute(type, "@convention(objc_method)");
-      else if (Mangled.nextIf('w'))
+      else if (Mangled.nextif ('w'))
         addImplFunctionAttribute(type, "@convention(witness_method)");
       else
         return nullptr;
@@ -2161,8 +2161,8 @@ private:
     // Enter a new generic context if this type is generic.
     // FIXME: replace with std::optional, when we have it.
     bool isPseudogeneric = false;
-    if (Mangled.nextIf('G') ||
-        (isPseudogeneric = Mangled.nextIf('g'))) {
+    if (Mangled.nextif ('G') ||
+        (isPseudogeneric = Mangled.nextif ('g'))) {
       NodePointer generics = demangleGenericSignature(isPseudogeneric);
       if (!generics)
         return nullptr;
@@ -2170,7 +2170,7 @@ private:
     }
 
     // Expect the attribute terminator.
-    if (!Mangled.nextIf('_'))
+    if (!Mangled.nextif ('_'))
       return nullptr;
 
     // Demangle the parameters.
@@ -2199,7 +2199,7 @@ private:
   /// Returns an empty string otherwise.
   StringRef demangleImplConvention(ImplConventionContext ctxt) {
 #define CASE(CHAR, FOR_CALLEE, FOR_PARAMETER, FOR_RESULT)            \
-    if (Mangled.nextIf(CHAR)) {                                      \
+    if (Mangled.nextif (CHAR)) {                                      \
       switch (ctxt) {                                                \
       case ImplConventionContext::Callee: return (FOR_CALLEE);       \
       case ImplConventionContext::Parameter: return (FOR_PARAMETER); \
@@ -2224,7 +2224,7 @@ private:
   // impl-callee-convention ::= impl-convention
   bool demangleImplCalleeConvention(NodePointer type) {
     StringRef attr;
-    if (Mangled.nextIf('t')) {
+    if (Mangled.nextif ('t')) {
       attr = "@convention(thin)";
     } else {
       attr = demangleImplConvention(ImplConventionContext::Callee);
@@ -2243,7 +2243,7 @@ private:
 
   // impl-parameter ::= impl-convention type
   bool demangleImplParameters(NodePointer parent) {
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       auto input = demangleImplParameterOrResult(Node::Kind::ImplParameter);
       if (!input) return false;
       parent->addChild(input);
@@ -2253,7 +2253,7 @@ private:
 
   // impl-result ::= impl-convention type
   bool demangleImplResults(NodePointer parent) {
-    while (!Mangled.nextIf('_')) {
+    while (!Mangled.nextif ('_')) {
       auto res = demangleImplParameterOrResult(Node::Kind::ImplResult);
       if (!res) return false;
       parent->addChild(res);
@@ -2262,7 +2262,7 @@ private:
   }
 
   NodePointer demangleImplParameterOrResult(Node::Kind kind) {
-    if (Mangled.nextIf('z')) {
+    if (Mangled.nextif ('z')) {
       // Only valid for a result.
       if (kind != Node::Kind::ImplResult)
         return nullptr;

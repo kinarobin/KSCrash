@@ -26,7 +26,7 @@
     AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.crashInstallation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error)
      {
-         if(completed)
+         if (completed)
          {
              NSLog(@"Sent %d reports", [reports count]);
          }

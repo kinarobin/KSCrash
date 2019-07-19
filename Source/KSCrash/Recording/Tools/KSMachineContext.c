@@ -69,7 +69,7 @@ static inline bool getThreadList(KSMachineContext* context)
     thread_act_array_t threads;
     mach_msg_type_number_t actualThreadCount;
 
-    if((kr = task_threads(thisTask, &threads, &actualThreadCount)) != KERN_SUCCESS)
+    if ((kr = task_threads(thisTask, &threads, &actualThreadCount)) != KERN_SUCCESS)
     {
         KSLOG_ERROR("task_threads: %s", mach_error_string(kr));
         return false;
@@ -77,7 +77,7 @@ static inline bool getThreadList(KSMachineContext* context)
     KSLOG_TRACE("Got %d threads", context->threadCount);
     int threadCount = (int)actualThreadCount;
     int maxThreadCount = sizeof(context->allThreads) / sizeof(context->allThreads[0]);
-    if(threadCount > maxThreadCount)
+    if (threadCount > maxThreadCount)
     {
         KSLOG_ERROR("Thread count %d is higher than maximum of %d", threadCount, maxThreadCount);
         threadCount = maxThreadCount;
@@ -115,11 +115,11 @@ bool ksmc_getContextForThread(KSThread thread, KSMachineContext* destinationCont
     destinationContext->isCurrentThread = thread == ksthread_self();
     destinationContext->isCrashedContext = isCrashedContext;
     destinationContext->isSignalContext = false;
-    if(ksmc_canHaveCPUState(destinationContext))
+    if (ksmc_canHaveCPUState(destinationContext))
     {
         kscpu_getState(destinationContext);
     }
-    if(ksmc_isCrashedContext(destinationContext))
+    if (ksmc_isCrashedContext(destinationContext))
     {
         destinationContext->isStackOverflow = isStackOverflow(destinationContext);
         getThreadList(destinationContext);
@@ -145,7 +145,7 @@ bool ksmc_getContextForSignal(void* signalUserContext, KSMachineContext* destina
 void ksmc_addReservedThread(KSThread thread)
 {
     int nextIndex = g_reservedThreadsCount;
-    if(nextIndex > g_reservedThreadsMaxIndex)
+    if (nextIndex > g_reservedThreadsMaxIndex)
     {
         KSLOG_ERROR("Too many reserved threads (%d). Max is %d", nextIndex, g_reservedThreadsMaxIndex);
         return;
@@ -158,7 +158,7 @@ static inline bool isThreadInList(thread_t thread, KSThread* list, int listCount
 {
     for(int i = 0; i < listCount; i++)
     {
-        if(list[i] == (KSThread)thread)
+        if (list[i] == (KSThread)thread)
         {
             return true;
         }
@@ -175,7 +175,7 @@ void ksmc_suspendEnvironment()
     const task_t thisTask = mach_task_self();
     const thread_t thisThread = (thread_t)ksthread_self();
     
-    if((kr = task_threads(thisTask, &g_suspendedThreads, &g_suspendedThreadsCount)) != KERN_SUCCESS)
+    if ((kr = task_threads(thisTask, &g_suspendedThreads, &g_suspendedThreadsCount)) != KERN_SUCCESS)
     {
         KSLOG_ERROR("task_threads: %s", mach_error_string(kr));
         return;
@@ -184,9 +184,9 @@ void ksmc_suspendEnvironment()
     for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++)
     {
         thread_t thread = g_suspendedThreads[i];
-        if(thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount))
+        if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount))
         {
-            if((kr = thread_suspend(thread)) != KERN_SUCCESS)
+            if ((kr = thread_suspend(thread)) != KERN_SUCCESS)
             {
                 // Record the error and keep going.
                 KSLOG_ERROR("thread_suspend (%08x): %s", thread, mach_error_string(kr));
@@ -206,7 +206,7 @@ void ksmc_resumeEnvironment()
     const task_t thisTask = mach_task_self();
     const thread_t thisThread = (thread_t)ksthread_self();
     
-    if(g_suspendedThreads == NULL || g_suspendedThreadsCount == 0)
+    if (g_suspendedThreads == NULL || g_suspendedThreadsCount == 0)
     {
         KSLOG_ERROR("we should call ksmc_suspendEnvironment() first");
         return;
@@ -215,9 +215,9 @@ void ksmc_resumeEnvironment()
     for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++)
     {
         thread_t thread = g_suspendedThreads[i];
-        if(thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount))
+        if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount))
         {
-            if((kr = thread_resume(thread)) != KERN_SUCCESS)
+            if ((kr = thread_resume(thread)) != KERN_SUCCESS)
             {
                 // Record the error and keep going.
                 KSLOG_ERROR("thread_resume (%08x): %s", thread, mach_error_string(kr));
@@ -254,7 +254,7 @@ int ksmc_indexOfThread(const KSMachineContext* const context, KSThread thread)
     for(int i = 0; i < (int)context->threadCount; i++)
     {
         KSLOG_TRACE("%d: %x vs %x", i, thread, context->allThreads[i]);
-        if(context->allThreads[i] == thread)
+        if (context->allThreads[i] == thread)
         {
             return i;
         }

@@ -48,17 +48,17 @@ void kscm_reportUserException(const char* name,
                               bool logAllThreads,
                               bool terminateProgram)
 {
-    if(!g_isEnabled)
+    if (!g_isEnabled)
     {
         KSLOG_WARN("User-reported exception monitor is not installed. Exception has not been recorded.");
     }
     else
     {
-        if(logAllThreads)
+        if (logAllThreads)
         {
             ksmc_suspendEnvironment();
         }
-        if(terminateProgram)
+        if (terminateProgram)
         {
             kscm_notifyFatalExceptionCaptured(false);
         }
@@ -87,11 +87,11 @@ void kscm_reportUserException(const char* name,
 
         kscm_handleException(&context);
 
-        if(logAllThreads)
+        if (logAllThreads)
         {
             ksmc_resumeEnvironment();
         }
-        if(terminateProgram)
+        if (terminateProgram)
         {
             abort();
         }

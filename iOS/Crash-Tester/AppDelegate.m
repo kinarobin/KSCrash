@@ -24,7 +24,7 @@ static BOOL g_crashInHandler = NO;
 
 static void onCrash(const KSCrashReportWriter* writer)
 {
-    if(g_crashInHandler)
+    if (g_crashInHandler)
     {
         char* buff = NULL;
         buff[0] = 'a';

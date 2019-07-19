@@ -46,7 +46,7 @@ bool ksdebug_isBeingTraced(void)
     size_t structSize = sizeof(procInfo);
     int mib[] = {CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()};
     
-    if(sysctl(mib, sizeof(mib)/sizeof(*mib), &procInfo, &structSize, NULL, 0) != 0)
+    if (sysctl(mib, sizeof(mib)/sizeof(*mib), &procInfo, &structSize, NULL, 0) != 0)
     {
         KSLOG_ERROR("sysctl: %s", strerror(errno));
         return false;

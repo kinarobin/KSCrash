@@ -26,7 +26,7 @@
       accessoryType:(UITableViewCellAccessoryType) accessoryType
               block:(void (^)(UIViewController* controller)) block
 {
-    if((self = [super init]))
+    if ((self = [super init]))
     {
         self.name = name;
         self.accessoryType = accessoryType;
@@ -56,7 +56,7 @@
 
 - (id)initWithStyle:(UITableViewStyle) style
 {
-    if((self = [super initWithStyle:style]))
+    if ((self = [super initWithStyle:style]))
     {
         self.commands = [NSMutableArray array];
     }
@@ -71,7 +71,7 @@
 
 - (void) reloadTitle
 {
-    if(self.getTitleBlock != nil)
+    if (self.getTitleBlock != nil)
     {
         self.title = self.getTitleBlock(self);
     }
@@ -94,7 +94,7 @@
     static NSString* CellIdentifier = @"Cell";
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if(cell == nil)
+    if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];

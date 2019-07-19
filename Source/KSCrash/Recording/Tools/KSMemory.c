@@ -41,7 +41,7 @@ static inline int copySafely(const void* restrict const src, void* restrict cons
                                              (vm_size_t)byteCount,
                                              (vm_address_t)dst,
                                              &bytesCopied);
-    if(result != KERN_SUCCESS)
+    if (result != KERN_SUCCESS)
     {
         return 0;
     }
@@ -58,11 +58,11 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
     int bytesCopied = 0;
     
     // Short-circuit if no memory is readable
-    if(copySafely(src, dst, 1) != 1)
+    if (copySafely(src, dst, 1) != 1)
     {
         return 0;
     }
-    else if(byteCount <= 1)
+    else if (byteCount <= 1)
     {
         return byteCount;
     }
@@ -70,12 +70,12 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
     for(;;)
     {
         int copyLength = (int)(pSrcEnd - pSrc);
-        if(copyLength <= 0)
+        if (copyLength <= 0)
         {
             break;
         }
         
-        if(copySafely(pSrc, pDst, copyLength) == copyLength)
+        if (copySafely(pSrc, pDst, copyLength) == copyLength)
         {
             bytesCopied += copyLength;
             pSrc += copyLength;
@@ -84,7 +84,7 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
         }
         else
         {
-            if(copyLength <= 1)
+            if (copyLength <= 1)
             {
                 break;
             }
@@ -104,7 +104,7 @@ static inline bool isMemoryReadable(const void* const memory, const int byteCoun
     while(bytesRemaining > 0)
     {
         int bytesToCopy = bytesRemaining > testBufferSize ? testBufferSize : bytesRemaining;
-        if(copySafely(memory, g_memoryTestBuffer, bytesToCopy) != bytesToCopy)
+        if (copySafely(memory, g_memoryTestBuffer, bytesToCopy) != bytesToCopy)
         {
             break;
         }
@@ -121,7 +121,7 @@ int ksmem_maxReadableBytes(const void* const memory, const int tryByteCount)
 
     while(bytesRemaining > testBufferSize)
     {
-        if(!isMemoryReadable(currentPosition, testBufferSize))
+        if (!isMemoryReadable(currentPosition, testBufferSize))
         {
             break;
         }
