@@ -319,22 +319,19 @@ static int extractTaggedNSString(const void* const object, char *buffer, int buf
             buffer[i] = (char)(value & 0x7f);
             value >>= 8;
         }
-    }
-    else if (length <= 9) {
+    } else if (length <= 9) {
         for(int i = 0; i < copyLength; i++)
         {
             uintptr_t index = (value >> ((length - 1 - i) * 6)) & 0x3f;
             buffer[i] = alphabet[index];
         }
-    }
-    else if (length <= 11) {
+    } else if (length <= 11) {
         for(int i = 0; i < copyLength; i++)
         {
             uintptr_t index = (value >> ((length - 1 - i) * 5)) & 0x1f;
             buffer[i] = alphabet[index];
         }
-    }
-    else {
+    } else {
         buffer[0] = 0;
     }
     buffer[length] = 0;
@@ -923,22 +920,19 @@ static bool stringIsValid(const void* const stringPtr)
             return false;
         }
         length = string->variants.inline1.length;
-    }
-    else if (__CFStrIsMutable(string)) {
+    } else if (__CFStrIsMutable(string)) {
         if (!ksmem_copySafely(&string->variants.notInlineMutable, &temp, sizeof(string->variants.notInlineMutable)))
         {
             return false;
         }
         length = string->variants.notInlineMutable.length;
-    }
-    else if (!__CFStrHasLengthByte(string)) {
+    } else if (!__CFStrHasLengthByte(string)) {
         if (!ksmem_copySafely(&string->variants.notInlineImmutable1, &temp, sizeof(string->variants.notInlineImmutable1)))
         {
             return false;
         }
         length = string->variants.notInlineImmutable1.length;
-    }
-    else {
+    } else {
         if (!ksmem_copySafely(&string->variants.notInlineImmutable2, &temp, sizeof(string->variants.notInlineImmutable2)))
         {
             return false;
@@ -952,8 +946,7 @@ static bool stringIsValid(const void* const stringPtr)
     
     if (length < 0) {
         return false;
-    }
-    else if (length > 0) {
+    } else if (length > 0) {
         if (!ksmem_copySafely(stringStart(string), &oneByte, sizeof(oneByte)))
         {
             return false;
@@ -974,13 +967,10 @@ int ksobjc_stringLength(const void* const stringPtr)
         if (__CFStrIsInline(string))
         {
             return (int)string->variants.inline1.length;
-        }
-        else
-        {
+        } else {
             return (int)string->variants.notInlineImmutable1.length;
         }
-    }
-    else {
+    } else {
         return *((uint8_t *)__CFStrContents(string));
     }
 }
@@ -1006,15 +996,12 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
         likely_if(leadSurrogate < kUTF16_LeadSurrogateStart || leadSurrogate > kUTF16_TailSurrogateEnd)
         {
             character = leadSurrogate;
-        }
-        else if (leadSurrogate > kUTF16_LeadSurrogateEnd)
+        } else if (leadSurrogate > kUTF16_LeadSurrogateEnd)
         {
             // Inverted surrogate
             *((uint8_t*)dst) = 0;
             return 0;
-        }
-        else
-        {
+        } else {
             uint16_t tailSurrogate = *pSrc++;
             if (tailSurrogate < kUTF16_TailSurrogateStart || tailSurrogate > kUTF16_TailSurrogateEnd)
             {
@@ -1031,8 +1018,7 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
         likely_if(character <= 0x7f)
         {
             *pDst++ = (uint8_t)character;
-        }
-        else if (character <= 0x7ff)
+        } else if (character <= 0x7ff)
         {
             if (pDstEnd - pDst >= 2)
             {
@@ -1043,8 +1029,7 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
             {
                 break;
             }
-        }
-        else if (character <= 0xffff)
+        } else if (character <= 0xffff)
         {
             if (pDstEnd - pDst >= 3)
             {
@@ -1071,9 +1056,7 @@ static int copyAndConvertUTF16StringToUTF8(const void* const src,
             {
                 break;
             }
-        }
-        else
-        {
+        } else {
             // Invalid unicode.
             *((uint8_t*)dst) = 0;
             return 0;
@@ -1302,8 +1285,7 @@ static int numberDescription(const void* object, char *buffer, int bufferLength)
     if (ksobjc_numberIsFloat(object)) {
         Float64 value = ksobjc_numberAsFloat(object);
         pBuffer += stringPrintf(pBuffer, (int)(pEnd - pBuffer), ": %lf", value);
-    }
-    else {
+    } else {
         int64_t value = ksobjc_numberAsInteger(object);
         pBuffer += stringPrintf(pBuffer, (int)(pEnd - pBuffer), ": %" PRId64, value);
     }

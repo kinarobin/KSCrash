@@ -165,8 +165,7 @@ catch(TYPE value)\
         crashContext->offendingMachineContext = machineContext;
 
         kscm_handleException(crashContext);
-    }
-    else {
+    } else {
         KSLOG_DEBUG("Detected NSException. Letting the current NSException handler deal with it.");
     }
     ksmc_resumeEnvironment();
@@ -199,9 +198,7 @@ static void setEnabled(bool isEnabled)
 
             ksid_generate(g_eventID);
             g_originalTerminateHandler = std::set_terminate(CPPExceptionTerminate);
-        }
-        else
-        {
+        } else {
             std::set_terminate(g_originalTerminateHandler);
         }
         g_captureNextStackTrace = isEnabled;

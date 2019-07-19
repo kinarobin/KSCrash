@@ -280,8 +280,7 @@ MAKE_CATEGORIES_LOADABLE(AppDelegate_UI)
     if (completed) {
         [CrashTesterCommands showAlertWithTitle:@"Success" message:@"Sent %d reports", [reports count]];
         [(CommandTVC*)controller reloadTitle];
-    }
-    else {
+    } else {
         NSLog(@"Failed to send reports: %@", error);
         [CrashTesterCommands showAlertWithTitle:@"Failed" message:@"Failed to send reports", [error localizedDescription]];
     }

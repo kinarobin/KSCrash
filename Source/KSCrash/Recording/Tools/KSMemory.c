@@ -59,8 +59,7 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
     // Short-circuit if no memory is readable
     if (copySafely(src, dst, 1) != 1) {
         return 0;
-    }
-    else if (byteCount <= 1) {
+    } else if (byteCount <= 1) {
         return byteCount;
     }
     
@@ -77,9 +76,7 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
             pSrc += copyLength;
             pDst += copyLength;
             pSrcEnd = pSrc + (pSrcMax - pSrc) / 2;
-        }
-        else
-        {
+        } else {
             if (copyLength <= 1)
             {
                 break;

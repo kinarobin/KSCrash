@@ -81,8 +81,7 @@ static bool increaseDepth(FixupContext* context, const char *name)
     }
     if (name == NULL) {
         *context->objectPath[context->currentDepth] = '\0';
-    }
-    else {
+    } else {
         strncpy(context->objectPath[context->currentDepth], name, sizeof(context->objectPath[context->currentDepth]));
     }
     context->currentDepth++;
@@ -181,15 +180,12 @@ static int onIntegerElement(const char *const name,
         if (matchesMinVersion(context, 3, 3, 0))
         {
             ksdate_utcStringFromMicroseconds(value, buffer);
-        }
-        else
-        {
+        } else {
             ksdate_utcStringFromTimestamp((time_t)value, buffer);
         }
 
         result = ksjson_addStringElement(context->encodeContext, name, buffer, (int)strlen(buffer));
-    }
-    else {
+    } else {
         result = ksjson_addIntegerElement(context->encodeContext, name, value);
     }
     return result;

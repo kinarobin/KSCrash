@@ -123,8 +123,7 @@ static inline void writeFmtArgsToLog(const char *fmt, va_list args)
 {
     unlikely_if(fmt == NULL) {
         writeToLog("(null)");
-    }
-    else {
+    } else {
         char buffer[KSLOGGER_CBufferSize];
         vsnprintf(buffer, sizeof(buffer), fmt, args);
         writeToLog(buffer);
@@ -197,8 +196,7 @@ static inline void writeFmtArgsToLog(const char *fmt, va_list args)
     
     if (fmt == NULL) {
         writeToLog("(null)");
-    }
-    else {
+    } else {
         vfprintf(g_file, fmt, args);
     }
 }
@@ -293,8 +291,7 @@ void i_kslog_logObjCBasic(CFStringRef fmt, ...)
     char *stringBuffer = malloc((unsigned)bufferLength);
     if (CFStringGetCString(entry, stringBuffer, (CFIndex)bufferLength, kCFStringEncodingUTF8)) {
         writeToLog(stringBuffer);
-    }
-    else {
+    } else {
         writeToLog("Could not convert log string to UTF-8. No logging performed.");
     }
     writeToLog("\n");
@@ -313,8 +310,7 @@ void i_kslog_logObjC(const char *const level,
     if (fmt == NULL) {
         logFmt = CFStringCreateWithCString(NULL, "%s: %s (%u): %s: (null)", kCFStringEncodingUTF8);
         i_kslog_logObjCBasic(logFmt, level, lastPathEntry(file), line, function);
-    }
-    else {
+    } else {
         va_list args;
         va_start(args,fmt);
         CFStringRef entry = CFStringCreateWithFormatAndArguments(NULL, NULL, fmt, args);

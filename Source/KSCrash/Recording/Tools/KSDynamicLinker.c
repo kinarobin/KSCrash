@@ -137,8 +137,7 @@ static uintptr_t segmentBaseOfImageIndex(const uint32_t idx)
             {
                 return segmentCmd->vmaddr - segmentCmd->fileoff;
             }
-        }
-        else if (loadCmd->cmd == LC_SEGMENT_64)
+        } else if (loadCmd->cmd == LC_SEGMENT_64)
         {
             const struct segment_command_64* segmentCmd = (struct segment_command_64*)cmdPtr;
             if (strcmp(segmentCmd->segname, SEG_LINKEDIT) == 0)

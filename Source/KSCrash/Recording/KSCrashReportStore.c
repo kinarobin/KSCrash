@@ -52,8 +52,7 @@ static int compareInt64(const void* a, const void* b)
     int64_t diff = *(int64_t*)a - *(int64_t*)b;
     if (diff < 0) {
         return -1;
-    }
-    else if (diff > 0) {
+    } else if (diff > 0) {
         return 1;
     }
     return 0;
@@ -228,8 +227,7 @@ int64_t kscrs_addUserReport(const char *report, int reportLength)
     if (bytesWritten < 0) {
         KSLOG_ERROR("Could not write to file %s: %s", crashReportPath, strerror(errno));
         goto done;
-    }
-    else if (bytesWritten < reportLength) {
+    } else if (bytesWritten < reportLength) {
         KSLOG_ERROR("Expected to write %d bytes to file %s, but only wrote %d", crashReportPath, reportLength, bytesWritten);
     }
 

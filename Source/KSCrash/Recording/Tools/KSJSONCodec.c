@@ -250,8 +250,7 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char *const na
     // Decide if a comma is warranted.
     unlikely_if(context->containerFirstEntry) {
         context->containerFirstEntry = false;
-    }
-    else {
+    } else {
         unlikely_if((result = addJSONData(context, ",", 1)) != KSJSON_OK)
         {
             return result;
@@ -290,9 +289,7 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char *const na
             {
                 return result;
             }
-        }
-        else
-        {
+        } else {
             unlikely_if((result = addJSONData(context, ":", 1)) != KSJSON_OK)
             {
                 return result;
@@ -319,8 +316,7 @@ int ksjson_addBooleanElement(KSJSONEncodeContext* const context,
     }
     if (value) {
         return addJSONData(context, "true", 4);
-    }
-    else {
+    } else {
         return addJSONData(context, "false", 5);
     }
 }
@@ -734,9 +730,7 @@ static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBu
         likely_if(*src != '\\')
         {
             *dst++ = *src;
-        }
-        else
-        {
+        } else {
             src++;
             switch(*src)
             {

@@ -110,11 +110,9 @@ static int onIntegerElement(const char *const name, const int64_t value, void* c
             KSLOG_ERROR("Expected version 1 but got %" PRId64, value);
             return KSJSON_ERROR_INVALID_DATA;
         }
-    }
-    else if (strcmp(name, kKeyLaunchesSinceLastCrash) == 0) {
+    } else if (strcmp(name, kKeyLaunchesSinceLastCrash) == 0) {
         state->launchesSinceLastCrash = (int)value;
-    }
-    else if (strcmp(name, kKeySessionsSinceLastCrash) == 0) {
+    } else if (strcmp(name, kKeySessionsSinceLastCrash) == 0) {
         state->sessionsSinceLastCrash = (int)value;
     }
 
@@ -313,8 +311,7 @@ static void updateAppState(void)
                     g_state.activeDurationSinceLaunch, g_state.activeDurationSinceLastCrash, duration);
         g_state.activeDurationSinceLaunch += duration;
         g_state.activeDurationSinceLastCrash += duration;
-    }
-    else if (!g_state.applicationIsInForeground) {
+    } else if (!g_state.applicationIsInForeground) {
         KSLOG_TRACE("Updating backgroundDurationSinceLaunch: %f and backgroundDurationSinceLastCrash: %f with duration: %f",
                     g_state.backgroundDurationSinceLaunch, g_state.backgroundDurationSinceLastCrash, duration);
         g_state.backgroundDurationSinceLaunch += duration;
@@ -374,9 +371,7 @@ void kscrashstate_notifyAppActive(const bool isActive)
         {
             KSLOG_TRACE("Updating transition time from: %f to: %f", g_state.appStateTransitionTime, getCurentTime());
             g_state.appStateTransitionTime = getCurentTime();
-        }
-        else
-        {
+        } else {
             double duration = timeSince(g_state.appStateTransitionTime);
             KSLOG_TRACE("Updating activeDurationSinceLaunch: %f and activeDurationSinceLastCrash: %f with duration: %f",
                         g_state.activeDurationSinceLaunch, g_state.activeDurationSinceLastCrash, duration);
@@ -401,9 +396,7 @@ void kscrashstate_notifyAppInForeground(const bool isInForeground)
             g_state.backgroundDurationSinceLastCrash += duration;
             g_state.sessionsSinceLastCrash++;
             g_state.sessionsSinceLaunch++;
-        }
-        else
-        {
+        } else {
             g_state.appStateTransitionTime = getCurentTime();
             saveState(stateFilePath);
         }

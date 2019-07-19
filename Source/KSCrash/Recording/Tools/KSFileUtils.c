@@ -57,8 +57,7 @@ static bool canDeletePath(const char *path)
     const char *lastComponent = strrchr(path, '/');
     if (lastComponent == NULL) {
         lastComponent = path;
-    }
-    else {
+    } else {
         lastComponent++;
     }
     if (strcmp(lastComponent, ".") == 0) {
@@ -175,11 +174,9 @@ static bool deletePathContents(const char *path, bool deleteTopLevelPathAlso)
         {
             ksfu_removeFile(path, false);
         }
-    }
-    else if (S_ISREG(statStruct.st_mode)) {
+    } else if (S_ISREG(statStruct.st_mode)) {
         ksfu_removeFile(path, false);
-    }
-    else {
+    } else {
         KSLOG_ERROR("Could not delete %s: Not a regular file.", path);
         return false;
     }
@@ -254,8 +251,7 @@ bool ksfu_readEntireFile(const char *const path, char** data, int* length, int m
 
     if (bytesToRead == 0 || bytesToRead >= (int)st.st_size) {
         bytesToRead = (int)st.st_size;
-    }
-    else if (bytesToRead > 0) {
+    } else if (bytesToRead > 0) {
         if (lseek(fd, -bytesToRead, SEEK_END) < 0)
         {
             KSLOG_ERROR("Could not seek to %d from end of %s: %s", -bytesToRead, path, strerror(errno));
@@ -351,8 +347,7 @@ int ksfu_readLineFromFD(const int fd, char *const buffer, const int maxLength)
         {
             KSLOG_ERROR("Could not read from fd %d: %s", fd, strerror(errno));
             return -1;
-        }
-        else if (bytesRead == 0 || *ch == '\n')
+        } else if (bytesRead == 0 || *ch == '\n')
         {
             break;
         }
@@ -480,8 +475,7 @@ static bool fillReadBuffer(KSBufferedReader* reader)
     if (bytesRead < 0) {
         KSLOG_ERROR("Could not read: %s", strerror(errno));
         return false;
-    }
-    else {
+    } else {
         reader->dataEndPos += bytesRead;
         reader->buffer[reader->dataEndPos] = '\0';
     }

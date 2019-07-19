@@ -210,9 +210,7 @@ static void setEnabled(bool isEnabled)
             {
                 return;
             }
-        }
-        else
-        {
+        } else {
             uninstallSignalHandler();
         }
     }

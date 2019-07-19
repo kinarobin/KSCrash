@@ -90,13 +90,10 @@ static bool copyStringIvar(const void* self, const char *ivarName, char *buffer,
             {
                 KSLOG_DEBUG("ksobjc_isValidObject %s failed", ivarName);
             }
-        }
-        else
-        {
+        } else {
             KSLOG_DEBUG("ksobjc_ivarValue %s failed", ivarName);
         }
-    }
-    else {
+    } else {
         KSLOG_DEBUG("ksobjc_ivarNamed %s failed", ivarName);
     }
     return false;
@@ -207,9 +204,7 @@ static void setEnabled(bool isEnabled)
         if (isEnabled)
         {
             install();
-        }
-        else
-        {
+        } else {
             // TODO: Uninstall doesn't work.
             g_isEnabled = true;
 //            uninstall();

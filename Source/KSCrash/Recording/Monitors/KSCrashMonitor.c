@@ -179,9 +179,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
         if (isMonitorEnabled(monitor))
         {
             activeMonitors |= monitor->monitorType;
-        }
-        else
-        {
+        } else {
             activeMonitors &= ~monitor->monitorType;
         }
     }

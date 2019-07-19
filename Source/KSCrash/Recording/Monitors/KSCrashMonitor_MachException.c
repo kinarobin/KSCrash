@@ -309,9 +309,7 @@ static void* handleExceptions(void* const userData)
             {
                 KSLOG_DEBUG("Could not activate secondary thread. Restoring original exception ports.");
             }
-        }
-        else
-        {
+        } else {
             KSLOG_DEBUG("This is the secondary exception thread. Restoring original exception ports.");
 //            restoreExceptionPorts();
         }
@@ -398,9 +396,7 @@ static void uninstallExceptionHandler()
         if (g_isHandlingCrash)
         {
             thread_terminate(g_primaryMachThread);
-        }
-        else
-        {
+        } else {
             pthread_cancel(g_primaryPThread);
         }
         g_primaryMachThread = 0;
@@ -411,9 +407,7 @@ static void uninstallExceptionHandler()
         if (g_isHandlingCrash)
         {
             thread_terminate(g_secondaryMachThread);
-        }
-        else
-        {
+        } else {
             pthread_cancel(g_secondaryPThread);
         }
         g_secondaryMachThread = 0;
@@ -541,9 +535,7 @@ static void setEnabled(bool isEnabled)
             {
                 return;
             }
-        }
-        else
-        {
+        } else {
             uninstallExceptionHandler();
         }
     }
@@ -558,8 +550,7 @@ static void addContextualInfoToEvent(struct KSCrash_MonitorContext* eventContext
 {
     if (eventContext->crashType == KSCrashMonitorTypeSignal) {
         eventContext->mach.type = machExceptionForSignal(eventContext->signal.signum);
-    }
-    else if (eventContext->crashType != KSCrashMonitorTypeMachException) {
+    } else if (eventContext->crashType != KSCrashMonitorTypeMachException) {
         eventContext->mach.type = EXC_CRASH;
     }
 }

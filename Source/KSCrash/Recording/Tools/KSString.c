@@ -91,8 +91,7 @@ bool ksstring_isNullTerminatedUTF8String(const void* memory,
                     return false;
                 }
             }
-        }
-        else unlikely_if(ch < 0x20 && !g_printableControlChars[ch])
+        } else unlikely_if(ch < 0x20 && !g_printableControlChars[ch])
         {
             return false;
         }

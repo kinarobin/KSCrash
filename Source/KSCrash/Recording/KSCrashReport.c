@@ -200,8 +200,7 @@ static void addUUIDElement(const KSCrashReportWriter* const writer, const char *
 {
     if (value == NULL) {
         ksjson_addNullElement(getJsonContext(writer), key);
-    }
-    else {
+    } else {
         char uuidBuffer[37];
         const unsigned char *src = value;
         char *dst = uuidBuffer;
@@ -548,9 +547,7 @@ static void writeUnknownObjectContents(const KSCrashReportWriter* const writer,
         if (ksobjc_isTaggedPointer(object))
         {
             writer->addIntegerElement(writer, "tagged_payload", (int64_t)ksobjc_taggedPointerPayload(object));
-        }
-        else
-        {
+        } else {
             const void* class = ksobjc_isaPointer(object);
             int ivarCount = ksobjc_ivarList(class, ivars, sizeof(ivars)/sizeof(*ivars));
             *limit -= ivarCount;
@@ -933,9 +930,7 @@ static void writeStackContents(const KSCrashReportWriter* const writer,
         if (ksmem_copySafely((void*)lowAddress, stackBuffer, copyLength))
         {
             writer->addDataElement(writer, KSCrashField_Contents, (void*)stackBuffer, copyLength);
-        }
-        else
-        {
+        } else {
             writer->addStringElement(writer, KSCrashField_Error, "Stack contents not accessible");
         }
     }
@@ -1708,9 +1703,7 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
         {
             addJSONElement(writer, KSCrashField_User, g_userInfoJSON, false);
             ksfu_flushBufferedWriter(&bufferedWriter);
-        }
-        else
-        {
+        } else {
             writer->beginObject(writer, KSCrashField_User);
         }
         if (g_userSectionWriteCallback != NULL)
@@ -1745,8 +1738,7 @@ void kscrashreport_setUserInfoJSON(const char *const userInfoJSON)
     }
     if (userInfoJSON == NULL) {
         g_userInfoJSON = NULL;
-    }
-    else {
+    } else {
         g_userInfoJSON = strdup(userInfoJSON);
     }
     pthread_mutex_unlock(&mutex);

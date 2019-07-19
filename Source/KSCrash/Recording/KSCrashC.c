@@ -129,8 +129,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
 
     if (monitorContext->crashedDuringCrashHandling) {
         kscrashreport_writeRecrashReport(monitorContext, g_lastCrashReportFilePath);
-    }
-    else {
+    } else {
         char crashReportFilePath[KSFU_MAX_PATH_LENGTH];
         int64_t reportID = kscrs_getNextCrashReport(crashReportFilePath);
         strncpy(g_lastCrashReportFilePath, crashReportFilePath, sizeof(g_lastCrashReportFilePath));
