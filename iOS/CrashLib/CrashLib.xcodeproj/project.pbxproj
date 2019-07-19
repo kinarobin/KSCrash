@@ -271,7 +271,7 @@
 			};
 			buildConfigurationList = CBE56E301E390A96004EC9E0 /* Build configuration list for PBXProject "CrashLib" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

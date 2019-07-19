@@ -135,8 +135,7 @@ static const int g_fatalSignals[] =
 
 const char *kssignal_signalName(const int sigNum)
 {
-    for(int i = 0; i < g_fatalSignalsCount; i++)
-    {
+    for(int i = 0; i < g_fatalSignalsCount; i++) {
         if (g_fatalSignalData[i].sigNum == sigNum)
         {
             return g_fatalSignalData[i].name;
@@ -147,8 +146,7 @@ const char *kssignal_signalName(const int sigNum)
 
 const char *kssignal_signalCodeName(const int sigNum, const int code)
 {
-    for(int si = 0; si < g_fatalSignalsCount; si++)
-    {
+    for(int si = 0; si < g_fatalSignalsCount; si++) {
         if (g_fatalSignalData[si].sigNum == sigNum)
         {
             for(int ci = 0; ci < g_fatalSignalData[si].numCodes; ci++)

@@ -39,8 +39,7 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
-    if ((self = [super initWithCoder:aDecoder]))
-    {
+    if ((self = [super initWithCoder:aDecoder])) {
         // This info could be leaked during introspection unless you tell KSCrash to ignore it.
         // See -[AppDelegate configureAdvancedSettings] for more info.
         self.info = [SensitiveInfo new];
@@ -49,7 +48,7 @@
     return self;
 }
 
-- (void) viewDidLoad {
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     UIButton * reportExceptionBtn = [[UIButton alloc] initWithFrame:CGRectMake(60, 100, 200, 50)];
@@ -67,15 +66,15 @@
     [self.view addSubview:reportUncaughtExceptionBtn];
 }
 
-- (void) onReportedCrash:(id)sender {
+- (void)onReportedCrash:(id)sender {
     NSException* ex = [NSException exceptionWithName:@"testing exception name" reason:@"testing exception reason" userInfo:@{@"testing exception key":@"testing exception value"}];
     [KSCrash sharedInstance].currentSnapshotUserReportedExceptionHandler(ex);
     [KSCrash sharedInstance].monitoring = KSCrashMonitorTypeProductionSafe;
     [self sendAllExceptions];
 }
 
-- (void) sendAllExceptions {
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+- (void)sendAllExceptions {
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     [appDelegate.crashInstallation sendAllReportsWithCompletion:^(NSArray *filteredReports, BOOL completed, NSError *error) {
         if (completed) {

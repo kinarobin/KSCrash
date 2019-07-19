@@ -91,8 +91,7 @@ int kscpu_numRegisters(void)
 
 const char *kscpu_registerName(const int regNumber)
 {
-    if (regNumber < kscpu_numRegisters())
-    {
+    if (regNumber < kscpu_numRegisters()) {
         return g_registerNames[regNumber];
     }
     return NULL;
@@ -100,13 +99,11 @@ const char *kscpu_registerName(const int regNumber)
 
 uint64_t kscpu_registerValue(const KSMachineContext* const context, const int regNumber)
 {
-    if (regNumber <= 12)
-    {
+    if (regNumber <= 12) {
         return context->machineContext.__ss.__r[regNumber];
     }
 
-    switch(regNumber)
-    {
+    switch(regNumber) {
         case 13: return context->machineContext.__ss.__sp;
         case 14: return context->machineContext.__ss.__lr;
         case 15: return context->machineContext.__ss.__pc;
@@ -124,8 +121,7 @@ int kscpu_numExceptionRegisters(void)
 
 const char *kscpu_exceptionRegisterName(const int regNumber)
 {
-    if (regNumber < kscpu_numExceptionRegisters())
-    {
+    if (regNumber < kscpu_numExceptionRegisters()) {
         return g_exceptionRegisterNames[regNumber];
     }
     KSLOG_ERROR("Invalid register number: %d", regNumber);
@@ -134,8 +130,7 @@ const char *kscpu_exceptionRegisterName(const int regNumber)
 
 uint64_t kscpu_exceptionRegisterValue(const KSMachineContext* const context, const int regNumber)
 {
-    switch(regNumber)
-    {
+    switch(regNumber) {
         case 0:
             return context->machineContext.__es.__exception;
         case 1:

@@ -53,8 +53,7 @@ bool kscpu_i_fillState(const thread_t thread,
     kern_return_t kr;
     
     kr = thread_get_state(thread, flavor, state, &stateCountBuff);
-    if (kr != KERN_SUCCESS)
-    {
+    if (kr != KERN_SUCCESS) {
         KSLOG_ERROR("thread_get_state: %s", mach_error_string(kr));
         return false;
     }

@@ -41,8 +41,7 @@ static inline int copySafely(const void* restrict const src, void* restrict cons
                                              (vm_size_t)byteCount,
                                              (vm_address_t)dst,
                                              &bytesCopied);
-    if (result != KERN_SUCCESS)
-    {
+    if (result != KERN_SUCCESS) {
         return 0;
     }
     return (int)bytesCopied;
@@ -58,17 +57,14 @@ static inline int copyMaxPossible(const void* restrict const src, void* restrict
     int bytesCopied = 0;
     
     // Short-circuit if no memory is readable
-    if (copySafely(src, dst, 1) != 1)
-    {
+    if (copySafely(src, dst, 1) != 1) {
         return 0;
     }
-    else if (byteCount <= 1)
-    {
+    else if (byteCount <= 1) {
         return byteCount;
     }
     
-    for(;;)
-    {
+    for(;;) {
         int copyLength = (int)(pSrcEnd - pSrc);
         if (copyLength <= 0)
         {
@@ -101,8 +97,7 @@ static inline bool isMemoryReadable(const void* const memory, const int byteCoun
     const int testBufferSize = sizeof(g_memoryTestBuffer);
     int bytesRemaining = byteCount;
     
-    while(bytesRemaining > 0)
-    {
+    while(bytesRemaining > 0) {
         int bytesToCopy = bytesRemaining > testBufferSize ? testBufferSize : bytesRemaining;
         if (copySafely(memory, g_memoryTestBuffer, bytesToCopy) != bytesToCopy)
         {
@@ -119,8 +114,7 @@ int ksmem_maxReadableBytes(const void* const memory, const int tryByteCount)
     const uint8_t* currentPosition = memory;
     int bytesRemaining = tryByteCount;
 
-    while(bytesRemaining > testBufferSize)
-    {
+    while(bytesRemaining > testBufferSize) {
         if (!isMemoryReadable(currentPosition, testBufferSize))
         {
             break;

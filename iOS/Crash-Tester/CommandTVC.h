@@ -21,7 +21,7 @@
       accessoryType:(UITableViewCellAccessoryType) accessoryType
               block:(void(^)(UIViewController* controller)) block;
 
-- (void) executeWithViewController:(UIViewController*) controller;
+- (void)executeWithViewController:(UIViewController*) controller;
 
 @end
 
@@ -31,6 +31,6 @@
 @property(nonatomic,readonly,retain) NSMutableArray* commands;
 @property(nonatomic,readwrite,copy) NSString* (^getTitleBlock)(UIViewController* controller);
 
-- (void) reloadTitle;
+- (void)reloadTitle;
 
 @end

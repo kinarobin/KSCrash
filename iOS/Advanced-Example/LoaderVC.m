@@ -18,20 +18,16 @@
  */
 @implementation LoaderVC
 
-- (void) viewDidAppear:(BOOL) animated
+- (void)viewDidAppear:(BOOL) animated
 {
     [super viewDidAppear:animated];
     
     // Send all outstanding reports, then show the main view controller.
-    AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    [appDelegate.crashInstallation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error)
-     {
-         if (completed)
-         {
-             NSLog(@"Sent %d reports", [reports count]);
-         }
-         else
-         {
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate.crashInstallation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
+         if (completed) {
+             NSLog(@"Sent %zd reports", [reports count]);
+         } else {
              NSLog(@"Failed to send reports: %@", error);
          }
 
@@ -42,8 +38,7 @@
 
 }
 
-- (void) showMainVC
-{
+- (void)showMainVC {
     UIViewController* vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MainVC"];
     [UIApplication sharedApplication].keyWindow.rootViewController = vc;
 }

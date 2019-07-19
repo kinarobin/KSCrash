@@ -82,8 +82,7 @@ static char g_eventID[37];
 static void handleSignal(int sigNum, siginfo_t* signalInfo, void* userContext)
 {
     KSLOG_DEBUG("Trapped signal %d", sigNum);
-    if (g_isEnabled)
-    {
+    if (g_isEnabled) {
         ksmc_suspendEnvironment();
         kscm_notifyFatalExceptionCaptured(false);
 
@@ -124,16 +123,14 @@ static bool installSignalHandler()
 
 #if KSCRASH_HAS_SIGNAL_STACK
 
-    if (g_signalStack.ss_size == 0)
-    {
+    if (g_signalStack.ss_size == 0) {
         KSLOG_DEBUG("Allocating signal stack area.");
         g_signalStack.ss_size = SIGSTKSZ;
         g_signalStack.ss_sp = malloc(g_signalStack.ss_size);
     }
 
     KSLOG_DEBUG("Setting signal stack area.");
-    if (sigaltstack(&g_signalStack, NULL) != 0)
-    {
+    if (sigaltstack(&g_signalStack, NULL) != 0) {
         KSLOG_ERROR("signalstack: %s", strerror(errno));
         goto failed;
     }
@@ -142,8 +139,7 @@ static bool installSignalHandler()
     const int* fatalSignals = kssignal_fatalSignals();
     int fatalSignalsCount = kssignal_numFatalSignals();
 
-    if (g_previousSignalHandlers == NULL)
-    {
+    if (g_previousSignalHandlers == NULL) {
         KSLOG_DEBUG("Allocating memory to store previous signal handlers.");
         g_previousSignalHandlers = malloc(sizeof(*g_previousSignalHandlers)
                                           * (unsigned)fatalSignalsCount);
@@ -157,8 +153,7 @@ static bool installSignalHandler()
     sigemptyset(&action.sa_mask);
     action.sa_sigaction = &handleSignal;
 
-    for(int i = 0; i < fatalSignalsCount; i++)
-    {
+    for(int i = 0; i < fatalSignalsCount; i++) {
         KSLOG_DEBUG("Assigning handler for signal %d", fatalSignals[i]);
         if (sigaction(fatalSignals[i], &action, &g_previousSignalHandlers[i]) != 0)
         {
@@ -193,8 +188,7 @@ static void uninstallSignalHandler(void)
     const int* fatalSignals = kssignal_fatalSignals();
     int fatalSignalsCount = kssignal_numFatalSignals();
 
-    for(int i = 0; i < fatalSignalsCount; i++)
-    {
+    for(int i = 0; i < fatalSignalsCount; i++) {
         KSLOG_DEBUG("Restoring original handler for signal %d", fatalSignals[i]);
         sigaction(fatalSignals[i], &g_previousSignalHandlers[i], NULL);
     }
@@ -207,8 +201,7 @@ static void uninstallSignalHandler(void)
 
 static void setEnabled(bool isEnabled)
 {
-    if (isEnabled != g_isEnabled)
-    {
+    if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
         if (isEnabled)
         {
@@ -232,8 +225,7 @@ static bool isEnabled()
 
 static void addContextualInfoToEvent(struct KSCrash_MonitorContext* eventContext)
 {
-    if (!(eventContext->crashType & (KSCrashMonitorTypeSignal | KSCrashMonitorTypeMachException)))
-    {
+    if (!(eventContext->crashType & (KSCrashMonitorTypeSignal | KSCrashMonitorTypeMachException))) {
         eventContext->signal.signum = SIGABRT;
     }
 }

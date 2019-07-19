@@ -24,8 +24,7 @@ static BOOL g_crashInHandler = NO;
 
 static void onCrash(const KSCrashReportWriter* writer)
 {
-    if (g_crashInHandler)
-    {
+    if (g_crashInHandler) {
         char *buff = NULL;
         buff[0] = 'a';
     }
@@ -45,12 +44,12 @@ static void onCrash(const KSCrashReportWriter* writer)
     return g_crashInHandler;
 }
 
-- (void) setCrashInHandler:(BOOL)crashInHandler
+- (void)setCrashInHandler:(BOOL)crashInHandler
 {
     g_crashInHandler = crashInHandler;
 }
 
-- (void) installCrashHandler
+- (void)installCrashHandler
 {
     KSCrash* handler = [KSCrash sharedInstance];
 

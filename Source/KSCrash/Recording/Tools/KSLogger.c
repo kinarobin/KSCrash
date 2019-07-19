@@ -102,8 +102,7 @@ static int g_fd = -1;
 
 static void writeToLog(const char *const str)
 {
-    if (g_fd >= 0)
-    {
+    if (g_fd >= 0) {
         int bytesToWrite = (int)strlen(str);
         const char *pos = str;
         while(bytesToWrite > 0)
@@ -122,12 +121,10 @@ static void writeToLog(const char *const str)
 
 static inline void writeFmtArgsToLog(const char *fmt, va_list args)
 {
-    unlikely_if(fmt == NULL)
-    {
+    unlikely_if(fmt == NULL) {
         writeToLog("(null)");
     }
-    else
-    {
+    else {
         char buffer[KSLOGGER_CBufferSize];
         vsnprintf(buffer, sizeof(buffer), fmt, args);
         writeToLog(buffer);
@@ -141,8 +138,7 @@ static inline void flushLog(void)
 
 static inline void setLogFD(int fd)
 {
-    if (g_fd >= 0 && g_fd != STDOUT_FILENO && g_fd != STDERR_FILENO && g_fd != STDIN_FILENO)
-    {
+    if (g_fd >= 0 && g_fd != STDOUT_FILENO && g_fd != STDERR_FILENO && g_fd != STDIN_FILENO) {
         close(g_fd);
     }
     g_fd = fd;
@@ -151,8 +147,7 @@ static inline void setLogFD(int fd)
 bool kslog_setLogFilename(const char *filename, bool overwrite)
 {
     static int fd = -1;
-    if (filename != NULL)
-    {
+    if (filename != NULL) {
         int openMask = O_WRONLY | O_CREAT;
         if (overwrite)
         {
@@ -180,8 +175,7 @@ static FILE* g_file = NULL;
 
 static inline void setLogFD(FILE* file)
 {
-    if (g_file != NULL && g_file != stdout && g_file != stderr && g_file != stdin)
-    {
+    if (g_file != NULL && g_file != stdout && g_file != stderr && g_file != stdin) {
         fclose(g_file);
     }
     g_file = file;
@@ -189,8 +183,7 @@ static inline void setLogFD(FILE* file)
 
 void writeToLog(const char *const str)
 {
-    if (g_file != NULL)
-    {
+    if (g_file != NULL) {
         fprintf(g_file, "%s", str);
     }
     fprintf(stdout, "%s", str);
@@ -198,17 +191,14 @@ void writeToLog(const char *const str)
 
 static inline void writeFmtArgsToLog(const char *fmt, va_list args)
 {
-    unlikely_if(g_file == NULL)
-    {
+    unlikely_if(g_file == NULL) {
         g_file = stdout;
     }
     
-    if (fmt == NULL)
-    {
+    if (fmt == NULL) {
         writeToLog("(null)");
     }
-    else
-    {
+    else {
         vfprintf(g_file, fmt, args);
     }
 }
@@ -222,8 +212,7 @@ bool kslog_setLogFilename(const char *filename, bool overwrite)
 {
     static FILE* file = NULL;
     FILE* oldFile = file;
-    if (filename != NULL)
-    {
+    if (filename != NULL) {
         file = fopen(filename, overwrite ? "wb" : "ab");
         unlikely_if(file == NULL)
         {
@@ -231,13 +220,11 @@ bool kslog_setLogFilename(const char *filename, bool overwrite)
             return false;
         }
     }
-    if (filename != g_logFilename)
-    {
+    if (filename != g_logFilename) {
         strncpy(g_logFilename, filename, sizeof(g_logFilename));
     }
 
-    if (oldFile != NULL)
-    {
+    if (oldFile != NULL) {
         fclose(oldFile);
     }
 
@@ -292,8 +279,7 @@ void i_kslog_logC(const char *const level,
 
 void i_kslog_logObjCBasic(CFStringRef fmt, ...)
 {
-    if (fmt == NULL)
-    {
+    if (fmt == NULL) {
         writeToLog("(null)");
         return;
     }
@@ -305,12 +291,10 @@ void i_kslog_logObjCBasic(CFStringRef fmt, ...)
     
     int bufferLength = (int)CFStringGetLength(entry) * 4 + 1;
     char *stringBuffer = malloc((unsigned)bufferLength);
-    if (CFStringGetCString(entry, stringBuffer, (CFIndex)bufferLength, kCFStringEncodingUTF8))
-    {
+    if (CFStringGetCString(entry, stringBuffer, (CFIndex)bufferLength, kCFStringEncodingUTF8)) {
         writeToLog(stringBuffer);
     }
-    else
-    {
+    else {
         writeToLog("Could not convert log string to UTF-8. No logging performed.");
     }
     writeToLog("\n");
@@ -326,13 +310,11 @@ void i_kslog_logObjC(const char *const level,
                      CFStringRef fmt, ...)
 {
     CFStringRef logFmt = NULL;
-    if (fmt == NULL)
-    {
+    if (fmt == NULL) {
         logFmt = CFStringCreateWithCString(NULL, "%s: %s (%u): %s: (null)", kCFStringEncodingUTF8);
         i_kslog_logObjCBasic(logFmt, level, lastPathEntry(file), line, function);
     }
-    else
-    {
+    else {
         va_list args;
         va_start(args,fmt);
         CFStringRef entry = CFStringCreateWithFormatAndArguments(NULL, NULL, fmt, args);

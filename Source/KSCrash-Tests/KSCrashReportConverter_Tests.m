@@ -43,7 +43,7 @@
 
 @implementation KSCrashReportConverter_Tests
 #if 0
-- (void) setUp
+- (void)setUp
 {
     [super setUp];
     [self createTempReportsAtPath:self.tempPath prefix:REPORT_PREFIX];
@@ -69,7 +69,7 @@
     return result;
 }
 
-- (void) testConvertReportsUnsymbolicated
+- (void)testConvertReportsUnsymbolicated
 {
     // TODO
     return;

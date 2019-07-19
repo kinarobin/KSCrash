@@ -34,7 +34,7 @@ didFinishLaunchingWithOptions:(__unused NSDictionary *) launchOptions
 #pragma mark - Basic Crash Handling -
 // ======================================================================
 
-- (void) installCrashHandler
+- (void)installCrashHandler
 {
     // Create an installation (choose one)
 //    KSCrashInstallation* installation = [self makeStandardInstallation];

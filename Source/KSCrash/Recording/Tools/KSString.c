@@ -66,8 +66,7 @@ bool ksstring_isNullTerminatedUTF8String(const void* memory,
     const unsigned char *ptr = memory;
     const unsigned char *const end = ptr + maxLength;
 
-    for(; ptr < end; ptr++)
-    {
+    for(; ptr < end; ptr++) {
         unsigned char ch = *ptr;
         unlikely_if(ch == 0)
         {
@@ -130,8 +129,7 @@ static const unsigned int g_hexConversion[] =
 
 bool ksstring_extractHexValue(const char *string, int stringLength, uint64_t* const result)
 {
-    if (stringLength > 0)
-    {
+    if (stringLength > 0) {
         const unsigned char *current = (const unsigned char*)string;
         const unsigned char *const end = current + stringLength;
         for(;;)

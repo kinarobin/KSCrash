@@ -48,12 +48,10 @@ void kscm_reportUserException(const char *name,
                               bool logAllThreads,
                               bool terminateProgram)
 {
-    if (!g_isEnabled)
-    {
+    if (!g_isEnabled) {
         KSLOG_WARN("User-reported exception monitor is not installed. Exception has not been recorded.");
     }
-    else
-    {
+    else {
         if (logAllThreads)
         {
             ksmc_suspendEnvironment();
@@ -110,8 +108,7 @@ static bool isEnabled()
 
 KSCrashMonitorAPI* kscm_user_getAPI()
 {
-    static KSCrashMonitorAPI api =
-    {
+    static KSCrashMonitorAPI api = {
         .setEnabled = setEnabled,
         .isEnabled = isEnabled
     };

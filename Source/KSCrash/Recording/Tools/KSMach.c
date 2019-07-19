@@ -31,8 +31,7 @@
 
 const char *ksmach_exceptionName(const int64_t exceptionType)
 {
-    switch (exceptionType)
-    {
+    switch (exceptionType) {
             RETURN_NAME_FOR_ENUM(EXC_BAD_ACCESS);
             RETURN_NAME_FOR_ENUM(EXC_BAD_INSTRUCTION);
             RETURN_NAME_FOR_ENUM(EXC_ARITHMETIC);
@@ -49,8 +48,7 @@ const char *ksmach_exceptionName(const int64_t exceptionType)
 
 const char *ksmach_kernelReturnCodeName(const int64_t returnCode)
 {
-    switch (returnCode)
-    {
+    switch (returnCode) {
             RETURN_NAME_FOR_ENUM(KERN_SUCCESS);
             RETURN_NAME_FOR_ENUM(KERN_INVALID_ADDRESS);
             RETURN_NAME_FOR_ENUM(KERN_PROTECTION_FAILURE);
@@ -112,8 +110,7 @@ const char *ksmach_kernelReturnCodeName(const int64_t returnCode)
 
 int ksmach_machExceptionForSignal(const int sigNum)
 {
-    switch(sigNum)
-    {
+    switch(sigNum) {
         case SIGFPE:
             return EXC_ARITHMETIC;
         case SIGSEGV:
@@ -142,8 +139,7 @@ int ksmach_machExceptionForSignal(const int sigNum)
 int ksmach_signalForMachException(const int exception,
                                   const mach_exception_code_t code)
 {
-    switch(exception)
-    {
+    switch(exception) {
         case EXC_ARITHMETIC:
             return SIGFPE;
         case EXC_BAD_ACCESS:

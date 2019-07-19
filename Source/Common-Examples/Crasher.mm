@@ -24,8 +24,7 @@ const char *MyException::what() const noexcept
 class MyCPPClass
 {
 public:
-    void throwAnException()
-    {
+    void throwAnException() {
         throw MyException();
     }
 };
@@ -52,7 +51,7 @@ public:
     return _ref;
 }
 
-- (void) setRef:(id) ref
+- (void)setRef:(id) ref
 {
     _ref = ref;
 }
@@ -73,8 +72,7 @@ public:
 
 - (id) init
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         self.lock = [[NSLock alloc] init];
     }
     return self;
@@ -83,24 +81,24 @@ public:
 int* g_crasher_null_ptr = NULL;
 int g_crasher_denominator = 0;
 
-- (void) throwUncaughtNSException
+- (void)throwUncaughtNSException
 {
     id data = [NSArray arrayWithObject:@"Hello World"];
     [(NSDictionary*)data objectForKey:@""];
 }
 
-- (void) dereferenceBadPointer
+- (void)dereferenceBadPointer
 {
     char *ptr = (char*)-1;
     *ptr = 1;
 }
 
-- (void) dereferenceNullPointer
+- (void)dereferenceNullPointer
 {
     *g_crasher_null_ptr = 1;
 }
 
-- (void) useCorruptObject
+- (void)useCorruptObject
 {
     // From http://landonf.bikemonkey.org/2011/09/14
     
@@ -122,42 +120,41 @@ int g_crasher_denominator = 0;
     [(__bridge id)&corruptObj class];
 }
 
-- (void) spinRunloop
+- (void)spinRunloop
 {
     // From http://landonf.bikemonkey.org/2011/09/14
     
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
+    dispatch_async(dispatch_get_main_queue(), ^ {
         NSLog(@"ERROR: Run loop should be dead but isn't!");
     });
     *g_crasher_null_ptr = 1;
 }
 
-- (void) causeStackOverflow
+- (void)causeStackOverflow
 {
     [self causeStackOverflow];
 }
 
-- (void) doAbort
+- (void)doAbort
 {
     abort();
 }
 
-- (void) doDiv0
+- (void)doDiv0
 {
     int value = 10;
     value /= g_crasher_denominator;
     NSLog(@"%d", value);
 }
 
-- (void) doIllegalInstruction
+- (void)doIllegalInstruction
 {
     unsigned int data[] = {0x11111111, 0x11111111};
     void (*funcptr)() = (void (*)())data;
     funcptr();
 }
 
-- (void) accessDeallocatedObject
+- (void)accessDeallocatedObject
 {
 //    NSArray* array = [[NSArray alloc] initWithObjects:@"", nil];
 //    [array release];
@@ -175,7 +172,7 @@ int g_crasher_denominator = 0;
                    });
 }
 
-- (void) accessDeallocatedPtrProxy
+- (void)accessDeallocatedPtrProxy
 {
     RefHolder* ref = [RefHolder new];
     ref.ref = [MyProxy alloc];
@@ -186,16 +183,14 @@ int g_crasher_denominator = 0;
                    });
 }
 
-- (void) zombieNSException
+- (void)zombieNSException
 {
-    @try
-    {
+    @try {
         NSString* value = @"This is a string";
         [NSException raise:@"TurboEncabulatorException"
                     format:@"Spurving bearing failure: Barescent skor motion non-sinusoidal for %p", value];
     }
-    @catch (NSException *exception)
-    {
+    @catch (NSException *exception) {
         RefHolder* ref = [RefHolder new];
         ref.ref = exception;
 
@@ -206,7 +201,7 @@ int g_crasher_denominator = 0;
     }
 }
 
-- (void) corruptMemory
+- (void)corruptMemory
 {
     size_t stringsize = sizeof(uintptr_t) * 2 + 2;
     NSString* string = [NSString stringWithFormat:@"%d", 1];
@@ -217,7 +212,7 @@ int g_crasher_denominator = 0;
     memset(ptr, 0xa1, 500);
 }
 
-- (void) deadlock
+- (void)deadlock
 {
     [self.lock lock];
     [NSThread sleepForTimeInterval:0.2f];
@@ -227,13 +222,13 @@ int g_crasher_denominator = 0;
                    });
 }
 
-- (void) pthreadAPICrash
+- (void)pthreadAPICrash
 {
     // http://landonf.bikemonkey.org/code/crashreporting
     pthread_getname_np(pthread_self(), (char*)0x1, 1);
 }
 
-- (void) userDefinedCrash
+- (void)userDefinedCrash
 {
     NSString* name = @"Script Error";
     NSString* reason = @"fragment is not defined";
@@ -255,7 +250,7 @@ int g_crasher_denominator = 0;
 }
 
 
-- (void) throwUncaughtCPPException
+- (void)throwUncaughtCPPException
 {
     MyCPPClass instance;
     instance.throwAnException();

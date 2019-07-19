@@ -103,14 +103,12 @@ static bool advanceCursor(KSStackCursor *cursor)
     MachineContextCursor* context = (MachineContextCursor*)cursor->context;
     uintptr_t nextAddress = 0;
     
-    if (cursor->state.currentDepth >= context->maxStackDepth)
-    {
+    if (cursor->state.currentDepth >= context->maxStackDepth) {
         cursor->state.hasGivenUp = true;
         return false;
     }
     
-    if (context->instructionAddress == 0)
-    {
+    if (context->instructionAddress == 0) {
         context->instructionAddress = kscpu_instructionAddress(context->machineContext);
         if (context->instructionAddress == 0)
         {
@@ -120,8 +118,7 @@ static bool advanceCursor(KSStackCursor *cursor)
         goto successfulExit;
     }
 
-    if (context->currentFrame.previous == NULL)
-    {
+    if (context->currentFrame.previous == NULL) {
         if (context->isPastFramePointer)
         {
             return false;
@@ -130,12 +127,10 @@ static bool advanceCursor(KSStackCursor *cursor)
         context->isPastFramePointer = true;
     }
 
-    if (!ksmem_copySafely(context->currentFrame.previous, &context->currentFrame, sizeof(context->currentFrame)))
-    {
+    if (!ksmem_copySafely(context->currentFrame.previous, &context->currentFrame, sizeof(context->currentFrame))) {
         return false;
     }
-    if (context->currentFrame.previous == 0 || context->currentFrame.return_address == 0)
-    {
+    if (context->currentFrame.previous == 0 || context->currentFrame.return_address == 0) {
         return false;
     }
 

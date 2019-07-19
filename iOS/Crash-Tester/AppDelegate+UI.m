@@ -36,8 +36,7 @@ MAKE_CATEGORIES_LOADABLE(AppDelegate_UI)
 - (UIViewController*) createRootViewController
 {
     CommandTVC* cmdController = [self commandTVCWithCommands:[self topLevelCommands]];
-    cmdController.getTitleBlock = ^NSString* (__unused UIViewController* controller)
-    {
+    cmdController.getTitleBlock = ^NSString* (__unused UIViewController* controller) {
         return [NSString stringWithFormat:@"Crash Tester: %@", [CrashTesterCommands reportCountString]];
     };
     return [[UINavigationController alloc] initWithRootViewController:cmdController];
@@ -54,7 +53,7 @@ MAKE_CATEGORIES_LOADABLE(AppDelegate_UI)
     return cmdController;
 }
 
-- (void) setBackButton:(UIViewController*) controller
+- (void)setBackButton:(UIViewController*) controller
 {
     controller.navigationItem.backBarButtonItem =
     [[UIBarButtonItem alloc] initWithTitle:@"Back"
@@ -273,18 +272,16 @@ MAKE_CATEGORIES_LOADABLE(AppDelegate_UI)
     return commands;
 }
 
-- (void) onSendCompleteWithController:(UIViewController*) controller
+- (void)onSendCompleteWithController:(UIViewController*) controller
                               reports:(NSArray*) reports
                             completed:(BOOL) completed
                                 error:(NSError*) error
 {
-    if (completed)
-    {
+    if (completed) {
         [CrashTesterCommands showAlertWithTitle:@"Success" message:@"Sent %d reports", [reports count]];
         [(CommandTVC*)controller reloadTitle];
     }
-    else
-    {
+    else {
         NSLog(@"Failed to send reports: %@", error);
         [CrashTesterCommands showAlertWithTitle:@"Failed" message:@"Failed to send reports", [error localizedDescription]];
     }
@@ -524,8 +521,7 @@ block:^(__unused UIViewController* controller) \
     Class* classes = objc_copyClassList(&classCount);
     Class foundClass = nil;
     
-    for(unsigned int i=0; i < classCount; i++)
-    {
+    for(unsigned int i=0; i < classCount; i++) {
         Class testClass = classes[i];
         if (testClass != NULL &&
             class_getSuperclass(testClass) == [CRLCrash class] &&

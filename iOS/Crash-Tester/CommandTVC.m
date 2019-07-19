@@ -26,8 +26,7 @@
       accessoryType:(UITableViewCellAccessoryType) accessoryType
               block:(void (^)(UIViewController* controller)) block
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         self.name = name;
         self.accessoryType = accessoryType;
         self.block = block;
@@ -35,7 +34,7 @@
     return self;
 }
 
-- (void) executeWithViewController:(UIViewController*) controller
+- (void)executeWithViewController:(UIViewController*) controller
 {
     self.block(controller);
 }
@@ -56,23 +55,21 @@
 
 - (id)initWithStyle:(UITableViewStyle) style
 {
-    if ((self = [super initWithStyle:style]))
-    {
+    if ((self = [super initWithStyle:style])) {
         self.commands = [NSMutableArray array];
     }
     return self;
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self reloadTitle];
 }
 
-- (void) reloadTitle
+- (void)reloadTitle
 {
-    if (self.getTitleBlock != nil)
-    {
+    if (self.getTitleBlock != nil) {
         self.title = self.getTitleBlock(self);
     }
 }
@@ -94,8 +91,7 @@
     static NSString* CellIdentifier = @"Cell";
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (cell == nil)
-    {
+    if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];
     }
@@ -108,7 +104,7 @@
 
 #pragma mark - Table view delegate
 
-- (void) tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath*) indexPath
+- (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath*) indexPath
 {
     [[self.commands objectAtIndex:(NSUInteger)indexPath.row] executeWithViewController:self];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -1060,7 +1060,7 @@ static NSString *toString(NSData *data) {
     XCTAssertNotNil(error, @"");
 }
 
-//- (void) testSerializeBadTopLevelType
+//- (void)testSerializeBadTopLevelType
 //{
 //    NSError* error = (NSError*)self;
 //    id source = @"Blah";

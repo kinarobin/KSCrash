@@ -955,7 +955,7 @@ static NSArray *g_test_strings;
     XCTAssertTrue(success, @"");
 }
 
-//- (void) testCopyDictionaryContents
+//- (void)testCopyDictionaryContents
 //{
 //    NSDictionary* dict = [NSDictionary dictionaryWithObject:@"value" forKey:@"key"];
 //    void* dictPtr = (__bridge void*)dict;

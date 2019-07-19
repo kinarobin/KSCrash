@@ -172,7 +172,7 @@
 }
 
 // This sysctl always returns true for some reason...
-//- (void) testGetProcessInfoInvalid
+//- (void)testGetProcessInfoInvalid
 //{
 //    int pid = 1000000;
 //    struct kinfo_proc procInfo = {{{{0}}}};

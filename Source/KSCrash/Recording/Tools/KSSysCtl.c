@@ -192,8 +192,7 @@ struct timeval kssysctl_timeval(const int major_cmd, const int minor_cmd)
     struct timeval value = {0};
     size_t size = sizeof(value);
 
-    if (0 != sysctl(cmd, sizeof(cmd)/sizeof(*cmd), &value, &size, NULL, 0))
-    {
+    if (0 != sysctl(cmd, sizeof(cmd)/sizeof(*cmd), &value, &size, NULL, 0)) {
         KSLOG_ERROR("Could not get timeval value for %d,%d: %s",
                     major_cmd, minor_cmd, strerror(errno));
     }
@@ -206,8 +205,7 @@ struct timeval kssysctl_timevalForName(const char *const name)
     struct timeval value = {0};
     size_t size = sizeof(value);
 
-    if (0 != sysctlbyname(name, &value, &size, NULL, 0))
-    {
+    if (0 != sysctlbyname(name, &value, &size, NULL, 0)) {
         KSLOG_ERROR("Could not get timeval value for %s: %s",
                     name, strerror(errno));
     }
@@ -221,8 +219,7 @@ bool kssysctl_getProcessInfo(const int pid,
     int cmd[4] = {CTL_KERN, KERN_PROC, KERN_PROC_PID, pid};
     size_t size = sizeof(*procInfo);
 
-    if (0 != sysctl(cmd, sizeof(cmd)/sizeof(*cmd), procInfo, &size, NULL, 0))
-    {
+    if (0 != sysctl(cmd, sizeof(cmd)/sizeof(*cmd), procInfo, &size, NULL, 0)) {
         KSLOG_ERROR("Could not get the name for process %d: %s",
                     pid, strerror(errno));
         return false;
@@ -235,8 +232,7 @@ bool kssysctl_getMacAddress(const char *const name,
 {
     // Based off http://iphonedevelopertips.com/device/determine-mac-address.html
 
-    int mib[6] =
-    {
+    int mib[6] = {
         CTL_NET,
         AF_ROUTE,
         0,
@@ -244,30 +240,26 @@ bool kssysctl_getMacAddress(const char *const name,
         NET_RT_IFLIST,
         (int)if_nametoindex(name)
     };
-    if (mib[5] == 0)
-    {
+    if (mib[5] == 0) {
         KSLOG_ERROR("Could not get interface index for %s: %s",
                     name, strerror(errno));
         return false;
     }
 
     size_t length;
-    if (sysctl(mib, 6, NULL, &length, NULL, 0) != 0)
-    {
+    if (sysctl(mib, 6, NULL, &length, NULL, 0) != 0) {
         KSLOG_ERROR("Could not get interface data for %s: %s",
                     name, strerror(errno));
         return false;
     }
 
     void* ifBuffer = malloc(length);
-    if (ifBuffer == NULL)
-    {
+    if (ifBuffer == NULL) {
         KSLOG_ERROR("Out of memory");
         return false;
     }
 
-    if (sysctl(mib, 6, ifBuffer, &length, NULL, 0) != 0)
-    {
+    if (sysctl(mib, 6, ifBuffer, &length, NULL, 0) != 0) {
         KSLOG_ERROR("Could not get interface data for %s: %s",
                     name, strerror(errno));
         free(ifBuffer);

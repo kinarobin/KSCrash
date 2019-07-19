@@ -76,16 +76,13 @@ typedef struct
 
 static bool increaseDepth(FixupContext* context, const char *name)
 {
-    if (context->currentDepth >= MAX_DEPTH)
-    {
+    if (context->currentDepth >= MAX_DEPTH) {
         return false;
     }
-    if (name == NULL)
-    {
+    if (name == NULL) {
         *context->objectPath[context->currentDepth] = '\0';
     }
-    else
-    {
+    else {
         strncpy(context->objectPath[context->currentDepth], name, sizeof(context->objectPath[context->currentDepth]));
     }
     context->currentDepth++;
@@ -94,8 +91,7 @@ static bool increaseDepth(FixupContext* context, const char *name)
 
 static bool decreaseDepth(FixupContext* context)
 {
-    if (context->currentDepth <= 0)
-    {
+    if (context->currentDepth <= 0) {
         return false;
     }
     context->currentDepth--;
@@ -104,20 +100,17 @@ static bool decreaseDepth(FixupContext* context)
 
 static bool matchesPath(FixupContext* context, char** path, const char *finalName)
 {
-    if (finalName == NULL)
-    {
+    if (finalName == NULL) {
         finalName = "";
     }
 
-    for(int i = 0;i < context->currentDepth; i++)
-    {
+    for(int i = 0;i < context->currentDepth; i++) {
         if (strncmp(context->objectPath[i], path[i], MAX_NAME_LENGTH) != 0)
         {
             return false;
         }
     }
-    if (strncmp(finalName, path[context->currentDepth], MAX_NAME_LENGTH) != 0)
-    {
+    if (strncmp(finalName, path[context->currentDepth], MAX_NAME_LENGTH) != 0) {
         return false;
     }
     return true;
@@ -125,8 +118,7 @@ static bool matchesPath(FixupContext* context, char** path, const char *finalNam
 
 static bool matchesAPath(FixupContext* context, const char *name, char *paths[][MAX_DEPTH], int pathsCount)
 {
-    for(int i = 0; i < pathsCount; i++)
-    {
+    for(int i = 0; i < pathsCount; i++) {
         if (matchesPath(context, paths[i], name))
         {
             return true;
@@ -183,8 +175,7 @@ static int onIntegerElement(const char *const name,
 {
     FixupContext* context = (FixupContext*)userData;
     int result = KSJSON_OK;
-    if (shouldFixDate(context, name))
-    {
+    if (shouldFixDate(context, name)) {
         char buffer[28];
 
         if (matchesMinVersion(context, 3, 3, 0))
@@ -198,8 +189,7 @@ static int onIntegerElement(const char *const name,
 
         result = ksjson_addStringElement(context->encodeContext, name, buffer, (int)strlen(buffer));
     }
-    else
-    {
+    else {
         result = ksjson_addIntegerElement(context->encodeContext, name, value);
     }
     return result;
@@ -219,8 +209,7 @@ static int onStringElement(const char *const name,
     FixupContext* context = (FixupContext*)userData;
     const char *stringValue = value;
     char *demangled = NULL;
-    if (shouldDemangle(context, name))
-    {
+    if (shouldDemangle(context, name)) {
         demangled = ksdm_demangleCPP(value);
 #if KSCRASH_HAS_SWIFT
         if (demangled == NULL)
@@ -234,12 +223,10 @@ static int onStringElement(const char *const name,
         }
     }
     int result = ksjson_addStringElement(context->encodeContext, name, stringValue, (int)strlen(stringValue));
-    if (demangled != NULL)
-    {
+    if (demangled != NULL) {
         free(demangled);
     }
-    if (shouldSaveVersion(context, name))
-    {
+    if (shouldSaveVersion(context, name)) {
         memset(context->reportVersionComponents, 0, sizeof(context->reportVersionComponents));
         int versionPartsIndex = 0;
         char *mutableValue = strdup(value);
@@ -259,8 +246,7 @@ static int onBeginObject(const char *const name,
 {
     FixupContext* context = (FixupContext*)userData;
     int result = ksjson_beginObject(context->encodeContext, name);
-    if (!increaseDepth(context, name))
-    {
+    if (!increaseDepth(context, name)) {
         return KSJSON_ERROR_DATA_TOO_LONG;
     }
     return result;
@@ -271,8 +257,7 @@ static int onBeginArray(const char *const name,
 {
     FixupContext* context = (FixupContext*)userData;
     int result = ksjson_beginArray(context->encodeContext, name);
-    if (!increaseDepth(context, name))
-    {
+    if (!increaseDepth(context, name)) {
         return KSJSON_ERROR_DATA_TOO_LONG;
     }
     return result;
@@ -282,8 +267,7 @@ static int onEndContainer(void* const userData)
 {
     FixupContext* context = (FixupContext*)userData;
     int result = ksjson_endContainer(context->encodeContext);
-    if (!decreaseDepth(context))
-    {
+    if (!decreaseDepth(context)) {
         // Do something;
     }
     return result;
@@ -298,8 +282,7 @@ static int onEndData(__unused void* const userData)
 static int addJSONData(const char *data, int length, void* userData)
 {
     FixupContext* context = (FixupContext*)userData;
-    if (length > context->outputBytesLeft)
-    {
+    if (length > context->outputBytesLeft) {
         return KSJSON_ERROR_DATA_TOO_LONG;
     }
     memcpy(context->outputPtr, data, length);
@@ -311,13 +294,11 @@ static int addJSONData(const char *data, int length, void* userData)
 
 char *kscrf_fixupCrashReport(const char *crashReport)
 {
-    if (crashReport == NULL)
-    {
+    if (crashReport == NULL) {
         return NULL;
     }
 
-    KSJSONDecodeCallbacks callbacks =
-    {
+    KSJSONDecodeCallbacks callbacks = {
         .onBeginArray = onBeginArray,
         .onBeginObject = onBeginObject,
         .onBooleanElement = onBooleanElement,
@@ -334,8 +315,7 @@ char *kscrf_fixupCrashReport(const char *crashReport)
     int fixedReportLength = (int)(crashReportLength * 1.5);
     char *fixedReport = malloc((unsigned)fixedReportLength);
     KSJSONEncodeContext encodeContext;
-    FixupContext fixupContext =
-    {
+    FixupContext fixupContext = {
         .encodeContext = &encodeContext,
         .reportVersionComponents = {0},
         .currentDepth = 0,
@@ -349,8 +329,7 @@ char *kscrf_fixupCrashReport(const char *crashReport)
     int result = ksjson_decode(crashReport, (int)strlen(crashReport), stringBuffer, stringBufferLength, &callbacks, &fixupContext, &errorOffset);
     *fixupContext.outputPtr = '\0';
     free(stringBuffer);
-    if (result != KSJSON_OK)
-    {
+    if (result != KSJSON_OK) {
         KSLOG_ERROR("Could not decode report: %s", ksjson_stringForError(result));
         free(fixedReport);
         return NULL;

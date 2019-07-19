@@ -1913,7 +1913,7 @@
 			};
 			buildConfigurationList = CB52178717EB735D007CB3C1 /* Build configuration list for PBXProject "KSCrash-iOS" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

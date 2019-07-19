@@ -41,7 +41,7 @@ didFinishLaunchingWithOptions:(__unused NSDictionary *) launchOptions
 #pragma mark - Basic Crash Handling -
 // ======================================================================
 
-- (void) installCrashHandler
+- (void)installCrashHandler
 {
     // This can be useful when debugging on the simulator.
     // Normally, there's no way to see console messages in the simulator,
@@ -165,7 +165,7 @@ static void advanced_crash_callback(const KSCrashReportWriter* writer)
     NSLog(@"***advanced_crash_callback");
 }
 
-- (void) configureAdvancedSettings
+- (void)configureAdvancedSettings
 {
     KSCrash* handler = [KSCrash sharedInstance];
     

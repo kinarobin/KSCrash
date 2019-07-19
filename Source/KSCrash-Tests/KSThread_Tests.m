@@ -35,7 +35,7 @@
 @implementation KSThread_Tests
 
 // TODO: Disabling this until I figure out what's wrong with queue names.
-//- (void) testGetQueueName
+//- (void)testGetQueueName
 //{
 //    kern_return_t kr;
 //    const task_t thisTask = mach_task_self();

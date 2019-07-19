@@ -71,8 +71,7 @@ static bool copyStringIvar(const void* self, const char *ivarName, char *buffer,
 {
     Class class = object_getClass((id)self);
     KSObjCIvar ivar = {0};
-    likely_if(ksobjc_ivarNamed(class, ivarName, &ivar))
-    {
+    likely_if(ksobjc_ivarNamed(class, ivarName, &ivar)) {
         void* pointer;
         likely_if(ksobjc_ivarValue(self, ivar.index, &pointer))
         {
@@ -97,8 +96,7 @@ static bool copyStringIvar(const void* self, const char *ivarName, char *buffer,
             KSLOG_DEBUG("ksobjc_ivarValue %s failed", ivarName);
         }
     }
-    else
-    {
+    else {
         KSLOG_DEBUG("ksobjc_ivarNamed %s failed", ivarName);
     }
     return false;
@@ -114,8 +112,7 @@ static void storeException(const void* exception)
 static inline void handleDealloc(const void* self)
 {
     volatile Zombie* cache = g_zombieCache;
-    likely_if(cache != NULL)
-    {
+    likely_if(cache != NULL) {
         Zombie* zombie = (Zombie*)cache + hashIndex(self);
         zombie->object = self;
         Class class = object_getClass((id)self);
@@ -159,8 +156,7 @@ static void install()
     unsigned cacheSize = CACHE_SIZE;
     g_zombieHashMask = cacheSize - 1;
     g_zombieCache = calloc(cacheSize, sizeof(*g_zombieCache));
-    if (g_zombieCache == NULL)
-    {
+    if (g_zombieCache == NULL) {
         KSLOG_ERROR("Error: Could not allocate %u bytes of memory. KSZombie NOT installed!",
               cacheSize * sizeof(*g_zombieCache));
         return;
@@ -193,14 +189,12 @@ static void install()
 const char *kszombie_className(const void* object)
 {
     volatile Zombie* cache = g_zombieCache;
-    if (cache == NULL || object == NULL)
-    {
+    if (cache == NULL || object == NULL) {
         return NULL;
     }
 
     Zombie* zombie = (Zombie*)cache + hashIndex(object);
-    if (zombie->object == object)
-    {
+    if (zombie->object == object) {
         return zombie->className;
     }
     return NULL;
@@ -208,8 +202,7 @@ const char *kszombie_className(const void* object)
 
 static void setEnabled(bool isEnabled)
 {
-    if (isEnabled != g_isEnabled)
-    {
+    if (isEnabled != g_isEnabled) {
         g_isEnabled = isEnabled;
         if (isEnabled)
         {
@@ -231,8 +224,7 @@ static bool isEnabled()
 
 static void addContextualInfoToEvent(KSCrash_MonitorContext* eventContext)
 {
-    if (g_isEnabled)
-    {
+    if (g_isEnabled) {
         eventContext->ZombieException.address = (uintptr_t)g_lastDeallocedException.address;
         eventContext->ZombieException.name = g_lastDeallocedException.name;
         eventContext->ZombieException.reason = g_lastDeallocedException.reason;
@@ -241,8 +233,7 @@ static void addContextualInfoToEvent(KSCrash_MonitorContext* eventContext)
 
 KSCrashMonitorAPI* kscm_zombie_getAPI()
 {
-    static KSCrashMonitorAPI api =
-    {
+    static KSCrashMonitorAPI api = {
         .setEnabled = setEnabled,
         .isEnabled = isEnabled,
         .addContextualInfoToEvent = addContextualInfoToEvent
