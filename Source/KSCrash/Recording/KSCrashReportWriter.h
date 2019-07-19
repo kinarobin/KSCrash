@@ -24,11 +24,9 @@
 // THE SOFTWARE.
 //
 
-
 /* Pointers to functions for writing to a crash report. All JSON types are
  * supported.
  */
-
 
 #ifndef HDR_KSCrashReportWriter_h
 #define HDR_KSCrashReportWriter_h
@@ -37,218 +35,201 @@
 extern "C" {
 #endif
 
-
 #include <stdbool.h>
 #include <stdint.h>
-
 
 /**
  * Encapsulates report writing functionality.
  */
-typedef struct KSCrashReportWriter
-{
-    /** Add a boolean element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value The value to add.
-     */
-    void (*addBooleanElement)(const struct KSCrashReportWriter* writer,
-                              const char* name,
-                              bool value);
+typedef struct KSCrashReportWriter {
+  /** Add a boolean element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value The value to add.
+   */
+  void (*addBooleanElement)(const struct KSCrashReportWriter* writer,
+                            const char* name, bool value);
 
-    /** Add a floating point element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value The value to add.
-     */
-    void (*addFloatingPointElement)(const struct KSCrashReportWriter* writer,
-                                    const char* name,
-                                    double value);
+  /** Add a floating point element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value The value to add.
+   */
+  void (*addFloatingPointElement)(const struct KSCrashReportWriter* writer,
+                                  const char* name, double value);
 
-    /** Add an integer element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value The value to add.
-     */
-    void (*addIntegerElement)(const struct KSCrashReportWriter* writer,
-                              const char* name,
-                              int64_t value);
+  /** Add an integer element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value The value to add.
+   */
+  void (*addIntegerElement)(const struct KSCrashReportWriter* writer,
+                            const char* name, int64_t value);
 
-    /** Add an unsigned integer element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value The value to add.
-     */
-    void (*addUIntegerElement)(const struct KSCrashReportWriter* writer,
-                               const char* name,
-                               uint64_t value);
+  /** Add an unsigned integer element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value The value to add.
+   */
+  void (*addUIntegerElement)(const struct KSCrashReportWriter* writer,
+                             const char* name, uint64_t value);
 
-    /** Add a string element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value The value to add.
-     */
-    void (*addStringElement)(const struct KSCrashReportWriter* writer,
-                             const char* name,
-                             const char* value);
+  /** Add a string element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value The value to add.
+   */
+  void (*addStringElement)(const struct KSCrashReportWriter* writer,
+                           const char* name, const char* value);
 
-    /** Add a string element from a text file to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param filePath The path to the file containing the value to add.
-     */
-    void (*addTextFileElement)(const struct KSCrashReportWriter* writer,
-                               const char* name,
-                               const char* filePath);
+  /** Add a string element from a text file to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param filePath The path to the file containing the value to add.
+   */
+  void (*addTextFileElement)(const struct KSCrashReportWriter* writer,
+                             const char* name, const char* filePath);
 
-    /** Add an array of string elements representing lines from a text file to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param filePath The path to the file containing the value to add.
-     */
-    void (*addTextFileLinesElement)(const struct KSCrashReportWriter* writer,
-                                    const char* name,
-                                    const char* filePath);
+  /** Add an array of string elements representing lines from a text file to the
+   * report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param filePath The path to the file containing the value to add.
+   */
+  void (*addTextFileLinesElement)(const struct KSCrashReportWriter* writer,
+                                  const char* name, const char* filePath);
 
-    /** Add a JSON element from a text file to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param filePath The path to the file containing the value to add.
-     *
-     * @param closeLastContainer If false, do not close the last container.
-     */
-    void (*addJSONFileElement)(const struct KSCrashReportWriter* writer,
-                               const char* name,
-                               const char* filePath,
-                               const bool closeLastContainer);
-    
-    /** Add a hex encoded data element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value A pointer to the binary data.
-     *
-     * @paramn length The length of the data.
-     */
-    void (*addDataElement)(const struct KSCrashReportWriter* writer,
-                           const char* name,
-                           const char* value,
-                           const int length);
+  /** Add a JSON element from a text file to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param filePath The path to the file containing the value to add.
+   *
+   * @param closeLastContainer If false, do not close the last container.
+   */
+  void (*addJSONFileElement)(const struct KSCrashReportWriter* writer,
+                             const char* name, const char* filePath,
+                             const bool closeLastContainer);
 
-    /** Begin writing a hex encoded data element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     */
-    void (*beginDataElement)(const struct KSCrashReportWriter* writer,
-                             const char* name);
+  /** Add a hex encoded data element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value A pointer to the binary data.
+   *
+   * @paramn length The length of the data.
+   */
+  void (*addDataElement)(const struct KSCrashReportWriter* writer,
+                         const char* name, const char* value, const int length);
 
-    /** Append hex encoded data to the current data element in the report.
-     *
-     * @param writer This writer.
-     *
-     * @param value A pointer to the binary data.
-     *
-     * @paramn length The length of the data.
-     */
-    void (*appendDataElement)(const struct KSCrashReportWriter* writer,
-                              const char* value,
-                              const int length);
+  /** Begin writing a hex encoded data element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   */
+  void (*beginDataElement)(const struct KSCrashReportWriter* writer,
+                           const char* name);
 
-    /** Complete writing a hex encoded data element to the report.
-     *
-     * @param writer This writer.
-     */
-    void (*endDataElement)(const struct KSCrashReportWriter* writer);
+  /** Append hex encoded data to the current data element in the report.
+   *
+   * @param writer This writer.
+   *
+   * @param value A pointer to the binary data.
+   *
+   * @paramn length The length of the data.
+   */
+  void (*appendDataElement)(const struct KSCrashReportWriter* writer,
+                            const char* value, const int length);
 
-    /** Add a UUID element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value A pointer to the binary UUID data.
-     */
-    void (*addUUIDElement)(const struct KSCrashReportWriter* writer,
-                           const char* name,
-                           const unsigned char* value);
+  /** Complete writing a hex encoded data element to the report.
+   *
+   * @param writer This writer.
+   */
+  void (*endDataElement)(const struct KSCrashReportWriter* writer);
 
-    /** Add a preformatted JSON element to the report.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     *
-     * @param value A pointer to the JSON data.
-     */
-    void (*addJSONElement)(const struct KSCrashReportWriter* writer,
-                           const char* name,
-                           const char* jsonElement,
-                           bool closeLastContainer);
+  /** Add a UUID element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value A pointer to the binary UUID data.
+   */
+  void (*addUUIDElement)(const struct KSCrashReportWriter* writer,
+                         const char* name, const unsigned char* value);
 
-    /** Begin a new object container.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     */
-    void (*beginObject)(const struct KSCrashReportWriter* writer,
-                        const char* name);
+  /** Add a preformatted JSON element to the report.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   *
+   * @param value A pointer to the JSON data.
+   */
+  void (*addJSONElement)(const struct KSCrashReportWriter* writer,
+                         const char* name, const char* jsonElement,
+                         bool closeLastContainer);
 
-    /** Begin a new array container.
-     *
-     * @param writer This writer.
-     *
-     * @param name The name to give this element.
-     */
-    void (*beginArray)(const struct KSCrashReportWriter* writer,
-                       const char* name);
+  /** Begin a new object container.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   */
+  void (*beginObject)(const struct KSCrashReportWriter* writer,
+                      const char* name);
 
-    /** Leave the current container, returning to the next higher level
-     *  container.
-     *
-     * @param writer This writer.
-     */
-    void (*endContainer)(const struct KSCrashReportWriter* writer);
+  /** Begin a new array container.
+   *
+   * @param writer This writer.
+   *
+   * @param name The name to give this element.
+   */
+  void (*beginArray)(const struct KSCrashReportWriter* writer,
+                     const char* name);
 
-    /** Internal contextual data for the writer */
-    void* context;
+  /** Leave the current container, returning to the next higher level
+   *  container.
+   *
+   * @param writer This writer.
+   */
+  void (*endContainer)(const struct KSCrashReportWriter* writer);
+
+  /** Internal contextual data for the writer */
+  void* context;
 
 } KSCrashReportWriter;
 
 typedef void (*KSReportWriteCallback)(const KSCrashReportWriter* writer);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCrashReportWriter_h
-
+#endif  // HDR_KSCrashReportWriter_h

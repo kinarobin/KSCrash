@@ -31,7 +31,6 @@
 extern "C" {
 #endif
 
-
 #include <stdint.h>
 
 #define KSCRS_MAX_PATH_LENGTH 500
@@ -39,7 +38,8 @@ extern "C" {
 /** Initialize the report store.
  *
  * @param appName The application's name.
- * @param reportsPath Full path to directory where the reports are to be stored (path will be created if needed).
+ * @param reportsPath Full path to directory where the reports are to be stored
+ * (path will be created if needed).
  */
 void kscrs_initialize(const char* appName, const char* reportsPath);
 
@@ -70,7 +70,8 @@ int kscrs_getReportIDs(int64_t* reportIDs, int count);
  * @param reportID The report's ID.
  *
  * @return The NULL terminated report, or NULL if not found.
- *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on the returned value.
+ *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on
+ * the returned value.
  */
 char* kscrs_readReport(int64_t reportID);
 
@@ -93,14 +94,15 @@ void kscrs_deleteAllReports(void);
  */
 void kscrs_deleteReportWithID(int64_t reportID);
 
-/** Set the maximum number of reports allowed on disk before old ones get deleted.
+/** Set the maximum number of reports allowed on disk before old ones get
+ * deleted.
  *
  * @param maxReportCount The maximum number of reports.
  */
-    void kscrs_setMaxReportCount(int maxReportCount);
+void kscrs_setMaxReportCount(int maxReportCount);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCrashReportStore_h
+#endif  // HDR_KSCrashReportStore_h

@@ -24,7 +24,6 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashReportFilter.h"
 
 /**
@@ -35,8 +34,8 @@
  */
 @interface KSCrashReportSinkConsole : NSObject <KSCrashReportFilter>
 
-+ (KSCrashReportSinkConsole*) filter;
++ (KSCrashReportSinkConsole *)filter;
 
-- (id <KSCrashReportFilter>) defaultCrashReportFilterSet;
+- (id<KSCrashReportFilter>)defaultCrashReportFilterSet;
 
 @end

@@ -24,31 +24,27 @@
 // THE SOFTWARE.
 //
 
-
-#import <XCTest/XCTest.h>
 #import "NSData+GZip.h"
+#import <XCTest/XCTest.h>
 
-
-@interface NSData_Gzip_Tests : XCTestCase @end
-
+@interface NSData_Gzip_Tests : XCTestCase
+@end
 
 @implementation NSData_Gzip_Tests
 
-- (void) testCompressDecompress
-{
+- (void)testCompressDecompress {
     NSUInteger numBytes = 1000000;
-    NSMutableData* data = [NSMutableData dataWithCapacity:numBytes];
-    for(NSUInteger i = 0; i < numBytes; i++)
-    {
+    NSMutableData *data = [NSMutableData dataWithCapacity:numBytes];
+    for (NSUInteger i = 0; i < numBytes; i++) {
         unsigned char byte = (unsigned char)i;
         [data appendBytes:&byte length:1];
     }
 
-    NSError* error = nil;
-    NSData* original = [NSData dataWithData:data];
-    NSData* compressed = [original gzippedWithCompressionLevel:-1 error:&error];
+    NSError *error = nil;
+    NSData *original = [NSData dataWithData:data];
+    NSData *compressed = [original gzippedWithCompressionLevel:-1 error:&error];
     XCTAssertNil(error, @"");
-    NSData* uncompressed = [compressed gunzippedWithError:&error];
+    NSData *uncompressed = [compressed gunzippedWithError:&error];
     XCTAssertNil(error, @"");
 
     XCTAssertEqualObjects(uncompressed, original, @"");
@@ -56,43 +52,39 @@
     XCTAssertTrue([compressed length] < [uncompressed length], @"");
 }
 
-- (void) testCompressDecompressEmpty
-{
-    NSError* error = nil;
-    NSData* original = [NSData data];
-    NSData* compressed = [original gzippedWithCompressionLevel:-1 error:&error];
+- (void)testCompressDecompressEmpty {
+    NSError *error = nil;
+    NSData *original = [NSData data];
+    NSData *compressed = [original gzippedWithCompressionLevel:-1 error:&error];
     XCTAssertNil(error, @"");
-    NSData* uncompressed = [compressed gunzippedWithError:&error];
+    NSData *uncompressed = [compressed gunzippedWithError:&error];
     XCTAssertNil(error, @"");
 
     XCTAssertEqualObjects(uncompressed, original, @"");
     XCTAssertEqualObjects(compressed, original, @"");
 }
 
-- (void) testCompressDecompressNilError
-{
+- (void)testCompressDecompressNilError {
     NSUInteger numBytes = 1000;
-    NSMutableData* data = [NSMutableData dataWithCapacity:numBytes];
-    for(NSUInteger i = 0; i < numBytes; i++)
-    {
+    NSMutableData *data = [NSMutableData dataWithCapacity:numBytes];
+    for (NSUInteger i = 0; i < numBytes; i++) {
         unsigned char byte = (unsigned char)i;
         [data appendBytes:&byte length:1];
     }
 
-    NSData* original = [NSData dataWithData:data];
-    NSData* compressed = [original gzippedWithCompressionLevel:-1 error:nil];
-    NSData* uncompressed = [compressed gunzippedWithError:nil];
+    NSData *original = [NSData dataWithData:data];
+    NSData *compressed = [original gzippedWithCompressionLevel:-1 error:nil];
+    NSData *uncompressed = [compressed gunzippedWithError:nil];
 
     XCTAssertEqualObjects(uncompressed, original, @"");
     XCTAssertFalse([compressed isEqualToData:uncompressed], @"");
     XCTAssertTrue([compressed length] < [uncompressed length], @"");
 }
 
-- (void) testCompressDecompressEmptyNilError
-{
-    NSData* original = [NSData data];
-    NSData* compressed = [original gzippedWithCompressionLevel:-1 error:nil];
-    NSData* uncompressed = [compressed gunzippedWithError:nil];
+- (void)testCompressDecompressEmptyNilError {
+    NSData *original = [NSData data];
+    NSData *compressed = [original gzippedWithCompressionLevel:-1 error:nil];
+    NSData *uncompressed = [compressed gunzippedWithError:nil];
 
     XCTAssertEqualObjects(uncompressed, original, @"");
     XCTAssertEqualObjects(compressed, original, @"");

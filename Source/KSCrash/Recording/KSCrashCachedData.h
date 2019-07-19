@@ -22,10 +22,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Maintains a cache of difficult-to-retrieve data.
  */
-
 
 #include "KSThread.h"
 

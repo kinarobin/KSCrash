@@ -24,7 +24,6 @@
 // THE SOFTWARE.
 //
 
-
 /* Poor man's zombie tracking.
  *
  * Benefits:
@@ -45,9 +44,8 @@
 extern "C" {
 #endif
 
-#include "KSCrashMonitor.h"
 #include <stdbool.h>
-
+#include "KSCrashMonitor.h"
 
 /** Get the class of a deallocated object pointer, if it was tracked.
  *
@@ -61,9 +59,8 @@ const char* kszombie_className(const void* object);
  */
 KSCrashMonitorAPI* kscm_zombie_getAPI(void);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSZombie_h
+#endif  // HDR_KSZombie_h

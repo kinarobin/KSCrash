@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashReportFilter.h"
 #import "KSCrashReportFilterAppleFmt.h"
-
 
 /**
  * Common filter sets.
@@ -36,7 +34,7 @@
 
 /** Create an Apple format filter that includes system and user data in JSON format.
  */
-+ (id<KSCrashReportFilter>) appleFmtWithUserAndSystemData:(KSAppleReportStyle) reportStyle
-                                               compressed:(BOOL) compressed;
++ (id<KSCrashReportFilter>)appleFmtWithUserAndSystemData:(KSAppleReportStyle)reportStyle
+                                              compressed:(BOOL)compressed;
 
 @end

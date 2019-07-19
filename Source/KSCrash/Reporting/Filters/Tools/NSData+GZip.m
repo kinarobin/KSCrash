@@ -24,20 +24,15 @@
 // THE SOFTWARE.
 //
 
-
 #import "NSData+GZip.h"
 
 #import "NSError+SimpleConstructor.h"
 #import <zlib.h>
 
-
 #define kBufferSize 4096
 
-
-static NSString* zlibError(int errorCode)
-{
-    switch (errorCode)
-    {
+static NSString *zlibError(int errorCode) {
+    switch (errorCode) {
         case Z_OK:
             return @"OK";
         case Z_STREAM_END:
@@ -62,18 +57,16 @@ static NSString* zlibError(int errorCode)
 
 @implementation NSData (GZip)
 
-- (NSData*) gzippedWithCompressionLevel:(int) compressionLevel
-                                  error:(NSError* __autoreleasing *) error
-{
+- (NSData *)gzippedWithCompressionLevel:(int)compressionLevel
+                                  error:(NSError *__autoreleasing *)error {
     uInt length = (uInt)[self length];
-    if(length == 0)
-    {
+    if (length == 0) {
         [NSError clearError:error];
         return [NSData data];
     }
 
     z_stream stream = {0};
-    stream.next_in = (Bytef*)[self bytes];
+    stream.next_in = (Bytef *)[self bytes];
     stream.avail_in = length;
 
     int err;
@@ -81,11 +74,10 @@ static NSString* zlibError(int errorCode)
     err = deflateInit2(&stream,
                        compressionLevel,
                        Z_DEFLATED,
-                       (16+MAX_WBITS),
+                       (16 + MAX_WBITS),
                        9,
                        Z_DEFAULT_STRATEGY);
-    if(err != Z_OK)
-    {
+    if (err != Z_OK) {
         [NSError fillError:error
                 withDomain:[[self class] description]
                       code:0
@@ -93,19 +85,17 @@ static NSString* zlibError(int errorCode)
         return nil;
     }
 
-    NSMutableData* compressedData = [NSMutableData dataWithLength:(NSUInteger)(length * 1.02 + 50)];
-    Bytef* compressedBytes = [compressedData mutableBytes];
+    NSMutableData *compressedData = [NSMutableData dataWithLength:(NSUInteger)(length * 1.02 + 50)];
+    Bytef *compressedBytes = [compressedData mutableBytes];
     NSUInteger compressedLength = [compressedData length];
 
-    while(err == Z_OK)
-    {
+    while (err == Z_OK) {
         stream.next_out = compressedBytes + stream.total_out;
         stream.avail_out = (uInt)(compressedLength - stream.total_out);
         err = deflate(&stream, Z_FINISH);
     }
 
-    if(err != Z_STREAM_END)
-    {
+    if (err != Z_STREAM_END) {
         [NSError fillError:error
                 withDomain:[[self class] description]
                       code:0
@@ -121,24 +111,21 @@ static NSString* zlibError(int errorCode)
     return compressedData;
 }
 
-- (NSData*) gunzippedWithError:(NSError* __autoreleasing *) error
-{
+- (NSData *)gunzippedWithError:(NSError *__autoreleasing *)error {
     uInt length = (uInt)[self length];
-    if(length == 0)
-    {
+    if (length == 0) {
         [NSError clearError:error];
         return [NSData data];
     }
 
     z_stream stream = {0};
-    stream.next_in = (Bytef*)[self bytes];
+    stream.next_in = (Bytef *)[self bytes];
     stream.avail_in = length;
 
     int err;
 
-    err = inflateInit2(&stream, 16+MAX_WBITS);
-    if(err != Z_OK)
-    {
+    err = inflateInit2(&stream, 16 + MAX_WBITS);
+    if (err != Z_OK) {
         [NSError fillError:error
                 withDomain:[[self class] description]
                       code:0
@@ -146,17 +133,15 @@ static NSString* zlibError(int errorCode)
         return nil;
     }
 
-    NSMutableData* expandedData = [NSMutableData dataWithCapacity:length * 2];
+    NSMutableData *expandedData = [NSMutableData dataWithCapacity:length * 2];
     Bytef buffer[kBufferSize];
     stream.avail_out = sizeof(buffer);
 
-    while(err != Z_STREAM_END)
-    {
+    while (err != Z_STREAM_END) {
         stream.avail_out = sizeof(buffer);
         stream.next_out = buffer;
         err = inflate(&stream, Z_NO_FLUSH);
-        if(err != Z_OK && err != Z_STREAM_END)
-        {
+        if (err != Z_OK && err != Z_STREAM_END) {
             [NSError fillError:error
                     withDomain:[[self class] description]
                           code:0
@@ -176,4 +161,7 @@ static NSString* zlibError(int errorCode)
 @end
 
 // Make this category auto-link
-@interface NSData_GZip_A0THJ4 : NSObject @end @implementation NSData_GZip_A0THJ4 @end
+@interface NSData_GZip_A0THJ4 : NSObject
+@end
+@implementation NSData_GZip_A0THJ4
+@end

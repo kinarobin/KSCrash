@@ -24,7 +24,6 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashInstallationQuincyHockey.h"
 
 #import "KSCrashInstallation+Private.h"
@@ -32,28 +31,24 @@
 #import "KSCrashReportSinkQuincyHockey.h"
 #import "NSError+SimpleConstructor.h"
 
-
 #define kQuincyDefaultKeyUserID @"user_id"
 #define kQuincyDefaultKeyUserName @"user_name"
 #define kQuincyDefaultKeyContactEmail @"contact_email"
 #define kQuincyDefaultKeyDescription @"crash_description"
 #define kQuincyDefaultKeysExtraDescription [NSArray arrayWithObjects:@"/" @KSCrashField_System, @"/" @KSCrashField_User, nil]
 
-
 @implementation KSCrashInstallationBaseQuincyHockey
 
-IMPLEMENT_REPORT_PROPERTY(userID, UserID, NSString*);
-IMPLEMENT_REPORT_PROPERTY(userName, UserName, NSString*);
-IMPLEMENT_REPORT_PROPERTY(contactEmail, ContactEmail, NSString*);
-IMPLEMENT_REPORT_PROPERTY(crashDescription, CrashDescription, NSString*);
+IMPLEMENT_REPORT_PROPERTY(userID, UserID, NSString *);
+IMPLEMENT_REPORT_PROPERTY(userName, UserName, NSString *);
+IMPLEMENT_REPORT_PROPERTY(contactEmail, ContactEmail, NSString *);
+IMPLEMENT_REPORT_PROPERTY(crashDescription, CrashDescription, NSString *);
 
 @synthesize extraDescriptionKeys = _extraDescriptionKeys;
 @synthesize waitUntilReachable = _waitUntilReachable;
 
-- (id) initWithRequiredProperties:(NSArray*) requiredProperties
-{
-    if((self = [super initWithRequiredProperties:requiredProperties]))
-    {
+- (id)initWithRequiredProperties:(NSArray *)requiredProperties {
+    if ((self = [super initWithRequiredProperties:requiredProperties])) {
         self.userIDKey = kQuincyDefaultKeyUserID;
         self.userNameKey = kQuincyDefaultKeyUserName;
         self.contactEmailKey = kQuincyDefaultKeyContactEmail;
@@ -64,15 +59,12 @@ IMPLEMENT_REPORT_PROPERTY(crashDescription, CrashDescription, NSString*);
     return self;
 }
 
-- (NSArray*) allCrashDescriptionKeys
-{
-    NSMutableArray* keys = [NSMutableArray array];
-    if(self.crashDescriptionKey != nil)
-    {
+- (NSArray *)allCrashDescriptionKeys {
+    NSMutableArray *keys = [NSMutableArray array];
+    if (self.crashDescriptionKey != nil) {
         [keys addObject:self.crashDescriptionKey];
     }
-    if([self.extraDescriptionKeys count] > 0)
-    {
+    if ([self.extraDescriptionKeys count] > 0) {
         [keys addObjectsFromArray:self.extraDescriptionKeys];
     }
     return keys;
@@ -80,30 +72,26 @@ IMPLEMENT_REPORT_PROPERTY(crashDescription, CrashDescription, NSString*);
 
 @end
 
-
 @implementation KSCrashInstallationQuincy
 
 @synthesize url = _url;
 
-+ (instancetype) sharedInstance
-{
++ (instancetype)sharedInstance {
     static KSCrashInstallationQuincy *sharedInstance = nil;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{
         sharedInstance = [[KSCrashInstallationQuincy alloc] init];
     });
     return sharedInstance;
 }
 
-- (id) init
-{
-    return [super initWithRequiredProperties:[NSArray arrayWithObjects: @"url", nil]];
+- (id)init {
+    return [super initWithRequiredProperties:[NSArray arrayWithObjects:@"url", nil]];
 }
 
-- (id<KSCrashReportFilter>) sink
-{
-    KSCrashReportSinkQuincy* sink = [KSCrashReportSinkQuincy sinkWithURL:self.url
+- (id<KSCrashReportFilter>)sink {
+    KSCrashReportSinkQuincy *sink = [KSCrashReportSinkQuincy sinkWithURL:self.url
                                                                userIDKey:[self makeKeyPath:self.userIDKey]
                                                              userNameKey:[self makeKeyPath:self.userNameKey]
                                                          contactEmailKey:[self makeKeyPath:self.contactEmailKey]
@@ -114,35 +102,30 @@ IMPLEMENT_REPORT_PROPERTY(crashDescription, CrashDescription, NSString*);
 
 @end
 
-
 @implementation KSCrashInstallationHockey
 
 @synthesize appIdentifier = _appIdentifier;
 
-+ (instancetype) sharedInstance
-{
++ (instancetype)sharedInstance {
     static KSCrashInstallationHockey *sharedInstance = nil;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{
         sharedInstance = [[KSCrashInstallationHockey alloc] init];
     });
     return sharedInstance;
 }
 
-- (id) init
-{
-    if((self = [super initWithRequiredProperties:[NSArray arrayWithObjects:
-                                                  @"appIdentifier",
-                                                  nil]]))
-    {
+- (id)init {
+    if ((self = [super initWithRequiredProperties:[NSArray arrayWithObjects:
+                                                               @"appIdentifier",
+                                                               nil]])) {
     }
     return self;
 }
 
-- (id<KSCrashReportFilter>) sink
-{
-    KSCrashReportSinkHockey* sink = [KSCrashReportSinkHockey sinkWithAppIdentifier:self.appIdentifier
+- (id<KSCrashReportFilter>)sink {
+    KSCrashReportSinkHockey *sink = [KSCrashReportSinkHockey sinkWithAppIdentifier:self.appIdentifier
                                                                          userIDKey:[self makeKeyPath:self.userIDKey]
                                                                        userNameKey:[self makeKeyPath:self.userNameKey]
                                                                    contactEmailKey:[self makeKeyPath:self.contactEmailKey]

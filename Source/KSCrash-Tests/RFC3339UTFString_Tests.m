@@ -22,15 +22,13 @@
 // THE SOFTWARE.
 //
 
-
-#import <XCTest/XCTest.h>
 #import "KSDate.h"
+#import <XCTest/XCTest.h>
 
+@interface RFC3339DateTool_Tests : XCTestCase
+@end
 
-@interface RFC3339DateTool_Tests : XCTestCase @end
-
-NSString* stringFromDate(NSDate* date)
-{
+NSString *stringFromDate(NSDate *date) {
     char string[21];
     time_t timestamp = (time_t)date.timeIntervalSince1970;
     ksdate_utcStringFromTimestamp(timestamp, string);
@@ -39,33 +37,30 @@ NSString* stringFromDate(NSDate* date)
 
 @implementation RFC3339DateTool_Tests
 
-- (NSDate*) gmtDateWithYear:(int) year
-                      month:(int) month
-                        day:(int) day
-                       hour:(int) hour
-                     minute:(int) minute
-                     second:(int) second
-{
-    NSDateComponents* components = [[NSDateComponents alloc] init];
+- (NSDate *)gmtDateWithYear:(int)year
+                      month:(int)month
+                        day:(int)day
+                       hour:(int)hour
+                     minute:(int)minute
+                     second:(int)second {
+    NSDateComponents *components = [[NSDateComponents alloc] init];
     components.year = year;
     components.month = month;
     components.day = day;
     components.hour = hour;
     components.minute = minute;
     components.second = second;
-    NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    [calendar setTimeZone:(NSTimeZone* _Nonnull)[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [calendar setTimeZone:(NSTimeZone * _Nonnull)[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     return [calendar dateFromComponents:components];
 }
 
-- (void) testStringFromDate
-{
-    NSDate* date = [self gmtDateWithYear:2000 month:1 day:2 hour:3 minute:4 second:5];
-    NSString* expected = @"2000-01-02T03:04:05Z";
-    NSString* actual = stringFromDate(date);
+- (void)testStringFromDate {
+    NSDate *date = [self gmtDateWithYear:2000 month:1 day:2 hour:3 minute:4 second:5];
+    NSString *expected = @"2000-01-02T03:04:05Z";
+    NSString *actual = stringFromDate(date);
 
     XCTAssertEqualObjects(actual, expected, @"");
 }
 
 @end
-

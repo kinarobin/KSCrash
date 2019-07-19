@@ -24,52 +24,46 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSMach.h"
 #include <mach/exception_types.h>
 #include <mach/kern_return.h>
 
-
-@interface KSMach_Tests : XCTestCase @end
+@interface KSMach_Tests : XCTestCase
+@end
 
 @implementation KSMach_Tests
 
-- (void) testExceptionName
-{
-    NSString* expected = @"EXC_ARITHMETIC";
-    NSString* actual = [NSString stringWithCString:ksmach_exceptionName(EXC_ARITHMETIC)
+- (void)testExceptionName {
+    NSString *expected = @"EXC_ARITHMETIC";
+    NSString *actual = [NSString stringWithCString:ksmach_exceptionName(EXC_ARITHMETIC)
                                           encoding:NSUTF8StringEncoding];
     XCTAssertEqualObjects(actual, expected, @"");
 }
 
-- (void) testVeryHighExceptionName
-{
-    const char* result = ksmach_exceptionName(100000);
+- (void)testVeryHighExceptionName {
+    const char *result = ksmach_exceptionName(100000);
     XCTAssertTrue(result == NULL, @"");
 }
 
-- (void) testKernReturnCodeName
-{
-    NSString* expected = @"KERN_FAILURE";
-    NSString* actual = [NSString stringWithCString:ksmach_kernelReturnCodeName(KERN_FAILURE)
+- (void)testKernReturnCodeName {
+    NSString *expected = @"KERN_FAILURE";
+    NSString *actual = [NSString stringWithCString:ksmach_kernelReturnCodeName(KERN_FAILURE)
                                           encoding:NSUTF8StringEncoding];
     XCTAssertEqualObjects(actual, expected, @"");
 }
 
-- (void) testVeryHighKernReturnCodeName
-{
-    const char* result = ksmach_kernelReturnCodeName(100000);
+- (void)testVeryHighKernReturnCodeName {
+    const char *result = ksmach_kernelReturnCodeName(100000);
     XCTAssertTrue(result == NULL, @"");
 }
 
 #define EXC_UNIX_BAD_SYSCALL 0x10000 /* SIGSYS */
-#define EXC_UNIX_BAD_PIPE    0x10001 /* SIGPIPE */
-#define EXC_UNIX_ABORT       0x10002 /* SIGABRT */
+#define EXC_UNIX_BAD_PIPE 0x10001    /* SIGPIPE */
+#define EXC_UNIX_ABORT 0x10002       /* SIGABRT */
 
-- (void) testMachExeptionsForSignals
-{
+- (void)testMachExeptionsForSignals {
     [self assertMachException:EXC_ARITHMETIC code:0 matchesSignal:SIGFPE];
     [self assertMachException:EXC_BAD_ACCESS code:0 matchesSignal:SIGBUS];
     [self assertMachException:EXC_BAD_ACCESS code:KERN_INVALID_ADDRESS matchesSignal:SIGSEGV];
@@ -84,8 +78,7 @@
     [self assertMachException:1000000000 code:0 matchesSignal:0];
 }
 
-- (void) testSignalsForMachExeptions
-{
+- (void)testSignalsForMachExeptions {
     [self assertSignal:SIGFPE matchesMachException:EXC_ARITHMETIC];
     [self assertSignal:SIGSEGV matchesMachException:EXC_BAD_ACCESS];
     [self assertSignal:SIGBUS matchesMachException:EXC_BAD_ACCESS];
@@ -99,14 +92,12 @@
     [self assertSignal:1000000000 matchesMachException:0];
 }
 
-- (void) assertMachException:(int) exception code:(int) code matchesSignal:(int) signal
-{
+- (void)assertMachException:(int)exception code:(int)code matchesSignal:(int)signal {
     int result = ksmach_signalForMachException(exception, code);
     XCTAssertEqual(result, signal, @"");
 }
 
-- (void) assertSignal:(int) signal matchesMachException:(int) exception
-{
+- (void)assertSignal:(int)signal matchesMachException:(int)exception {
     int result = ksmach_machExceptionForSignal(signal);
     XCTAssertEqual(result, exception, @"");
 }

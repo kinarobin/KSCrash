@@ -24,12 +24,10 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashInstallationVictory.h"
 #import "KSCrashInstallation+Private.h"
 #import "KSCrashReportFilterBasic.h"
 #import "KSCrashReportSinkVictory.h"
-
 
 @implementation KSCrashInstallationVictory
 
@@ -37,25 +35,22 @@
 @synthesize userName = _userName;
 @synthesize userEmail = _userEmail;
 
-+ (instancetype) sharedInstance
-{
++ (instancetype)sharedInstance {
     static KSCrashInstallationVictory *sharedInstance = nil;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{
         sharedInstance = [[KSCrashInstallationVictory alloc] init];
     });
     return sharedInstance;
 }
 
-- (id) init
-{
-    return [super initWithRequiredProperties:[NSArray arrayWithObjects: @"url", nil]];
+- (id)init {
+    return [super initWithRequiredProperties:[NSArray arrayWithObjects:@"url", nil]];
 }
 
-- (id<KSCrashReportFilter>) sink
-{
-    KSCrashReportSinkVictory* sink = [KSCrashReportSinkVictory sinkWithURL:self.url userName:self.userName userEmail:self.userEmail];
+- (id<KSCrashReportFilter>)sink {
+    KSCrashReportSinkVictory *sink = [KSCrashReportSinkVictory sinkWithURL:self.url userName:self.userName userEmail:self.userEmail];
     return [KSCrashReportFilterPipeline filterWithFilters:[sink defaultCrashReportFilterSet], nil];
 }
 

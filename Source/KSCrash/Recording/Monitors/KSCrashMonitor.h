@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /** Keeps watch for crashes and informs via callback when on occurs.
  */
-
 
 #ifndef HDR_KSCrashMonitor_h
 #define HDR_KSCrashMonitor_h
@@ -36,14 +34,12 @@
 extern "C" {
 #endif
 
-
 #include "KSCrashMonitorType.h"
 #include "KSThread.h"
-    
+
 #include <stdbool.h>
 
 struct KSCrash_MonitorContext;
-
 
 // ============================================================================
 #pragma mark - External API -
@@ -63,24 +59,24 @@ KSCrashMonitorType kscm_getActiveMonitors(void);
  *
  * @param onEvent Called whenever an event is captured.
  */
-void kscm_setEventCallback(void (*onEvent)(struct KSCrash_MonitorContext* monitorContext));
-
+void kscm_setEventCallback(
+    void (*onEvent)(struct KSCrash_MonitorContext* monitorContext));
 
 // ============================================================================
 #pragma mark - Internal API -
 // ============================================================================
 
-typedef struct
-{
-    void (*setEnabled)(bool isEnabled);
-    bool (*isEnabled)(void);
-    void (*addContextualInfoToEvent)(struct KSCrash_MonitorContext* eventContext);
+typedef struct {
+  void (*setEnabled)(bool isEnabled);
+  bool (*isEnabled)(void);
+  void (*addContextualInfoToEvent)(struct KSCrash_MonitorContext* eventContext);
 } KSCrashMonitorAPI;
 
 /** Notify that a fatal exception has been captured.
  *  This allows the system to take appropriate steps in preparation.
  *
- * @oaram isAsyncSafeEnvironment If true, only async-safe functions are allowed from now on.
+ * @oaram isAsyncSafeEnvironment If true, only async-safe functions are allowed
+ * from now on.
  */
 bool kscm_notifyFatalExceptionCaptured(bool isAsyncSafeEnvironment);
 
@@ -90,9 +86,8 @@ bool kscm_notifyFatalExceptionCaptured(bool isAsyncSafeEnvironment);
  */
 void kscm_handleException(struct KSCrash_MonitorContext* context);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCrashMonitor_h
+#endif  // HDR_KSCrashMonitor_h

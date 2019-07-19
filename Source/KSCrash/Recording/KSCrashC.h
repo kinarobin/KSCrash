@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Primary C entry point into the crash reporting system.
  */
-
 
 #ifndef HDR_KSCrashC_h
 #define HDR_KSCrashC_h
@@ -36,12 +34,10 @@
 extern "C" {
 #endif
 
-
 #include "KSCrashMonitorType.h"
 #include "KSCrashReportWriter.h"
 
 #include <stdbool.h>
-
 
 /** Install the crash reporter. The reporter will record the next crash and then
  * terminate the program.
@@ -50,7 +46,8 @@ extern "C" {
  *
  * @return The crash types that are being handled.
  */
-KSCrashMonitorType kscrash_install(const char* appName, const char* const installPath);
+KSCrashMonitorType kscrash_install(const char* appName,
+                                   const char* const installPath);
 
 /** Set the crash types that will be handled.
  * Some crash types may not be enabled depending on circumstances (e.g. running
@@ -77,11 +74,11 @@ void kscrash_setUserInfoJSON(const char* const userInfoJSON);
  * watchdog will consider the queue deadlocked and shut down the app and write a
  * crash report.
  *
- * Warning: Make SURE that nothing in your app that runs on the main thread takes
- * longer to complete than this value or it WILL get shut down! This includes
- * your app startup process, so you may need to push app initialization to
- * another thread, or perhaps set this to a higher value until your application
- * has been fully initialized.
+ * Warning: Make SURE that nothing in your app that runs on the main thread
+ * takes longer to complete than this value or it WILL get shut down! This
+ * includes your app startup process, so you may need to push app initialization
+ * to another thread, or perhaps set this to a higher value until your
+ * application has been fully initialized.
  *
  * 0 = Disabled.
  *
@@ -91,7 +88,8 @@ void kscrash_setDeadlockWatchdogInterval(double deadlockWatchdogInterval);
 
 /** If true, attempt to fetch dispatch queue names for each running thread.
  *
- * WARNING: There is a chance that this will crash on a ksthread_getQueueName() call!
+ * WARNING: There is a chance that this will crash on a ksthread_getQueueName()
+ * call!
  *
  * Enable at your own risk.
  *
@@ -109,12 +107,13 @@ void kscrash_setSearchQueueNames(bool searchQueueNames);
 void kscrash_setIntrospectMemory(bool introspectMemory);
 
 /** List of Objective-C classes that should never be introspected.
- * Whenever a class in this list is encountered, only the class name will be recorded.
- * This can be useful for information security concerns.
+ * Whenever a class in this list is encountered, only the class name will be
+ * recorded. This can be useful for information security concerns.
  *
  * Default: NULL
  */
-void kscrash_setDoNotIntrospectClasses(const char** doNotIntrospectClasses, int length);
+void kscrash_setDoNotIntrospectClasses(const char** doNotIntrospectClasses,
+                                       int length);
 
 /** Set the callback to invoke upon a crash.
  *
@@ -142,7 +141,8 @@ typedef void (*KSReportWrittenCallback)(int64_t reportID);
  *
  * Default: NULL
  */
-void kscrash_setReportWrittenCallback(const KSReportWrittenCallback onReportWrittenNotify);
+void kscrash_setReportWrittenCallback(
+    const KSReportWrittenCallback onReportWrittenNotify);
 
 /** Set if KSLOG console messages should be appended to the report.
  *
@@ -155,7 +155,8 @@ void kscrash_setAddConsoleLogToReport(bool shouldAddConsoleLogToReport);
  */
 void kscrash_setPrintPreviousLog(bool shouldPrintPreviousLog);
 
-/** Set the maximum number of reports allowed on disk before old ones get deleted.
+/** Set the maximum number of reports allowed on disk before old ones get
+ * deleted.
  *
  * @param maxReportCount The maximum number of reports.
  */
@@ -164,8 +165,8 @@ void kscrash_setMaxReportCount(int maxReportCount);
 /** Report a custom, user defined exception.
  * This can be useful when dealing with scripting languages.
  *
- * If terminateProgram is true, all sentries will be uninstalled and the application will
- * terminate with an abort().
+ * If terminateProgram is true, all sentries will be uninstalled and the
+ * application will terminate with an abort().
  *
  * @param name The exception name (for namespacing exception types).
  *
@@ -175,26 +176,26 @@ void kscrash_setMaxReportCount(int maxReportCount);
  *
  * @param lineOfCode A copy of the offending line of code (NULL = ignore).
  *
- * @param stackTrace JSON encoded array containing stack trace information (one frame per array entry).
- *                   The frame structure can be anything you want, including bare strings.
+ * @param stackTrace JSON encoded array containing stack trace information (one
+ * frame per array entry). The frame structure can be anything you want,
+ * including bare strings.
  *
- * @param logAllThreads If true, suspend all threads and log their state. Note that this incurs a
- *                      performance penalty, so it's best to use only on fatal errors.
+ * @param logAllThreads If true, suspend all threads and log their state. Note
+ * that this incurs a performance penalty, so it's best to use only on fatal
+ * errors.
  *
- * @param terminateProgram If true, do not return from this function call. Terminate the program instead.
+ * @param terminateProgram If true, do not return from this function call.
+ * Terminate the program instead.
  */
-void kscrash_reportUserException(const char* name,
-                                 const char* reason,
-                                 const char* language,
-                                 const char* lineOfCode,
-                                 const char* stackTrace,
-                                 bool logAllThreads,
+void kscrash_reportUserException(const char* name, const char* reason,
+                                 const char* language, const char* lineOfCode,
+                                 const char* stackTrace, bool logAllThreads,
                                  bool terminateProgram);
 
-    
-#pragma mark -- Notifications --
+#pragma mark-- Notifications --
 
-/** Notify the crash reporter of KSCrash being added to Objective-C runtime system.
+/** Notify the crash reporter of KSCrash being added to Objective-C runtime
+ * system.
  */
 void kscrash_notifyObjCLoad(void);
 
@@ -219,8 +220,7 @@ void kscrash_notifyAppTerminate(void);
  */
 void kscrash_notifyAppCrash(void);
 
-    
-#pragma mark -- Reporting --
+#pragma mark-- Reporting --
 
 /** Get the number of reports on disk.
  */
@@ -240,7 +240,8 @@ int kscrash_getReportIDs(int64_t* reportIDs, int count);
  * @param reportID The report's ID.
  *
  * @return The NULL terminated report, or NULL if not found.
- *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on the returned value.
+ *         MEMORY MANAGEMENT WARNING: User is responsible for calling free() on
+ * the returned value.
  */
 char* kscrash_readReport(int64_t reportID);
 
@@ -263,9 +264,8 @@ void kscrash_deleteAllReports(void);
  */
 void kscrash_deleteReportWithID(int64_t reportID);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCrashC_h
+#endif  // HDR_KSCrashC_h

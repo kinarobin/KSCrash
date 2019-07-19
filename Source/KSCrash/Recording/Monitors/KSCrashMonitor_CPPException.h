@@ -31,14 +31,12 @@ extern "C" {
 
 #include "KSCrashMonitor.h"
 
-
 /** Access the Monitor API.
  */
 KSCrashMonitorAPI* kscm_cppexception_getAPI(void);
-
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCrashMonitor_CPPException_h
+#endif  // HDR_KSCrashMonitor_CPPException_h

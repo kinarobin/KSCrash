@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Writes a crash report to disk.
  */
-
 
 #ifndef HDR_KSCrashReport_h
 #define HDR_KSCrashReport_h
@@ -36,16 +34,15 @@
 extern "C" {
 #endif
 
-#import "KSCrashReportWriter.h"
 #import "KSCrashMonitorContext.h"
+#import "KSCrashReportWriter.h"
 
 #include <stdbool.h>
-
 
 // ============================================================================
 #pragma mark - Configuration -
 // ============================================================================
-    
+
 /** Set custom user information to be stored in the report.
  *
  * @param userInfoJSON The user information, in JSON format.
@@ -64,21 +61,22 @@ void kscrashreport_setIntrospectMemory(bool shouldIntrospectMemory);
  * @param doNotIntrospectClasses Array of class names.
  * @param length Length of the array.
  */
-void kscrashreport_setDoNotIntrospectClasses(const char** doNotIntrospectClasses, int length);
+void kscrashreport_setDoNotIntrospectClasses(
+    const char** doNotIntrospectClasses, int length);
 
 /** Set the function to call when writing the user section of the report.
- *  This allows the user to add more fields to the user section at the time of the crash.
- *  Note: Only async-safe functions are allowed in the callback.
+ *  This allows the user to add more fields to the user section at the time of
+ * the crash. Note: Only async-safe functions are allowed in the callback.
  *
  * @param userSectionWriteCallback The user section write callback.
  */
-void kscrashreport_setUserSectionWriteCallback(const KSReportWriteCallback userSectionWriteCallback);
-
+void kscrashreport_setUserSectionWriteCallback(
+    const KSReportWriteCallback userSectionWriteCallback);
 
 // ============================================================================
 #pragma mark - Main API -
 // ============================================================================
-    
+
 /** Write a standard crash report to a file.
  *
  * @param monitorContext Contextual information about the crash and environment.
@@ -86,8 +84,9 @@ void kscrashreport_setUserSectionWriteCallback(const KSReportWriteCallback userS
  *
  * @param path The file to write to.
  */
-void kscrashreport_writeStandardReport(const struct KSCrash_MonitorContext* const monitorContext,
-                                       const char* path);
+void kscrashreport_writeStandardReport(
+    const struct KSCrash_MonitorContext* const monitorContext,
+    const char* path);
 
 /** Write a minimal crash report to a file.
  *
@@ -96,12 +95,12 @@ void kscrashreport_writeStandardReport(const struct KSCrash_MonitorContext* cons
  *
  * @param path The file to write to.
  */
-void kscrashreport_writeRecrashReport(const struct KSCrash_MonitorContext* const monitorContext,
-                                      const char* path);
-
+void kscrashreport_writeRecrashReport(
+    const struct KSCrash_MonitorContext* const monitorContext,
+    const char* path);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCrashReport_h
+#endif  // HDR_KSCrashReport_h

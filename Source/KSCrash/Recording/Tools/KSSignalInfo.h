@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Information about the signals we are interested in for a crash reporter.
  */
-
 
 #ifndef HDR_KSSignalInfo_h
 #define HDR_KSSignalInfo_h
@@ -36,9 +34,7 @@
 extern "C" {
 #endif
 
-
 #include <stdint.h>
-
 
 /** Get the name of a signal.
  *
@@ -70,9 +66,8 @@ const int* kssignal_fatalSignals(void);
  */
 int kssignal_numFatalSignals(void);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSSignalInfo_h
+#endif  // HDR_KSSignalInfo_h

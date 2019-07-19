@@ -31,10 +31,8 @@
 extern "C" {
 #endif
 
-
-#include <sys/types.h>
 #include <stdbool.h>
-
+#include <sys/types.h>
 
 typedef uintptr_t KSThread;
 
@@ -49,7 +47,8 @@ typedef uintptr_t KSThread;
  *
  * @return true if a name was found.
  */
-bool ksthread_getThreadName(const KSThread thread, char* const buffer, int bufLength);
+bool ksthread_getThreadName(const KSThread thread, char* const buffer,
+                            int bufLength);
 
 /** Get the name of a thread's dispatch queue. Internally, a queue name will
  * never be more than 64 characters long.
@@ -73,9 +72,8 @@ bool ksthread_getQueueName(KSThread thread, char* buffer, int bufLength);
  */
 KSThread ksthread_self(void);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSThread_h
+#endif  // HDR_KSThread_h

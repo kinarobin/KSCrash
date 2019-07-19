@@ -22,7 +22,6 @@
 // THE SOFTWARE.
 //
 
-
 #ifndef KSSymbolicator_h
 #define KSSymbolicator_h
 
@@ -30,9 +29,8 @@
 extern "C" {
 #endif
 
-
-#include "KSStackCursor.h"
 #include <stdbool.h>
+#include "KSStackCursor.h"
 
 /** Symbolicate a stack cursor.
  *
@@ -42,9 +40,8 @@ extern "C" {
  */
 bool kssymbolicator_symbolicate(KSStackCursor *cursor);
 
-    
 #ifdef __cplusplus
 }
 #endif
 
-#endif // KSSymbolicator_h
+#endif  // KSSymbolicator_h

@@ -31,7 +31,6 @@
 extern "C" {
 #endif
 
-
 #include "KSMachineContext.h"
 
 #include <stdbool.h>
@@ -67,7 +66,8 @@ uintptr_t kscpu_stackPointer(const struct KSMachineContext* const context);
  *
  * @return The context's next instruction address.
  */
-uintptr_t kscpu_instructionAddress(const struct KSMachineContext* const context);
+uintptr_t kscpu_instructionAddress(
+    const struct KSMachineContext* const context);
 
 /** Get the address stored in the link register (arm only). This may
  * contain the first return address of the stack.
@@ -107,7 +107,8 @@ const char* kscpu_registerName(int regNumber);
  *
  * @return The register's current value.
  */
-uint64_t kscpu_registerValue(const struct KSMachineContext* const context, int regNumber);
+uint64_t kscpu_registerValue(const struct KSMachineContext* const context,
+                             int regNumber);
 
 /** Get the number of exception registers the currently running CPU has.
  *
@@ -129,7 +130,8 @@ const char* kscpu_exceptionRegisterName(int regNumber);
  *
  * @return The register's current value.
  */
-uint64_t kscpu_exceptionRegisterValue(const struct KSMachineContext* const context, int regNumber);
+uint64_t kscpu_exceptionRegisterValue(
+    const struct KSMachineContext* const context, int regNumber);
 
 /** Get the direction in which the stack grows on the current architecture.
  *
@@ -150,9 +152,9 @@ void kscpu_getState(struct KSMachineContext* destinationContext);
  * @return Instruction pointer without PAC.
  */
 uintptr_t kscpu_normaliseInstructionPointer(uintptr_t ip);
-    
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSCPU_h
+#endif  // HDR_KSCPU_h

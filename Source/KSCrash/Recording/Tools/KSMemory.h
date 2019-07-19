@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Utility functions for querying the mach kernel.
  */
-
 
 #ifndef HDR_ksmemory_h
 #define HDR_ksmemory_h
@@ -36,9 +34,7 @@
 extern "C" {
 #endif
 
-
 #include <stdbool.h>
-
 
 /** Test if the specified memory is safe to read from.
  *
@@ -69,7 +65,8 @@ int ksmem_maxReadableBytes(const void* const memory, const int tryByteCount);
  *
  * @return true if successful.
  */
-bool ksmem_copySafely(const void* restrict const src, void* restrict const dst, int byteCount);
+bool ksmem_copySafely(const void* restrict const src, void* restrict const dst,
+                      int byteCount);
 
 /** Copies up to numBytes of data from src to dest, stopping if memory
  * becomes inaccessible.
@@ -82,10 +79,11 @@ bool ksmem_copySafely(const void* restrict const src, void* restrict const dst, 
  *
  * @return The number of bytes actually copied.
  */
-int ksmem_copyMaxPossible(const void* restrict const src, void* restrict const dst, int byteCount);
+int ksmem_copyMaxPossible(const void* restrict const src,
+                          void* restrict const dst, int byteCount);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_ksmemory_h
+#endif  // HDR_ksmemory_h

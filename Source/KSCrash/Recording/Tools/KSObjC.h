@@ -24,7 +24,6 @@
 // THE SOFTWARE.
 //
 
-
 #ifndef HDR_KSObjC_h
 #define HDR_KSObjC_h
 
@@ -32,38 +31,32 @@
 extern "C" {
 #endif
 
-
 #include <stdbool.h>
 #include <stdint.h>
 
-
-typedef enum
-{
-    KSObjCTypeUnknown = 0,
-    KSObjCTypeClass,
-    KSObjCTypeObject,
-    KSObjCTypeBlock,
+typedef enum {
+  KSObjCTypeUnknown = 0,
+  KSObjCTypeClass,
+  KSObjCTypeObject,
+  KSObjCTypeBlock,
 } KSObjCType;
 
-typedef enum
-{
-    KSObjCClassTypeUnknown = 0,
-    KSObjCClassTypeString,
-    KSObjCClassTypeDate,
-    KSObjCClassTypeURL,
-    KSObjCClassTypeArray,
-    KSObjCClassTypeDictionary,
-    KSObjCClassTypeNumber,
-    KSObjCClassTypeException,
+typedef enum {
+  KSObjCClassTypeUnknown = 0,
+  KSObjCClassTypeString,
+  KSObjCClassTypeDate,
+  KSObjCClassTypeURL,
+  KSObjCClassTypeArray,
+  KSObjCClassTypeDictionary,
+  KSObjCClassTypeNumber,
+  KSObjCClassTypeException,
 } KSObjCClassType;
 
-typedef struct
-{
-    const char* name;
-    const char* type;
-    int index;
+typedef struct {
+  const char* name;
+  const char* type;
+  int index;
 } KSObjCIvar;
-
 
 //======================================================================
 #pragma mark - Basic Objective-C Queries -
@@ -82,7 +75,7 @@ bool ksobjc_isTaggedPointer(const void* const pointer);
  * @return true if it's a valid tagged pointer.
  */
 bool ksobjc_isValidTaggedPointer(const void* const pointer);
-    
+
 /** Query a pointer to see what kind of object it points to.
  * If the pointer points to a class, this method will verify that its basic
  * class data and ivars are valid,
@@ -182,7 +175,8 @@ const char* ksobjc_objectClassName(const void* objectPtr);
  *
  * @return true if the class has the specified name.
  */
-bool ksobjc_isClassNamed(const void* const classPtr, const char* const className);
+bool ksobjc_isClassNamed(const void* const classPtr,
+                         const char* const className);
 
 /** Check if a class is of the specified type or a subclass thereof.
  * Note: This function is considerably slower than ksobjc_baseClassName().
@@ -191,7 +185,8 @@ bool ksobjc_isClassNamed(const void* const classPtr, const char* const className
  *
  * @param className The class name to compare against.
  *
- * @return true if the class is of the specified type or a subclass of that type.
+ * @return true if the class is of the specified type or a subclass of that
+ * type.
  */
 bool ksobjc_isKindOfClass(const void* classPtr, const char* className);
 
@@ -225,7 +220,8 @@ int ksobjc_ivarList(const void* classPtr, KSObjCIvar* dstIvars, int ivarsCount);
  *
  * @return true if the operation was successful.
  */
-bool ksobjc_ivarNamed(const void* const classPtr, const char* name, KSObjCIvar* dst);
+bool ksobjc_ivarNamed(const void* const classPtr, const char* name,
+                      KSObjCIvar* dst);
 
 /** Get the value of an ivar in an object.
  *
@@ -273,10 +269,10 @@ int ksobjc_getDescription(void* object, char* buffer, int bufferLength);
  *
  * @param object The object to query.
  *
- * @return The class type, or KSObjCClassTypeUnknown if it couldn't be determined.
+ * @return The class type, or KSObjCClassTypeUnknown if it couldn't be
+ * determined.
  */
 KSObjCClassType ksobjc_objectClassType(const void* object);
-
 
 //======================================================================
 #pragma mark - Object-Specific Queries -
@@ -371,7 +367,6 @@ int ksobjc_arrayCount(const void* arrayPtr);
  */
 int ksobjc_arrayContents(const void* arrayPtr, uintptr_t* contents, int count);
 
-
 //======================================================================
 #pragma mark - Broken/Unimplemented Stuff -
 //======================================================================
@@ -388,15 +383,15 @@ int ksobjc_arrayContents(const void* arrayPtr, uintptr_t* contents, int count);
  *
  * @return true if the operation was successful.
  */
-bool ksobjc_dictionaryFirstEntry(const void* dict, uintptr_t* key, uintptr_t* value);
+bool ksobjc_dictionaryFirstEntry(const void* dict, uintptr_t* key,
+                                 uintptr_t* value);
 
 /** UNIMPLEMENTED
  */
 int ksobjc_dictionaryCount(const void* dict);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSObjC_h
+#endif  // HDR_KSObjC_h

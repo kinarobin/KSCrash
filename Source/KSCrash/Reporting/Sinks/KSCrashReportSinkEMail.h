@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
-#import <Foundation/Foundation.h>
 #import "KSCrashReportFilter.h"
-
+#import <Foundation/Foundation.h>
 
 /** Sends reports via email.
  *
@@ -44,10 +42,10 @@
  *                    when multiple reports are sent at once.
  *                    Note: With the default filter set, files are gzipped text.
  */
-+ (KSCrashReportSinkEMail*) sinkWithRecipients:(NSArray*) recipients
-                                       subject:(NSString*) subject
-                                       message:(NSString*) message
-                                   filenameFmt:(NSString*) filenameFmt;
++ (KSCrashReportSinkEMail *)sinkWithRecipients:(NSArray *)recipients
+                                       subject:(NSString *)subject
+                                       message:(NSString *)message
+                                   filenameFmt:(NSString *)filenameFmt;
 
 /**
  * @param recipients List of email addresses to send to.
@@ -57,12 +55,12 @@
  *                    when multiple reports are sent at once.
  *                    Note: With the default filter set, files are gzipped text.
  */
-- (id) initWithRecipients:(NSArray*) recipients
-                  subject:(NSString*) subject
-                  message:(NSString*) message
-              filenameFmt:(NSString*) filenameFmt;
+- (id)initWithRecipients:(NSArray *)recipients
+                 subject:(NSString *)subject
+                 message:(NSString *)message
+             filenameFmt:(NSString *)filenameFmt;
 
-- (id <KSCrashReportFilter>) defaultCrashReportFilterSet;
-- (id <KSCrashReportFilter>) defaultCrashReportFilterSetAppleFmt;
+- (id<KSCrashReportFilter>)defaultCrashReportFilterSet;
+- (id<KSCrashReportFilter>)defaultCrashReportFilterSetAppleFmt;
 
 @end

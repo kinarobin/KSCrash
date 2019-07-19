@@ -24,24 +24,22 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSCrashMonitor.h"
 #import "KSCrashMonitorContext.h"
 
-@interface KSCrashMonitor_Tests : XCTestCase @end
+@interface KSCrashMonitor_Tests : XCTestCase
+@end
 
 @implementation KSCrashMonitor_Tests
 
-- (void) testInstallUninstall
-{
+- (void)testInstallUninstall {
     kscm_setActiveMonitors(KSCrashMonitorTypeAll);
     kscm_setActiveMonitors(KSCrashMonitorTypeNone);
 }
 
-- (void) testSuspendResumeThreads
-{
+- (void)testSuspendResumeThreads {
     ksmc_suspendEnvironment();
     ksmc_suspendEnvironment();
     ksmc_resumeEnvironment();

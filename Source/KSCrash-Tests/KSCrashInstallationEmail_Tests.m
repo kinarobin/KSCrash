@@ -24,49 +24,43 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
-#import <KSCrash/KSCrashInstallation+Alert.h>
 #import "KSCrashInstallationEmail.h"
+#import <KSCrash/KSCrashInstallation+Alert.h>
 
-
-@interface KSCrashInstallationEmail_Tests : XCTestCase @end
-
+@interface KSCrashInstallationEmail_Tests : XCTestCase
+@end
 
 @implementation KSCrashInstallationEmail_Tests
 
-- (void) testInstall
-{
-    KSCrashInstallationEmail* installation = [KSCrashInstallationEmail sharedInstance];
+- (void)testInstall {
+    KSCrashInstallationEmail *installation = [KSCrashInstallationEmail sharedInstance];
     installation.recipients = [NSArray arrayWithObjects:@"nobody", nil];
     installation.subject = @"subject";
     installation.message = @"message";
     installation.filenameFmt = @"someFile.txt.gz";
     [installation addConditionalAlertWithTitle:@"title" message:@"message" yesAnswer:@"Yes" noAnswer:@"No"];
     [installation install];
-    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error)
-     {
-         // There are no reports, so this will succeed.
-         XCTAssertTrue(completed, @"");
-         XCTAssertNil(error, @"");
-     }];
+    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error) {
+        // There are no reports, so this will succeed.
+        XCTAssertTrue(completed, @"");
+        XCTAssertNil(error, @"");
+    }];
 }
 
-- (void) testInstallInvalid
-{
-    KSCrashInstallationEmail* installation = [KSCrashInstallationEmail sharedInstance];
+- (void)testInstallInvalid {
+    KSCrashInstallationEmail *installation = [KSCrashInstallationEmail sharedInstance];
     installation.recipients = nil;
     installation.subject = nil;
     installation.message = nil;
     installation.filenameFmt = nil;
     [installation addUnconditionalAlertWithTitle:@"title" message:@"message" dismissButtonText:@"dismiss"];
     [installation install];
-    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error)
-     {
-         XCTAssertFalse(completed, @"");
-         XCTAssertNotNil(error, @"");
-     }];
+    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error) {
+        XCTAssertFalse(completed, @"");
+        XCTAssertNotNil(error, @"");
+    }];
 }
 
 @end

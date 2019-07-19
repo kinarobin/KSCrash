@@ -13,18 +13,18 @@
 #ifndef SWIFT_BASIC_DEMANGLE_H
 #define SWIFT_BASIC_DEMANGLE_H
 
+#include <cassert>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
-#include <cassert>
-#include <cstdint>
 //#include "llvm/ADT/StringRef.h"
 //#include "swift/Basic/Malloc.h"
-#include "StringRef.h"
 #include "Malloc.h"
+#include "StringRef.h"
 
 namespace llvm {
-  class raw_ostream;
+class raw_ostream;
 }
 
 namespace swift {
@@ -133,12 +133,10 @@ enum class ValueWitnessKind {
   DestructiveProjectEnumData,
 };
 
-enum class Directness {
-  Direct, Indirect
-};
+enum class Directness { Direct, Indirect };
 
 class Node : public std::enable_shared_from_this<Node> {
-public:
+ public:
   enum class Kind : uint16_t {
 #define NODE(ID) ID,
 //#include "swift/Basic/DemangleNodes.def"
@@ -147,12 +145,10 @@ public:
 
   typedef uint64_t IndexType;
 
-private:
+ private:
   Kind NodeKind;
 
-  enum class PayloadKind : uint8_t {
-    None, Text, Index
-  };
+  enum class PayloadKind : uint8_t { None, Text, Index };
   PayloadKind NodePayloadKind;
 
   union {
@@ -164,9 +160,7 @@ private:
   typedef std::vector<NodePointer> NodeVector;
   NodeVector Children;
 
-  Node(Kind k)
-      : NodeKind(k), NodePayloadKind(PayloadKind::None) {
-  }
+  Node(Kind k) : NodeKind(k), NodePayloadKind(PayloadKind::None) {}
   Node(Kind k, std::string &&t)
       : NodeKind(k), NodePayloadKind(PayloadKind::Text) {
     new (&TextPayload) std::string(std::move(t));
@@ -180,7 +174,7 @@ private:
 
   friend struct NodeFactory;
 
-public:
+ public:
   ~Node();
 
   Kind getKind() const { return NodeKind; }
@@ -196,7 +190,7 @@ public:
     assert(hasIndex());
     return IndexPayload;
   }
-  
+
   typedef NodeVector::iterator iterator;
   typedef NodeVector::const_iterator const_iterator;
   typedef NodeVector::size_type size_type;
@@ -237,19 +231,20 @@ public:
 /// \endcode
 ///
 /// \param mangledName The mangled string.
-/// \param options An object encapsulating options to use to perform this demangling.
+/// \param options An object encapsulating options to use to perform this
+/// demangling.
 ///
 ///
 /// \returns A parse tree for the demangled string - or a null pointer
 /// on failure.
 ///
-NodePointer
-demangleSymbolAsNode(const char *mangledName, size_t mangledNameLength,
-                     const DemangleOptions &options = DemangleOptions());
+NodePointer demangleSymbolAsNode(
+    const char *mangledName, size_t mangledNameLength,
+    const DemangleOptions &options = DemangleOptions());
 
-inline NodePointer
-demangleSymbolAsNode(const std::string &mangledName,
-                     const DemangleOptions &options = DemangleOptions()) {
+inline NodePointer demangleSymbolAsNode(
+    const std::string &mangledName,
+    const DemangleOptions &options = DemangleOptions()) {
   return demangleSymbolAsNode(mangledName.data(), mangledName.size(), options);
 }
 
@@ -262,18 +257,19 @@ demangleSymbolAsNode(const std::string &mangledName,
 /// \endcode
 ///
 /// \param mangledName The mangled string.
-/// \param options An object encapsulating options to use to perform this demangling.
+/// \param options An object encapsulating options to use to perform this
+/// demangling.
 ///
 ///
 /// \returns A string representing the demangled name.
 ///
-std::string
-demangleSymbolAsString(const char *mangledName, size_t mangledNameLength,
-                       const DemangleOptions &options = DemangleOptions());
+std::string demangleSymbolAsString(
+    const char *mangledName, size_t mangledNameLength,
+    const DemangleOptions &options = DemangleOptions());
 
-inline std::string
-demangleSymbolAsString(const std::string &mangledName,
-                       const DemangleOptions &options = DemangleOptions()) {
+inline std::string demangleSymbolAsString(
+    const std::string &mangledName,
+    const DemangleOptions &options = DemangleOptions()) {
   return demangleSymbolAsString(mangledName.data(), mangledName.size(),
                                 options);
 }
@@ -287,36 +283,38 @@ demangleSymbolAsString(const std::string &mangledName,
 /// \endcode
 ///
 /// \param mangledName The mangled string.
-/// \param options An object encapsulating options to use to perform this demangling.
+/// \param options An object encapsulating options to use to perform this
+/// demangling.
 ///
 ///
 /// \returns A parse tree for the demangled string - or a null pointer
 /// on failure.
 ///
-NodePointer
-demangleTypeAsNode(const char *mangledName, size_t mangledNameLength,
-                   const DemangleOptions &options = DemangleOptions());
+NodePointer demangleTypeAsNode(
+    const char *mangledName, size_t mangledNameLength,
+    const DemangleOptions &options = DemangleOptions());
 
-inline NodePointer
-demangleTypeAsNode(const std::string &mangledName,
-                   const DemangleOptions &options = DemangleOptions()) {
+inline NodePointer demangleTypeAsNode(
+    const std::string &mangledName,
+    const DemangleOptions &options = DemangleOptions()) {
   return demangleTypeAsNode(mangledName.data(), mangledName.size(), options);
 }
 
 /// \brief Demangle the given string as a Swift type mangling.
 ///
 /// \param mangledName The mangled string.
-/// \param options An object encapsulating options to use to perform this demangling.
+/// \param options An object encapsulating options to use to perform this
+/// demangling.
 ///
 ///
 /// \returns A string representing the demangled name.
-std::string
-demangleTypeAsString(const char *mangledName, size_t mangledNameLength,
-                     const DemangleOptions &options = DemangleOptions());
+std::string demangleTypeAsString(
+    const char *mangledName, size_t mangledNameLength,
+    const DemangleOptions &options = DemangleOptions());
 
-inline std::string
-demangleTypeAsString(const std::string &mangledName,
-                     const DemangleOptions &options = DemangleOptions()) {
+inline std::string demangleTypeAsString(
+    const std::string &mangledName,
+    const DemangleOptions &options = DemangleOptions()) {
   return demangleTypeAsString(mangledName.data(), mangledName.size(), options);
 }
 
@@ -346,7 +344,8 @@ std::string mangleNode(const NodePointer &root);
 /// \endcode
 ///
 /// \param Root A pointer to a parse tree generated by the demangler.
-/// \param Options An object encapsulating options to use to perform this demangling.
+/// \param Options An object encapsulating options to use to perform this
+/// demangling.
 ///
 /// \returns A string representing the demangled name.
 ///
@@ -354,9 +353,7 @@ std::string nodeToString(NodePointer Root,
                          const DemangleOptions &Options = DemangleOptions());
 
 struct NodeFactory {
-  static NodePointer create(Node::Kind K) {
-    return NodePointer(new Node(K));
-  }
+  static NodePointer create(Node::Kind K) { return NodePointer(new Node(K)); }
   static NodePointer create(Node::Kind K, Node::IndexType Index) {
     return NodePointer(new Node(K, Index));
   }
@@ -372,16 +369,16 @@ struct NodeFactory {
   }
 };
 
-  /// A class for printing to a std::string.
+/// A class for printing to a std::string.
 class DemanglerPrinter {
-public:
+ public:
   DemanglerPrinter() = default;
 
   DemanglerPrinter &operator<<(llvm::StringRef Value) & {
     Stream.append(Value.data(), Value.size());
     return *this;
   }
-  
+
   DemanglerPrinter &operator<<(char c) & {
     Stream.push_back(c);
     return *this;
@@ -391,24 +388,20 @@ public:
   DemanglerPrinter &operator<<(unsigned long n) & {
     return *this << (unsigned long long)n;
   }
-  DemanglerPrinter &operator<<(long n) & {
-    return *this << (long long)n;
-  }
+  DemanglerPrinter &operator<<(long n) & { return *this << (long long)n; }
   DemanglerPrinter &operator<<(unsigned n) & {
     return *this << (unsigned long long)n;
   }
-  DemanglerPrinter &operator<<(int n) & {
-    return *this << (long long)n;
-  }
-  
-  template<typename T>
+  DemanglerPrinter &operator<<(int n) & { return *this << (long long)n; }
+
+  template <typename T>
   DemanglerPrinter &&operator<<(T &&x) && {
     return std::move(*this << std::forward<T>(x));
   }
-  
+
   std::string &&str() && { return std::move(Stream); }
-  
-private:
+
+ private:
   std::string Stream;
 };
 
@@ -416,11 +409,9 @@ private:
 ///
 /// Yes, this is equivalent to the standard C isdigit(3), but some platforms
 /// give isdigit suboptimal implementations.
-static inline bool isDigit(int c) {
-  return c >= '0' && c <= '9';
-}
-  
-} // end namespace Demangle
-} // end namespace swift
+static inline bool isDigit(int c) { return c >= '0' && c <= '9'; }
 
-#endif // SWIFT_BASIC_DEMANGLE_H
+}  // end namespace Demangle
+}  // end namespace swift
+
+#endif  // SWIFT_BASIC_DEMANGLE_H

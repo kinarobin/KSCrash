@@ -24,15 +24,13 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashInstallation.h"
-
 
 @interface KSCrashInstallationStandard : KSCrashInstallation
 
 /** The URL to connect to. */
-@property(nonatomic,readwrite,retain) NSURL* url;
+@property (nonatomic, readwrite, retain) NSURL *url;
 
-+ (instancetype) sharedInstance;
++ (instancetype)sharedInstance;
 
 @end

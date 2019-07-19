@@ -39,28 +39,28 @@
 
 #if KSCRASH_HAS_NSALERT
 #import <AppKit/AppKit.h>
-#endif 
+#endif
 
 @interface KSCrashAlertViewProcess : NSObject
 #if KSCRASH_HAS_UIALERTVIEW
-<UIAlertViewDelegate>
+                                     <UIAlertViewDelegate>
 #endif
 
-@property(nonatomic,readwrite,retain) NSArray* reports;
-@property(nonatomic,readwrite,copy) KSCrashReportFilterCompletion onCompletion;
+@property (nonatomic, readwrite, retain) NSArray *reports;
+@property (nonatomic, readwrite, copy) KSCrashReportFilterCompletion onCompletion;
 #if KSCRASH_HAS_UIALERTVIEW
-@property(nonatomic,readwrite,retain) UIAlertView* alertView;
+@property (nonatomic, readwrite, retain) UIAlertView *alertView;
 #endif
-@property(nonatomic,readwrite,assign) NSInteger expectedButtonIndex;
+@property (nonatomic, readwrite, assign) NSInteger expectedButtonIndex;
 
-+ (KSCrashAlertViewProcess*) process;
++ (KSCrashAlertViewProcess *)process;
 
-- (void) startWithTitle:(NSString*) title
-                message:(NSString*) message
-              yesAnswer:(NSString*) yesAnswer
-               noAnswer:(NSString*) noAnswer
-                reports:(NSArray*) reports
-           onCompletion:(KSCrashReportFilterCompletion) onCompletion;
+- (void)startWithTitle:(NSString *)title
+               message:(NSString *)message
+             yesAnswer:(NSString *)yesAnswer
+              noAnswer:(NSString *)noAnswer
+               reports:(NSArray *)reports
+          onCompletion:(KSCrashReportFilterCompletion)onCompletion;
 
 @end
 
@@ -73,18 +73,16 @@
 #endif
 @synthesize expectedButtonIndex = _expectedButtonIndex;
 
-+ (KSCrashAlertViewProcess*) process
-{
++ (KSCrashAlertViewProcess *)process {
     return [[self alloc] init];
 }
 
-- (void) startWithTitle:(NSString*) title
-                message:(NSString*) message
-              yesAnswer:(NSString*) yesAnswer
-               noAnswer:(NSString*) noAnswer
-                reports:(NSArray*) reports
-           onCompletion:(KSCrashReportFilterCompletion) onCompletion
-{
+- (void)startWithTitle:(NSString *)title
+               message:(NSString *)message
+             yesAnswer:(NSString *)yesAnswer
+              noAnswer:(NSString *)noAnswer
+               reports:(NSArray *)reports
+          onCompletion:(KSCrashReportFilterCompletion)onCompletion {
     KSLOG_TRACE(@"Starting alert view process");
     self.reports = reports;
     self.onCompletion = onCompletion;
@@ -94,13 +92,12 @@
     self.alertView = [[UIAlertView alloc] init];
     self.alertView.title = title;
     self.alertView.message = message;
-    if(noAnswer != nil)
-    {
+    if (noAnswer != nil) {
         [self.alertView addButtonWithTitle:noAnswer];
     }
     [self.alertView addButtonWithTitle:yesAnswer];
     self.alertView.delegate = self;
-    
+
     KSLOG_TRACE(@"Showing alert view");
     [self.alertView show];
 #elif KSCRASH_HAS_UIALERTCONTROLLER
@@ -109,12 +106,12 @@
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:yesAnswer
                                                         style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                      handler:^(UIAlertAction *_Nonnull action) {
                                                           kscrash_callCompletion(self.onCompletion, self.reports, YES, nil);
                                                       }];
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:noAnswer
                                                        style:UIAlertActionStyleCancel
-                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                     handler:^(UIAlertAction *_Nonnull action) {
                                                          kscrash_callCompletion(self.onCompletion, self.reports, NO, nil);
                                                      }];
     [alertController addAction:yesAction];
@@ -124,37 +121,33 @@
 #elif KSCRASH_HAS_NSALERT
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:yesAnswer];
-    if(noAnswer != nil)
-    {
+    if (noAnswer != nil) {
         [alert addButtonWithTitle:noAnswer];
     }
     [alert setMessageText:title];
     [alert setInformativeText:message];
     [alert setAlertStyle:NSInformationalAlertStyle];
     BOOL success = NO;
-    if([alert runModal] == NSAlertFirstButtonReturn)
-    {
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
         success = noAnswer != nil;
     }
     kscrash_callCompletion(self.onCompletion, self.reports, success, nil);
 #endif
 }
 
-- (void) alertView:(__unused id) alertView clickedButtonAtIndex:(NSInteger) buttonIndex
-{
+- (void)alertView:(__unused id)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     BOOL success = buttonIndex == self.expectedButtonIndex;
     kscrash_callCompletion(self.onCompletion, self.reports, success, nil);
 }
 
 @end
 
-
 @interface KSCrashReportFilterAlert ()
 
-@property(nonatomic, readwrite, retain) NSString* title;
-@property(nonatomic, readwrite, retain) NSString* message;
-@property(nonatomic, readwrite, retain) NSString* yesAnswer;
-@property(nonatomic, readwrite, retain) NSString* noAnswer;
+@property (nonatomic, readwrite, retain) NSString *title;
+@property (nonatomic, readwrite, retain) NSString *message;
+@property (nonatomic, readwrite, retain) NSString *yesAnswer;
+@property (nonatomic, readwrite, retain) NSString *noAnswer;
 
 @end
 
@@ -165,24 +158,21 @@
 @synthesize yesAnswer = _yesAnswer;
 @synthesize noAnswer = _noAnswer;
 
-+ (KSCrashReportFilterAlert*) filterWithTitle:(NSString*) title
-                                      message:(NSString*) message
-                                    yesAnswer:(NSString*) yesAnswer
-                                     noAnswer:(NSString*) noAnswer
-{
++ (KSCrashReportFilterAlert *)filterWithTitle:(NSString *)title
+                                      message:(NSString *)message
+                                    yesAnswer:(NSString *)yesAnswer
+                                     noAnswer:(NSString *)noAnswer {
     return [[self alloc] initWithTitle:title
                                message:message
                              yesAnswer:yesAnswer
                               noAnswer:noAnswer];
 }
 
-- (id) initWithTitle:(NSString*) title
-             message:(NSString*) message
-           yesAnswer:(NSString*) yesAnswer
-            noAnswer:(NSString*) noAnswer
-{
-    if((self = [super init]))
-    {
+- (id)initWithTitle:(NSString *)title
+            message:(NSString *)message
+          yesAnswer:(NSString *)yesAnswer
+           noAnswer:(NSString *)noAnswer {
+    if ((self = [super init])) {
         self.title = title;
         self.message = message;
         self.yesAnswer = yesAnswer;
@@ -191,30 +181,26 @@
     return self;
 }
 
-- (void) filterReports:(NSArray*) reports
-          onCompletion:(KSCrashReportFilterCompletion) onCompletion
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       KSLOG_TRACE(@"Launching new alert view process");
-                       __block KSCrashAlertViewProcess* process = [[KSCrashAlertViewProcess alloc] init];
-                       [process startWithTitle:self.title
-                                       message:self.message
-                                     yesAnswer:self.yesAnswer
-                                      noAnswer:self.noAnswer
-                                       reports:reports
-                                  onCompletion:^(NSArray* filteredReports,
-                                                 BOOL completed,
-                                                 NSError* error)
-                        {
-                            KSLOG_TRACE(@"alert process complete");
-                            kscrash_callCompletion(onCompletion, filteredReports, completed, error);
-                            dispatch_async(dispatch_get_main_queue(), ^
-                                           {
-                                               process = nil;
-                                           });
-                        }];
-                   });
+- (void)filterReports:(NSArray *)reports
+         onCompletion:(KSCrashReportFilterCompletion)onCompletion {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        KSLOG_TRACE(@"Launching new alert view process");
+        __block KSCrashAlertViewProcess *process = [[KSCrashAlertViewProcess alloc] init];
+        [process startWithTitle:self.title
+                        message:self.message
+                      yesAnswer:self.yesAnswer
+                       noAnswer:self.noAnswer
+                        reports:reports
+                   onCompletion:^(NSArray *filteredReports,
+                                  BOOL completed,
+                                  NSError *error) {
+                       KSLOG_TRACE(@"alert process complete");
+                       kscrash_callCompletion(onCompletion, filteredReports, completed, error);
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           process = nil;
+                       });
+                   }];
+    });
 }
 
 @end
@@ -223,32 +209,28 @@
 
 @implementation KSCrashReportFilterAlert
 
-+ (KSCrashReportFilterAlert*) filterWithTitle:(NSString*) title
-                                      message:(NSString*) message
-                                    yesAnswer:(NSString*) yesAnswer
-                                     noAnswer:(NSString*) noAnswer
-{
++ (KSCrashReportFilterAlert *)filterWithTitle:(NSString *)title
+                                      message:(NSString *)message
+                                    yesAnswer:(NSString *)yesAnswer
+                                     noAnswer:(NSString *)noAnswer {
     return [[self alloc] initWithTitle:title
                                message:message
                              yesAnswer:yesAnswer
                               noAnswer:noAnswer];
 }
 
-- (id) initWithTitle:(__unused NSString*) title
-             message:(__unused NSString*) message
-           yesAnswer:(__unused NSString*) yesAnswer
-            noAnswer:(__unused NSString*) noAnswer
-{
-    if((self = [super init]))
-    {
+- (id)initWithTitle:(__unused NSString *)title
+            message:(__unused NSString *)message
+          yesAnswer:(__unused NSString *)yesAnswer
+           noAnswer:(__unused NSString *)noAnswer {
+    if ((self = [super init])) {
         KSLOG_WARN(@"Alert filter not available on this platform.");
     }
     return self;
 }
 
-- (void) filterReports:(NSArray*) reports
-          onCompletion:(KSCrashReportFilterCompletion) onCompletion
-{
+- (void)filterReports:(NSArray *)reports
+         onCompletion:(KSCrashReportFilterCompletion)onCompletion {
     KSLOG_WARN(@"Alert filter not available on this platform.");
     kscrash_callCompletion(onCompletion, reports, YES, nil);
 }

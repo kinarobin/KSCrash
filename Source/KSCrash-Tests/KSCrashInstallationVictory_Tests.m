@@ -24,31 +24,27 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSCrashInstallationVictory.h"
 
-
-@interface KSCrashInstallationVictory_Tests : XCTestCase @end
-
+@interface KSCrashInstallationVictory_Tests : XCTestCase
+@end
 
 @implementation KSCrashInstallationVictory_Tests
 
-- (void) testInstall
-{
-    KSCrashInstallationVictory* installation = [KSCrashInstallationVictory sharedInstance];
+- (void)testInstall {
+    KSCrashInstallationVictory *installation = [KSCrashInstallationVictory sharedInstance];
     installation.url = [NSURL URLWithString:@"https://victory-demo.appspot.com/api/v1/crash/0571f5f6-652d-413f-8043-0e9531e1b689"];
     installation.userName = nil;
     installation.userEmail = nil;
-    
+
     [installation install];
-    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error)
-     {
-         // There are no reports, so this will succeed.
-         XCTAssertTrue(completed, @"");
-         XCTAssertNil(error, @"");
-     }];
+    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error) {
+        // There are no reports, so this will succeed.
+        XCTAssertTrue(completed, @"");
+        XCTAssertNil(error, @"");
+    }];
 }
 
 @end

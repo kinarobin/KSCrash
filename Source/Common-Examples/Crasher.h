@@ -8,38 +8,38 @@
 
 @interface Crasher : NSObject
 
-- (void) throwUncaughtNSException;
+- (void)throwUncaughtNSException;
 
-- (void) dereferenceBadPointer;
+- (void)dereferenceBadPointer;
 
-- (void) dereferenceNullPointer;
+- (void)dereferenceNullPointer;
 
-- (void) useCorruptObject;
+- (void)useCorruptObject;
 
-- (void) spinRunloop;
+- (void)spinRunloop;
 
-- (void) causeStackOverflow;
+- (void)causeStackOverflow;
 
-- (void) doAbort;
+- (void)doAbort;
 
-- (void) doDiv0;
+- (void)doDiv0;
 
-- (void) doIllegalInstruction;
+- (void)doIllegalInstruction;
 
-- (void) accessDeallocatedObject;
+- (void)accessDeallocatedObject;
 
-- (void) accessDeallocatedPtrProxy;
+- (void)accessDeallocatedPtrProxy;
 
-- (void) zombieNSException;
+- (void)zombieNSException;
 
-- (void) corruptMemory;
+- (void)corruptMemory;
 
-- (void) deadlock;
+- (void)deadlock;
 
-- (void) pthreadAPICrash;
+- (void)pthreadAPICrash;
 
-- (void) userDefinedCrash;
+- (void)userDefinedCrash;
 
-- (void) throwUncaughtCPPException;
+- (void)throwUncaughtCPPException;
 
 @end

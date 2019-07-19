@@ -10,12 +10,12 @@
 #import "Configuration.h"
 
 #import <KSCrash/KSCrash.h>
-#import <KSCrash/KSCrashReportFilterSets.h>
 #import <KSCrash/KSCrashReportFilter.h>
 #import <KSCrash/KSCrashReportFilterAppleFmt.h>
 #import <KSCrash/KSCrashReportFilterBasic.h>
 #import <KSCrash/KSCrashReportFilterGZip.h>
 #import <KSCrash/KSCrashReportFilterJSON.h>
+#import <KSCrash/KSCrashReportFilterSets.h>
 #import <KSCrash/KSCrashReportSinkConsole.h>
 #import <KSCrash/KSCrashReportSinkEMail.h>
 #import <KSCrash/KSCrashReportSinkQuincyHockey.h>
@@ -24,25 +24,20 @@
 
 @implementation CrashTesterCommands
 
-+ (NSString*) reportCountString
-{
++ (NSString *)reportCountString {
     int reportCount = (int)[[KSCrash sharedInstance] reportCount];
-    if(reportCount == 1)
-    {
+    if (reportCount == 1) {
         return @"1 Report";
-    }
-    else
-    {
+    } else {
         return [NSString stringWithFormat:@"%d Reports", reportCount];
     }
 }
 
-+ (void) showAlertWithTitle:(NSString*) title
-                    message:(NSString*) fmt, ...
-{
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)fmt, ... {
     va_list args;
     va_start(args, fmt);
-    NSString* message = [[NSString alloc] initWithFormat:fmt arguments:args];
+    NSString *message = [[NSString alloc] initWithFormat:fmt arguments:args];
     va_end(args);
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -61,166 +56,149 @@
 #endif
 }
 
-
-+ (void) sendReportsWithMessage:(NSString*)message
-                           sink:(id<KSCrashReportFilter>)sink
-{
++ (void)sendReportsWithMessage:(NSString *)message
+                          sink:(id<KSCrashReportFilter>)sink {
     [self sendReportsWithMessage:message sink:sink completion:nil];
 }
 
-+ (void) sendReportsWithMessage:(NSString*)message
-                           sink:(id<KSCrashReportFilter>)sink
-                     completion:(KSCrashReportFilterCompletion)completion
-{
++ (void)sendReportsWithMessage:(NSString *)message
+                          sink:(id<KSCrashReportFilter>)sink
+                    completion:(KSCrashReportFilterCompletion)completion {
     NSLog(@"%@", message);
-    KSCrash* crashReporter = [KSCrash sharedInstance];
+    KSCrash *crashReporter = [KSCrash sharedInstance];
     crashReporter.sink = sink;
     [crashReporter sendAllReportsWithCompletion:completion];
 }
 
-+ (void) printStandard
-{
++ (void)printStandard {
     [self sendReportsWithMessage:@"Printing standard reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterJSONEncode filterWithOptions:KSJSONEncodeOptionSorted | KSJSONEncodeOptionPretty],
-                                  [KSCrashReportFilterDataToString filter],
-                                  [KSCrashReportSinkConsole filter],
-                                  nil]];
+                                                                  [KSCrashReportFilterJSONEncode filterWithOptions:KSJSONEncodeOptionSorted | KSJSONEncodeOptionPretty],
+                                                                  [KSCrashReportFilterDataToString filter],
+                                                                  [KSCrashReportSinkConsole filter],
+                                                                  nil]];
 }
 
-+ (void) printUnsymbolicated
-{
++ (void)printUnsymbolicated {
     [self sendReportsWithMessage:@"Printing unsymbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleUnsymbolicated],
-                                  [KSCrashReportSinkConsole filter],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleUnsymbolicated],
+                                                                  [KSCrashReportSinkConsole filter],
+                                                                  nil]];
 }
 
-+ (void) printPartiallySymbolicated
-{
++ (void)printPartiallySymbolicated {
     [self sendReportsWithMessage:@"Printing partially symbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStylePartiallySymbolicated],
-                                  [KSCrashReportSinkConsole filter],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStylePartiallySymbolicated],
+                                                                  [KSCrashReportSinkConsole filter],
+                                                                  nil]];
 }
 
-+ (void) printSymbolicated
-{
++ (void)printSymbolicated {
     [self sendReportsWithMessage:@"Printing symbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicated],
-                                  [KSCrashReportSinkConsole filter],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicated],
+                                                                  [KSCrashReportSinkConsole filter],
+                                                                  nil]];
 }
 
-+ (void) printSideBySide
-{
++ (void)printSideBySide {
     [self sendReportsWithMessage:@"Apple Style (Side-By-Side)"
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicatedSideBySide],
-                                  [KSCrashReportSinkConsole filter],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicatedSideBySide],
+                                                                  [KSCrashReportSinkConsole filter],
+                                                                  nil]];
 }
 
-+ (void) printSideBySideWithUserAndSystemData
-{
++ (void)printSideBySideWithUserAndSystemData {
     [self sendReportsWithMessage:@"Printing side-by-side symbolicated apple reports with system and user data..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashFilterSets appleFmtWithUserAndSystemData:KSAppleReportStyleSymbolicatedSideBySide
-                                                                        compressed:NO],
-                                  [KSCrashReportSinkConsole filter],
-                                  nil]];
+                                                                  [KSCrashFilterSets appleFmtWithUserAndSystemData:KSAppleReportStyleSymbolicatedSideBySide
+                                                                                                        compressed:NO],
+                                                                  [KSCrashReportSinkConsole filter],
+                                                                  nil]];
 }
 
-+ (void) mailStandard
-{
++ (void)mailStandard {
     [self sendReportsWithMessage:@"Mailing standard reports..."
                             sink:[[KSCrashReportSinkEMail sinkWithRecipients:nil
-                                                                    subject:@"Crash Reports"
-                                                                    message:nil
-                                                                filenameFmt:@"StandardReport-%d.json.gz"] defaultCrashReportFilterSet]];
+                                                                     subject:@"Crash Reports"
+                                                                     message:nil
+                                                                 filenameFmt:@"StandardReport-%d.json.gz"] defaultCrashReportFilterSet]];
 }
 
-+ (void) mailUnsymbolicated
-{
++ (void)mailUnsymbolicated {
     [self sendReportsWithMessage:@"Mailing unsymbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleUnsymbolicated],
-                                  [KSCrashReportFilterStringToData filter],
-                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
-                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
-                                                                     subject:@"Crash Reports"
-                                                                     message:nil
-                                                                 filenameFmt:@"AppleUnsymbolicatedReport-%d.txt.gz"],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleUnsymbolicated],
+                                                                  [KSCrashReportFilterStringToData filter],
+                                                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
+                                                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
+                                                                                                     subject:@"Crash Reports"
+                                                                                                     message:nil
+                                                                                                 filenameFmt:@"AppleUnsymbolicatedReport-%d.txt.gz"],
+                                                                  nil]];
 }
 
-+ (void) mailPartiallySymbolicated
-{
++ (void)mailPartiallySymbolicated {
     [self sendReportsWithMessage:@"Mailing partially symbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStylePartiallySymbolicated],
-                                  [KSCrashReportFilterStringToData filter],
-                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
-                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
-                                                                     subject:@"Crash Reports"
-                                                                     message:nil
-                                                                 filenameFmt:@"ApplePartialSymbolicatedReport-%d.txt.gz"],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStylePartiallySymbolicated],
+                                                                  [KSCrashReportFilterStringToData filter],
+                                                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
+                                                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
+                                                                                                     subject:@"Crash Reports"
+                                                                                                     message:nil
+                                                                                                 filenameFmt:@"ApplePartialSymbolicatedReport-%d.txt.gz"],
+                                                                  nil]];
 }
 
-+ (void) mailSymbolicated
-{
++ (void)mailSymbolicated {
     [self sendReportsWithMessage:@"Mailing symbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicated],
-                                  [KSCrashReportFilterStringToData filter],
-                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
-                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
-                                                                     subject:@"Crash Reports"
-                                                                     message:nil
-                                                                 filenameFmt:@"AppleSymbolicatedReport-%d.txt.gz"],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicated],
+                                                                  [KSCrashReportFilterStringToData filter],
+                                                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
+                                                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
+                                                                                                     subject:@"Crash Reports"
+                                                                                                     message:nil
+                                                                                                 filenameFmt:@"AppleSymbolicatedReport-%d.txt.gz"],
+                                                                  nil]];
 }
 
-+ (void) mailSideBySide
-{
++ (void)mailSideBySide {
     [self sendReportsWithMessage:@"Mailing side-by-side symbolicated apple reports..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicatedSideBySide],
-                                  [KSCrashReportFilterStringToData filter],
-                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
-                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
-                                                                     subject:@"Crash Reports"
-                                                                     message:nil
-                                                                 filenameFmt:@"AppleSideBySideReport-%d.txt.gz"],
-                                  nil]];
+                                                                  [KSCrashReportFilterAppleFmt filterWithReportStyle:KSAppleReportStyleSymbolicatedSideBySide],
+                                                                  [KSCrashReportFilterStringToData filter],
+                                                                  [KSCrashReportFilterGZipCompress filterWithCompressionLevel:-1],
+                                                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
+                                                                                                     subject:@"Crash Reports"
+                                                                                                     message:nil
+                                                                                                 filenameFmt:@"AppleSideBySideReport-%d.txt.gz"],
+                                                                  nil]];
 }
 
-+ (void) mailSideBySideWithUserAndSystemData
-{
++ (void)mailSideBySideWithUserAndSystemData {
     [self sendReportsWithMessage:@"Mailing side-by-side symbolicated apple reports with system and user data..."
                             sink:[KSCrashReportFilterPipeline filterWithFilters:
-                                  [KSCrashFilterSets appleFmtWithUserAndSystemData:KSAppleReportStyleSymbolicatedSideBySide
-                                                                        compressed:YES],
-                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
-                                                                     subject:@"Crash Reports"
-                                                                     message:nil
-                                                                 filenameFmt:@"AppleSystemUserReport-%d.txt.gz"],
-                                  nil]];
+                                                                  [KSCrashFilterSets appleFmtWithUserAndSystemData:KSAppleReportStyleSymbolicatedSideBySide
+                                                                                                        compressed:YES],
+                                                                  [KSCrashReportSinkEMail sinkWithRecipients:nil
+                                                                                                     subject:@"Crash Reports"
+                                                                                                     message:nil
+                                                                                                 filenameFmt:@"AppleSystemUserReport-%d.txt.gz"],
+                                                                  nil]];
 }
 
-+ (void) sendToKSWithCompletion:(KSCrashReportFilterCompletion)completion
-{
++ (void)sendToKSWithCompletion:(KSCrashReportFilterCompletion)completion {
     [self sendReportsWithMessage:@"Sending reports to KS..."
-                           sink:[[KSCrashReportSinkStandard sinkWithURL:kReportURL] defaultCrashReportFilterSet]
+                            sink:[[KSCrashReportSinkStandard sinkWithURL:kReportURL] defaultCrashReportFilterSet]
                       completion:completion];
 }
 
-+ (void) sendToQuincyWithCompletion:(KSCrashReportFilterCompletion)completion
-{
++ (void)sendToQuincyWithCompletion:(KSCrashReportFilterCompletion)completion {
     [self sendReportsWithMessage:@"Sending reports to Quincy..."
                             sink:[[KSCrashReportSinkQuincy sinkWithURL:kQuincyReportURL
                                                              userIDKey:nil
@@ -230,8 +208,7 @@
                       completion:completion];
 }
 
-+ (void) sendToHockeyWithCompletion:(KSCrashReportFilterCompletion)completion
-{
++ (void)sendToHockeyWithCompletion:(KSCrashReportFilterCompletion)completion {
     [self sendReportsWithMessage:@"Sending reports to Hockey..."
                             sink:[[KSCrashReportSinkHockey sinkWithAppIdentifier:kHockeyAppID
                                                                        userIDKey:nil
@@ -241,9 +218,8 @@
                       completion:completion];
 }
 
-+ (void) sendToVictoryWithUserName:(NSString*)userName
-                        completion:(KSCrashReportFilterCompletion)completion
-{
++ (void)sendToVictoryWithUserName:(NSString *)userName
+                       completion:(KSCrashReportFilterCompletion)completion {
     [self sendReportsWithMessage:@"Sending reports to Victory..."
                             sink:[[KSCrashReportSinkVictory sinkWithURL:kVictoryURL
                                                                userName:userName

@@ -27,10 +27,10 @@
 //#include "swift/Basic/LLVM.h"
 //#include "llvm/ADT/StringRef.h"
 //#include "llvm/ADT/SmallVector.h"
+#include <cstdint>
+#include <vector>
 #include "LLVM.h"
 #include "StringRef.h"
-#include <vector>
-#include <cstdint>
 
 namespace swift {
 namespace Punycode {
@@ -51,8 +51,7 @@ bool encodePunycodeUTF8(StringRef InputUTF8, std::string &OutPunycode);
 
 bool decodePunycodeUTF8(StringRef InputPunycode, std::string &OutUTF8);
 
-} // end namespace Punycode
-} // end namespace swift
+}  // end namespace Punycode
+}  // end namespace swift
 
-#endif // SWIFT_BASIC_PUNYCODE_H
-
+#endif  // SWIFT_BASIC_PUNYCODE_H

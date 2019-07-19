@@ -24,7 +24,6 @@
 // THE SOFTWARE.
 //
 
-
 #ifndef HDR_KSMachineContext_Apple_h
 #define HDR_KSMachineContext_Apple_h
 
@@ -37,26 +36,24 @@ extern "C" {
 #include <sys/ucontext.h>
 
 #ifdef __arm64__
-    #define STRUCT_MCONTEXT_L _STRUCT_MCONTEXT64
+#define STRUCT_MCONTEXT_L _STRUCT_MCONTEXT64
 #else
-    #define STRUCT_MCONTEXT_L _STRUCT_MCONTEXT
+#define STRUCT_MCONTEXT_L _STRUCT_MCONTEXT
 #endif
 
-typedef struct KSMachineContext
-{
-    thread_t thisThread;
-    thread_t allThreads[100];
-    int threadCount;
-    bool isCrashedContext;
-    bool isCurrentThread;
-    bool isStackOverflow;
-    bool isSignalContext;
-    STRUCT_MCONTEXT_L machineContext;
+typedef struct KSMachineContext {
+  thread_t thisThread;
+  thread_t allThreads[100];
+  int threadCount;
+  bool isCrashedContext;
+  bool isCurrentThread;
+  bool isStackOverflow;
+  bool isSignalContext;
+  STRUCT_MCONTEXT_L machineContext;
 } KSMachineContext;
-    
-    
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSMachineContext_Apple_h
+#endif  // HDR_KSMachineContext_Apple_h

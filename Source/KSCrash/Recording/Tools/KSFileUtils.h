@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Basic file reading/writing functions.
  */
-
 
 #ifndef HDR_KSFileUtils_h
 #define HDR_KSFileUtils_h
@@ -36,10 +34,8 @@
 extern "C" {
 #endif
 
-
-#include <stdbool.h>
 #include <stdarg.h>
-
+#include <stdbool.h>
 
 #define KSFU_MAX_PATH_LENGTH 500
 
@@ -84,12 +80,13 @@ bool ksfu_readBytesFromFD(const int fd, char* bytes, int length);
  * @param length Place to store the length of the loaded data (can be NULL).
  *
  * @param maxLength the maximum amount of bytes to read. It will skip beginning
- *                  bytes if necessary, and always get the latter part of the file.
- *                  0 = no maximum.
+ *                  bytes if necessary, and always get the latter part of the
+ * file. 0 = no maximum.
  *
  * @return true if the operation was successful.
  */
-bool ksfu_readEntireFile(const char* path, char** data, int* length, int maxLength);
+bool ksfu_readEntireFile(const char* path, char** data, int* length,
+                         int maxLength);
 
 /** Write a string to a file.
  *
@@ -161,13 +158,13 @@ bool ksfu_removeFile(const char* path, bool mustExist);
  */
 bool ksfu_deleteContentsOfPath(const char* path);
 
-/** Buffered writer structure. Everything inside should be considered internal use only. */
-typedef struct
-{
-    char* buffer;
-    int bufferLength;
-    int position;
-    int fd;
+/** Buffered writer structure. Everything inside should be considered internal
+ * use only. */
+typedef struct {
+  char* buffer;
+  int bufferLength;
+  int position;
+  int fd;
 } KSBufferedWriter;
 
 /** Open a file for buffered writing.
@@ -182,7 +179,8 @@ typedef struct
  *
  * @return True if the file was successfully opened.
  */
-bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char* const path, char* writeBuffer, int writeBufferLength);
+bool ksfu_openBufferedWriter(KSBufferedWriter* writer, const char* const path,
+                             char* writeBuffer, int writeBufferLength);
 
 /** Close a buffered writer.
  *
@@ -200,7 +198,9 @@ void ksfu_closeBufferedWriter(KSBufferedWriter* writer);
  *
  * @return True if the data was successfully written.
  */
-bool ksfu_writeBufferedWriter(KSBufferedWriter* writer, const char* restrict const data, const int length);
+bool ksfu_writeBufferedWriter(KSBufferedWriter* writer,
+                              const char* restrict const data,
+                              const int length);
 
 /** Flush a buffered writer, writing all uncommitted data to disk.
  *
@@ -210,14 +210,14 @@ bool ksfu_writeBufferedWriter(KSBufferedWriter* writer, const char* restrict con
  */
 bool ksfu_flushBufferedWriter(KSBufferedWriter* writer);
 
-/** Buffered reader structure. Everything inside should be considered internal use only. */
-typedef struct
-{
-    char* buffer;
-    int bufferLength;
-    int dataStartPos;
-    int dataEndPos;
-    int fd;
+/** Buffered reader structure. Everything inside should be considered internal
+ * use only. */
+typedef struct {
+  char* buffer;
+  int bufferLength;
+  int dataStartPos;
+  int dataEndPos;
+  int fd;
 } KSBufferedReader;
 
 /** Open a file for buffered reading.
@@ -232,7 +232,8 @@ typedef struct
  *
  * @return True if the file was successfully opened.
  */
-bool ksfu_openBufferedReader(KSBufferedReader* reader, const char* const path, char* readBuffer, int readBufferLength);
+bool ksfu_openBufferedReader(KSBufferedReader* reader, const char* const path,
+                             char* readBuffer, int readBufferLength);
 
 /** Close a buffered reader.
  *
@@ -250,7 +251,8 @@ void ksfu_closeBufferedReader(KSBufferedReader* reader);
  *
  * @return The number of bytes actually read.
  */
-int ksfu_readBufferedReader(KSBufferedReader* reader, char* dstBuffer, int byteCount);
+int ksfu_readBufferedReader(KSBufferedReader* reader, char* dstBuffer,
+                            int byteCount);
 
 /** Read from a buffered reader until the specified character is encountered.
  * All bytes up to and including the character will be read.
@@ -261,16 +263,16 @@ int ksfu_readBufferedReader(KSBufferedReader* reader, char* dstBuffer, int byteC
  *
  * @param dstBuffer The buffer to read into.
  *
- * @param length in: The maximum number of bytes to read before giving up the search.
- *              out: The actual number of bytes read.
+ * @param length in: The maximum number of bytes to read before giving up the
+ * search. out: The actual number of bytes read.
  *
  * @return True if the character was found before giving up.
  */
-bool ksfu_readBufferedReaderUntilChar(KSBufferedReader* reader, int ch, char* dstBuffer, int* length);
-
+bool ksfu_readBufferedReaderUntilChar(KSBufferedReader* reader, int ch,
+                                      char* dstBuffer, int* length);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSFileUtils_h
+#endif  // HDR_KSFileUtils_h

@@ -24,9 +24,7 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashReportFilter.h"
-
 
 /** Sends reports to Quincy.
  *
@@ -40,24 +38,23 @@
  *
  * Default: YES
  */
-@property(nonatomic,readwrite,assign) BOOL waitUntilReachable;
+@property (nonatomic, readwrite, assign) BOOL waitUntilReachable;
 
-+ (KSCrashReportSinkQuincy*) sinkWithURL:(NSURL*) url
-                               userIDKey:(NSString*) userIDKey
-                             userNameKey:(NSString*) userNameKey
-                         contactEmailKey:(NSString*) contactEmailKey
-                    crashDescriptionKeys:(NSArray*) crashDescriptionKeys;
++ (KSCrashReportSinkQuincy *)sinkWithURL:(NSURL *)url
+                               userIDKey:(NSString *)userIDKey
+                             userNameKey:(NSString *)userNameKey
+                         contactEmailKey:(NSString *)contactEmailKey
+                    crashDescriptionKeys:(NSArray *)crashDescriptionKeys;
 
-- (id) initWithURL:(NSURL*) url
-         userIDKey:(NSString*) userIDKey
-       userNameKey:(NSString*) userNameKey
-   contactEmailKey:(NSString*) contactEmailKey
-crashDescriptionKeys:(NSArray*) crashDescriptionKeys;
+- (id)initWithURL:(NSURL *)url
+               userIDKey:(NSString *)userIDKey
+             userNameKey:(NSString *)userNameKey
+         contactEmailKey:(NSString *)contactEmailKey
+    crashDescriptionKeys:(NSArray *)crashDescriptionKeys;
 
-- (id <KSCrashReportFilter>) defaultCrashReportFilterSet;
+- (id<KSCrashReportFilter>)defaultCrashReportFilterSet;
 
 @end
-
 
 /** Sends reports to Hockey.
  *
@@ -66,16 +63,16 @@ crashDescriptionKeys:(NSArray*) crashDescriptionKeys;
  */
 @interface KSCrashReportSinkHockey : KSCrashReportSinkQuincy
 
-+ (KSCrashReportSinkHockey*) sinkWithAppIdentifier:(NSString*) appIdentifier
-                                         userIDKey:(NSString*) userIDKey
-                                       userNameKey:(NSString*) userNameKey
-                                   contactEmailKey:(NSString*) contactEmailKey
-                              crashDescriptionKeys:(NSArray*) crashDescriptionKeys;
++ (KSCrashReportSinkHockey *)sinkWithAppIdentifier:(NSString *)appIdentifier
+                                         userIDKey:(NSString *)userIDKey
+                                       userNameKey:(NSString *)userNameKey
+                                   contactEmailKey:(NSString *)contactEmailKey
+                              crashDescriptionKeys:(NSArray *)crashDescriptionKeys;
 
-- (id) initWithAppIdentifier:(NSString*) appIdentifier
-                   userIDKey:(NSString*) userIDKey
-                 userNameKey:(NSString*) userNameKey
-             contactEmailKey:(NSString*) contactEmailKey
-        crashDescriptionKeys:(NSArray*) crashDescriptionKeys;
+- (id)initWithAppIdentifier:(NSString *)appIdentifier
+                  userIDKey:(NSString *)userIDKey
+                userNameKey:(NSString *)userNameKey
+            contactEmailKey:(NSString *)contactEmailKey
+       crashDescriptionKeys:(NSArray *)crashDescriptionKeys;
 
 @end

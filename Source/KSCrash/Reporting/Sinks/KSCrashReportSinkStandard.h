@@ -24,9 +24,7 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashReportFilter.h"
-
 
 /**
  * Sends crash reports to an HTTP server.
@@ -40,14 +38,14 @@
  *
  * @param url The URL to connect to.
  */
-+ (KSCrashReportSinkStandard*) sinkWithURL:(NSURL*) url;
++ (KSCrashReportSinkStandard *)sinkWithURL:(NSURL *)url;
 
 /** Constructor.
  *
  * @param url The URL to connect to.
  */
-- (id) initWithURL:(NSURL*) url;
+- (id)initWithURL:(NSURL *)url;
 
-- (id <KSCrashReportFilter>) defaultCrashReportFilterSet;
+- (id<KSCrashReportFilter>)defaultCrashReportFilterSet;
 
 @end

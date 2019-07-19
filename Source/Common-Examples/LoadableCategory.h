@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 //
 
-
 /** Make all categories in the current file loadable without using -load-all.
  *
  * Normally, compilers will skip linking files that contain only categories.
@@ -33,5 +32,7 @@
  * @param UNIQUE_NAME A globally unique name.
  */
 #define MAKE_CATEGORIES_LOADABLE(UNIQUE_NAME) \
-    @interface FORCELOAD_##UNIQUE_NAME: NSObject @end \
-    @implementation FORCELOAD_##UNIQUE_NAME @end
+    @interface FORCELOAD_                     \
+    ##UNIQUE_NAME : NSObject @end             \
+    @implementation FORCELOAD_                \
+    ##UNIQUE_NAME @end

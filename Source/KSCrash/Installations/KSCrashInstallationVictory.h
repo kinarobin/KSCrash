@@ -24,9 +24,7 @@
 // THE SOFTWARE.
 //
 
-
 #import "KSCrashInstallation.h"
-
 
 /**
  Victory is an error reporting server in Python. It runs on Google App Engine.
@@ -39,12 +37,12 @@
 @interface KSCrashInstallationVictory : KSCrashInstallation
 
 /** The URL to connect to. */
-@property(nonatomic,readwrite,retain) NSURL* url;
+@property (nonatomic, readwrite, retain) NSURL *url;
 /** The user name of crash information *required. If value is nil it will be replaced with UIDevice.currentDevice.name */
-@property(nonatomic,readwrite,retain) NSString* userName;
+@property (nonatomic, readwrite, retain) NSString *userName;
 /** The user email of crash information *optional */
-@property(nonatomic,readwrite,retain) NSString* userEmail;
+@property (nonatomic, readwrite, retain) NSString *userEmail;
 
-+ (instancetype) sharedInstance;
++ (instancetype)sharedInstance;
 
 @end

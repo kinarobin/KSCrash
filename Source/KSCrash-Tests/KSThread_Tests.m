@@ -24,14 +24,13 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSThread.h"
 #import "TestThread.h"
 
-
-@interface KSThread_Tests : XCTestCase @end
+@interface KSThread_Tests : XCTestCase
+@end
 
 @implementation KSThread_Tests
 

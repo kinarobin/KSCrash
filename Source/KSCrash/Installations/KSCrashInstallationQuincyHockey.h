@@ -24,11 +24,9 @@
 // THE SOFTWARE.
 //
 
-
-#import <Foundation/Foundation.h>
 #import "KSCrashInstallation.h"
 #import "KSCrashReportWriter.h"
-
+#import <Foundation/Foundation.h>
 
 /**
  * Common properties to both Quincy and Hockey.
@@ -70,11 +68,10 @@
 
 // The values of these properties will be written to the next crash report.
 
-@property(nonatomic,readwrite,retain) NSString* userID;
-@property(nonatomic,readwrite,retain) NSString* userName;
-@property(nonatomic,readwrite,retain) NSString* contactEmail;
-@property(nonatomic,readwrite,retain) NSString* crashDescription;
-
+@property (nonatomic, readwrite, retain) NSString *userID;
+@property (nonatomic, readwrite, retain) NSString *userName;
+@property (nonatomic, readwrite, retain) NSString *contactEmail;
+@property (nonatomic, readwrite, retain) NSString *crashDescription;
 
 // ======================================================================
 #pragma mark - Advanced settings (normally you don't need to change these) -
@@ -83,25 +80,24 @@
 // The above properties will be written to the user section report using the
 // following keys.
 
-@property(nonatomic,readwrite,retain) NSString* userIDKey;
-@property(nonatomic,readwrite,retain) NSString* userNameKey;
-@property(nonatomic,readwrite,retain) NSString* contactEmailKey;
-@property(nonatomic,readwrite,retain) NSString* crashDescriptionKey;
+@property (nonatomic, readwrite, retain) NSString *userIDKey;
+@property (nonatomic, readwrite, retain) NSString *userNameKey;
+@property (nonatomic, readwrite, retain) NSString *contactEmailKey;
+@property (nonatomic, readwrite, retain) NSString *crashDescriptionKey;
 
 /** Data stored under these keys will be appended to the description
  * (in JSON format) before sending to Quincy/Hockey.
  */
-@property(nonatomic,readwrite,retain) NSArray* extraDescriptionKeys;
+@property (nonatomic, readwrite, retain) NSArray *extraDescriptionKeys;
 
 /** If YES, wait until the host becomes reachable before trying to send.
  * If NO, it will attempt to send right away, and either succeed or fail.
  *
  * Default: YES
  */
-@property(nonatomic,readwrite,assign) BOOL waitUntilReachable;
+@property (nonatomic, readwrite, assign) BOOL waitUntilReachable;
 
 @end
-
 
 /**
  * Quincy installation.
@@ -109,21 +105,20 @@
 @interface KSCrashInstallationQuincy : KSCrashInstallationBaseQuincyHockey
 
 /** URL to send reports to (mandatory) */
-@property(nonatomic, readwrite, retain) NSURL* url;
+@property (nonatomic, readwrite, retain) NSURL *url;
 
-+ (KSCrashInstallationQuincy*) sharedInstance;
++ (KSCrashInstallationQuincy *)sharedInstance;
 
 @end
-
 
 /**
  * Hockey installation.
  */
-@interface KSCrashInstallationHockey: KSCrashInstallationBaseQuincyHockey
+@interface KSCrashInstallationHockey : KSCrashInstallationBaseQuincyHockey
 
 /** App identifier you received from Hockey (mandatory) */
-@property(nonatomic, readwrite, retain) NSString* appIdentifier;
+@property (nonatomic, readwrite, retain) NSString *appIdentifier;
 
-+ (instancetype) sharedInstance;
++ (instancetype)sharedInstance;
 
 @end

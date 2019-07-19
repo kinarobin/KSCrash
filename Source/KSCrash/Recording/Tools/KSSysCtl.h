@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 /* Convenience wrapper functions for sysctl calls.
  */
-
 
 #ifndef HDR_KSSysCtl_h
 #define HDR_KSSysCtl_h
@@ -36,11 +34,9 @@
 extern "C" {
 #endif
 
-
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/sysctl.h>
-
 
 /** Get an int32 value via sysctl.
  *
@@ -183,9 +179,8 @@ bool kssysctl_getProcessInfo(int pid, struct kinfo_proc* procInfo);
  */
 bool kssysctl_getMacAddress(const char* name, char* macAddressBuffer);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSSysCtl_h
+#endif  // HDR_KSSysCtl_h

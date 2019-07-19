@@ -22,15 +22,13 @@
 // THE SOFTWARE.
 //
 
-
 #ifndef KSStackCursor_h
 #define KSStackCursor_h
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-    
+
 #include "KSMachineContext.h"
 
 #include <stdbool.h>
@@ -38,62 +36,63 @@ extern "C" {
 
 #define KSSC_CONTEXT_SIZE 100
 
-/** Point at which to give up walking a stack and consider it a stack overflow. */
+/** Point at which to give up walking a stack and consider it a stack overflow.
+ */
 #define KSSC_STACK_OVERFLOW_THRESHOLD 150
 
-typedef struct KSStackCursor
-{
-    struct
-    {
-        /** Current address in the stack trace. */
-        uintptr_t address;
-        
-        /** The name (if any) of the binary image the current address falls inside. */
-        const char* imageName;
-        
-        /** The starting address of the binary image the current address falls inside. */
-        uintptr_t imageAddress;
-        
-        /** The name (if any) of the closest symbol to the current address. */
-        const char* symbolName;
-        
-        /** The address of the closest symbol to the current address. */
-        uintptr_t symbolAddress;
-    } stackEntry;
-    struct
-    {
-        /** Current depth as we walk the stack (1-based). */
-        int currentDepth;
-        
-        /** If true, cursor has given up walking the stack. */
-        bool hasGivenUp;
-    } state;
+typedef struct KSStackCursor {
+  struct {
+    /** Current address in the stack trace. */
+    uintptr_t address;
 
-    /** Reset the cursor back to the beginning. */
-    void (*resetCursor)(struct KSStackCursor*);
+    /** The name (if any) of the binary image the current address falls inside.
+     */
+    const char* imageName;
 
-    /** Advance the cursor to the next stack entry. */
-    bool (*advanceCursor)(struct KSStackCursor*);
-    
-    /** Attempt to symbolicate the current address, filling in the fields in stackEntry. */
-    bool (*symbolicate)(struct KSStackCursor*);
-    
-    /** Internal context-specific information. */
-    void* context[KSSC_CONTEXT_SIZE];
+    /** The starting address of the binary image the current address falls
+     * inside. */
+    uintptr_t imageAddress;
+
+    /** The name (if any) of the closest symbol to the current address. */
+    const char* symbolName;
+
+    /** The address of the closest symbol to the current address. */
+    uintptr_t symbolAddress;
+  } stackEntry;
+  struct {
+    /** Current depth as we walk the stack (1-based). */
+    int currentDepth;
+
+    /** If true, cursor has given up walking the stack. */
+    bool hasGivenUp;
+  } state;
+
+  /** Reset the cursor back to the beginning. */
+  void (*resetCursor)(struct KSStackCursor*);
+
+  /** Advance the cursor to the next stack entry. */
+  bool (*advanceCursor)(struct KSStackCursor*);
+
+  /** Attempt to symbolicate the current address, filling in the fields in
+   * stackEntry. */
+  bool (*symbolicate)(struct KSStackCursor*);
+
+  /** Internal context-specific information. */
+  void* context[KSSC_CONTEXT_SIZE];
 } KSStackCursor;
-
 
 /** Common initialization routine for a stack cursor.
  *  Note: This is intended primarily for other cursors to call.
  *
  * @param cursor The cursor to initialize.
  *
- * @param resetCursor Function that will reset the cursor (NULL = default: Do nothing).
+ * @param resetCursor Function that will reset the cursor (NULL = default: Do
+ * nothing).
  *
- * @param advanceCursor Function to advance the cursor (NULL = default: Do nothing and return false).
+ * @param advanceCursor Function to advance the cursor (NULL = default: Do
+ * nothing and return false).
  */
-void kssc_initCursor(KSStackCursor *cursor,
-                     void (*resetCursor)(KSStackCursor*),
+void kssc_initCursor(KSStackCursor* cursor, void (*resetCursor)(KSStackCursor*),
                      bool (*advanceCursor)(KSStackCursor*));
 
 /** Reset a cursor.
@@ -101,11 +100,10 @@ void kssc_initCursor(KSStackCursor *cursor,
  *
  * @param cursor The cursor to reset.
  */
-void kssc_resetCursor(KSStackCursor *cursor);
+void kssc_resetCursor(KSStackCursor* cursor);
 
-    
 #ifdef __cplusplus
 }
 #endif
 
-#endif // KSStackCursor_h
+#endif  // KSStackCursor_h

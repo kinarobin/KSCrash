@@ -29,6 +29,6 @@
  */
 @interface KSCrashReportFilterStringify : NSObject <KSCrashReportFilter>
 
-+ (KSCrashReportFilterStringify*) filter;
++ (KSCrashReportFilterStringify *)filter;
 
 @end

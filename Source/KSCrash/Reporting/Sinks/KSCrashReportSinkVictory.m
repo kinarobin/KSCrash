@@ -33,27 +33,24 @@
 
 #import "KSHTTPMultipartPostBody.h"
 #import "KSHTTPRequestSender.h"
-#import "NSData+GZip.h"
 #import "KSJSONCodecObjC.h"
 #import "KSReachabilityKSCrash.h"
-#import "NSError+SimpleConstructor.h"
 #import "KSSystemCapabilities.h"
+#import "NSData+GZip.h"
+#import "NSError+SimpleConstructor.h"
 
 //#define KSLogger_LocalLevel TRACE
 #import "KSLogger.h"
 
-
 @interface KSCrashReportSinkVictory ()
 
-@property(nonatomic,readwrite,retain) NSURL* url;
-@property(nonatomic,readwrite,retain) NSString* userName;
-@property(nonatomic,readwrite,retain) NSString* userEmail;
+@property (nonatomic, readwrite, retain) NSURL *url;
+@property (nonatomic, readwrite, retain) NSString *userName;
+@property (nonatomic, readwrite, retain) NSString *userEmail;
 
-@property(nonatomic,readwrite,retain) KSReachableOperationKSCrash* reachableOperation;
-
+@property (nonatomic, readwrite, retain) KSReachableOperationKSCrash *reachableOperation;
 
 @end
-
 
 @implementation KSCrashReportSinkVictory
 
@@ -62,19 +59,16 @@
 @synthesize userEmail = _userEmail;
 @synthesize reachableOperation = _reachableOperation;
 
-+ (KSCrashReportSinkVictory*) sinkWithURL:(NSURL*) url
-                                   userName:(NSString*) userName
-                                  userEmail:(NSString*) userEmail
-{
++ (KSCrashReportSinkVictory *)sinkWithURL:(NSURL *)url
+                                 userName:(NSString *)userName
+                                userEmail:(NSString *)userEmail {
     return [[self alloc] initWithURL:url userName:userName userEmail:userEmail];
 }
 
-- (id) initWithURL:(NSURL*) url
-          userName:(NSString*) userName
-         userEmail:(NSString*) userEmail
-{
-    if((self = [super init]))
-    {
+- (id)initWithURL:(NSURL *)url
+         userName:(NSString *)userName
+        userEmail:(NSString *)userEmail {
+    if ((self = [super init])) {
         self.url = url;
         if (userName == nil || [userName length] == 0) {
 #if KSCRASH_HAS_UIDEVICE
@@ -82,8 +76,7 @@
 #else
             self.userName = @"unknown";
 #endif
-        }
-        else {
+        } else {
             self.userName = userName;
         }
         self.userEmail = userEmail;
@@ -91,14 +84,12 @@
     return self;
 }
 
-- (id <KSCrashReportFilter>) defaultCrashReportFilterSet
-{
+- (id<KSCrashReportFilter>)defaultCrashReportFilterSet {
     return self;
 }
 
-- (void) filterReports:(NSArray*) reports
-          onCompletion:(KSCrashReportFilterCompletion) onCompletion
-{
+- (void)filterReports:(NSArray *)reports
+         onCompletion:(KSCrashReportFilterCompletion)onCompletion {
     // update user information in reports with KVC
     for (NSDictionary *report in reports) {
         NSDictionary *userDict = [report objectForKey:@"user"];
@@ -106,27 +97,25 @@
             // user member is exist
             [userDict setValue:self.userName forKey:@"name"];
             [userDict setValue:self.userEmail forKey:@"email"];
-        }
-        else {
+        } else {
             // no user member, append user dictionary
             [report setValue:@{@"name": self.userName, @"email": self.userEmail} forKey:@"user"];
         }
     }
-    
-    NSError* error = nil;
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:self.url
+
+    NSError *error = nil;
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                        timeoutInterval:15];
-    KSHTTPMultipartPostBody* body = [KSHTTPMultipartPostBody body];
-    NSData* jsonData = [KSJSONCodec encode:reports
+    KSHTTPMultipartPostBody *body = [KSHTTPMultipartPostBody body];
+    NSData *jsonData = [KSJSONCodec encode:reports
                                    options:KSJSONEncodeOptionSorted
                                      error:&error];
-    if(jsonData == nil)
-    {
+    if (jsonData == nil) {
         kscrash_callCompletion(onCompletion, reports, NO, error);
         return;
     }
-    
+
     [body appendData:jsonData
                 name:@"reports"
          contentType:@"application/json"
@@ -143,24 +132,22 @@
 
     self.reachableOperation = [KSReachableOperationKSCrash operationWithHost:[self.url host]
                                                                    allowWWAN:YES
-                                                                       block:^
-    {
-        [[KSHTTPRequestSender sender] sendRequest:request
-                                        onSuccess:^(__unused NSHTTPURLResponse* response, __unused NSData* data)
-         {
-             kscrash_callCompletion(onCompletion, reports, YES, nil);
-         } onFailure:^(NSHTTPURLResponse* response, NSData* data)
-         {
-             NSString* text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-             kscrash_callCompletion(onCompletion, reports, NO,
-                                      [NSError errorWithDomain:[[self class] description]
-                                                          code:response.statusCode
-                                                   description:text]);
-         } onError:^(NSError* error2)
-         {
-             kscrash_callCompletion(onCompletion, reports, NO, error2);
-         }];
-    }];
+                                                                       block:^{
+                                                                           [[KSHTTPRequestSender sender] sendRequest:request
+                                                                               onSuccess:^(__unused NSHTTPURLResponse *response, __unused NSData *data) {
+                                                                                   kscrash_callCompletion(onCompletion, reports, YES, nil);
+                                                                               }
+                                                                               onFailure:^(NSHTTPURLResponse *response, NSData *data) {
+                                                                                   NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                                                   kscrash_callCompletion(onCompletion, reports, NO,
+                                                                                                          [NSError errorWithDomain:[[self class] description]
+                                                                                                                              code:response.statusCode
+                                                                                                                       description:text]);
+                                                                               }
+                                                                               onError:^(NSError *error2) {
+                                                                                   kscrash_callCompletion(onCompletion, reports, NO, error2);
+                                                                               }];
+                                                                       }];
 }
 
 @end

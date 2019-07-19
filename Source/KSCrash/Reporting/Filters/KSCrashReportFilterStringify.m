@@ -27,33 +27,27 @@
 
 @implementation KSCrashReportFilterStringify
 
-+ (KSCrashReportFilterStringify*) filter
-{
++ (KSCrashReportFilterStringify *)filter {
     return [[self alloc] init];
 }
 
-- (NSString*) stringifyObject:(id) object
-{
-    if([object isKindOfClass:[NSString class]])
-    {
+- (NSString *)stringifyObject:(id)object {
+    if ([object isKindOfClass:[NSString class]]) {
         return object;
     }
-    if([object isKindOfClass:[NSData class]])
-    {
+    if ([object isKindOfClass:[NSData class]]) {
         return [[NSString alloc] initWithData:object encoding:NSUTF8StringEncoding];
     }
     return [NSString stringWithFormat:@"%@", object];
 }
 
-- (void) filterReports:(NSArray*) reports
-          onCompletion:(KSCrashReportFilterCompletion) onCompletion
-{
-    NSMutableArray* filteredReports = [NSMutableArray arrayWithCapacity:[reports count]];
-    for(id report in reports)
-    {
+- (void)filterReports:(NSArray *)reports
+         onCompletion:(KSCrashReportFilterCompletion)onCompletion {
+    NSMutableArray *filteredReports = [NSMutableArray arrayWithCapacity:[reports count]];
+    for (id report in reports) {
         [filteredReports addObject:[self stringifyObject:report]];
     }
-    
+
     kscrash_callCompletion(onCompletion, filteredReports, YES, nil);
 }
 

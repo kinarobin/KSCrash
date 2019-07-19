@@ -31,23 +31,21 @@
 extern "C" {
 #endif
 
-
 #include <dlfcn.h>
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef struct
-{
-    uint64_t address;
-    uint64_t vmAddress;
-    uint64_t size;
-    const char* name;
-    const uint8_t* uuid;
-    int cpuType;
-    int cpuSubType;
-    uint64_t majorVersion;
-    uint64_t minorVersion;
-    uint64_t revisionVersion;
+typedef struct {
+  uint64_t address;
+  uint64_t vmAddress;
+  uint64_t size;
+  const char* name;
+  const uint8_t* uuid;
+  int cpuType;
+  int cpuSubType;
+  uint64_t majorVersion;
+  uint64_t minorVersion;
+  uint64_t revisionVersion;
 } KSBinaryImage;
 
 /** Get the number of loaded binary images.
@@ -101,9 +99,8 @@ const uint8_t* ksdl_imageUUID(const char* const imageName, bool exactMatch);
  */
 bool ksdl_dladdr(const uintptr_t address, Dl_info* const info);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSDynamicLinker_h
+#endif  // HDR_KSDynamicLinker_h

@@ -10,42 +10,42 @@
 
 @interface CrashTesterCommands : NSObject
 
-+ (NSString*) reportCountString;
++ (NSString *)reportCountString;
 
-+ (void) showAlertWithTitle:(NSString*) title
-                    message:(NSString*) fmt, ...;
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)fmt, ...;
 
-+ (void) printStandard;
++ (void)printStandard;
 
-+ (void) printUnsymbolicated;
++ (void)printUnsymbolicated;
 
-+ (void) printPartiallySymbolicated;
++ (void)printPartiallySymbolicated;
 
-+ (void) printSymbolicated;
++ (void)printSymbolicated;
 
-+ (void) printSideBySide;
++ (void)printSideBySide;
 
-+ (void) printSideBySideWithUserAndSystemData;
++ (void)printSideBySideWithUserAndSystemData;
 
-+ (void) mailStandard;
++ (void)mailStandard;
 
-+ (void) mailUnsymbolicated;
++ (void)mailUnsymbolicated;
 
-+ (void) mailPartiallySymbolicated;
++ (void)mailPartiallySymbolicated;
 
-+ (void) mailSymbolicated;
++ (void)mailSymbolicated;
 
-+ (void) mailSideBySide;
++ (void)mailSideBySide;
 
-+ (void) mailSideBySideWithUserAndSystemData;
++ (void)mailSideBySideWithUserAndSystemData;
 
-+ (void) sendToKSWithCompletion:(KSCrashReportFilterCompletion)completion;
++ (void)sendToKSWithCompletion:(KSCrashReportFilterCompletion)completion;
 
-+ (void) sendToQuincyWithCompletion:(KSCrashReportFilterCompletion)completion;
++ (void)sendToQuincyWithCompletion:(KSCrashReportFilterCompletion)completion;
 
-+ (void) sendToHockeyWithCompletion:(KSCrashReportFilterCompletion)completion;
++ (void)sendToHockeyWithCompletion:(KSCrashReportFilterCompletion)completion;
 
-+ (void) sendToVictoryWithUserName:(NSString*)userName
-                        completion:(KSCrashReportFilterCompletion)completion;
++ (void)sendToVictoryWithUserName:(NSString *)userName
+                       completion:(KSCrashReportFilterCompletion)completion;
 
 @end

@@ -24,20 +24,17 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSString.h"
 
-
-@interface KSString_Tests : XCTestCase @end
-
+@interface KSString_Tests : XCTestCase
+@end
 
 @implementation KSString_Tests
 
-- (void) testExtractHexValue
-{
-    const char* string = "Some string with 0x12345678 and such";
+- (void)testExtractHexValue {
+    const char *string = "Some string with 0x12345678 and such";
     uint64_t expected = 0x12345678;
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
@@ -45,9 +42,8 @@
     XCTAssertEqual(result, expected, @"");
 }
 
-- (void) testExtractHexValue2
-{
-    const char* string = "Some string with 0x1 and such";
+- (void)testExtractHexValue2 {
+    const char *string = "Some string with 0x1 and such";
     uint64_t expected = 0x1;
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
@@ -55,9 +51,8 @@
     XCTAssertEqual(result, expected, @"");
 }
 
-- (void) testExtractHexValue3
-{
-    const char* string = "Some string with 0x1234567890123456 and such";
+- (void)testExtractHexValue3 {
+    const char *string = "Some string with 0x1234567890123456 and such";
     uint64_t expected = 0x1234567890123456;
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
@@ -65,9 +60,8 @@
     XCTAssertEqual(result, expected, @"");
 }
 
-- (void) testExtractHexValueBeginning
-{
-    const char* string = "0x12345678 Some string";
+- (void)testExtractHexValueBeginning {
+    const char *string = "0x12345678 Some string";
     uint64_t expected = 0x12345678;
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
@@ -75,9 +69,8 @@
     XCTAssertEqual(result, expected, @"");
 }
 
-- (void) testExtractHexValueEnd
-{
-    const char* string = "Some string with 0x12345678";
+- (void)testExtractHexValueEnd {
+    const char *string = "Some string with 0x12345678";
     uint64_t expected = 0x12345678;
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
@@ -85,96 +78,83 @@
     XCTAssertEqual(result, expected, @"");
 }
 
-- (void) testExtractHexValueEmpty
-{
-    const char* string = "";
+- (void)testExtractHexValueEmpty {
+    const char *string = "";
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testExtractHexValueInvalid
-{
-    const char* string = "Some string with 0xoo and such";
+- (void)testExtractHexValueInvalid {
+    const char *string = "Some string with 0xoo and such";
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testExtractHexValueInvalid2
-{
-    const char* string = "Some string with 0xoo";
+- (void)testExtractHexValueInvalid2 {
+    const char *string = "Some string with 0xoo";
     uint64_t result = 0;
     bool success = ksstring_extractHexValue(string, (int)strlen(string), &result);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8String
-{
-    const char* string = "A string";
+- (void)testIsNullTerminatedUTF8String {
+    const char *string = "A string";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 100);
     XCTAssertTrue(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8String2
-{
-    const char* string = "テスト";
+- (void)testIsNullTerminatedUTF8String2 {
+    const char *string = "テスト";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 100);
     XCTAssertTrue(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8String3
-{
-    const char* string = "aŸঠ𐅐 and so on";
+- (void)testIsNullTerminatedUTF8String3 {
+    const char *string = "aŸঠ𐅐 and so on";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 100);
     XCTAssertTrue(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringTooShort
-{
-    const char* string = "A string";
+- (void)testIsNullTerminatedUTF8StringTooShort {
+    const char *string = "A string";
     bool success = ksstring_isNullTerminatedUTF8String(string, 10, 100);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringTooLong
-{
-    const char* string = "A string";
+- (void)testIsNullTerminatedUTF8StringTooLong {
+    const char *string = "A string";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 5);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringInvalid
-{
-    const char* string = "A string\xf8";
+- (void)testIsNullTerminatedUTF8StringInvalid {
+    const char *string = "A string\xf8";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 100);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringInvalid2
-{
-    const char* string = "A string\xc1zzz";
+- (void)testIsNullTerminatedUTF8StringInvalid2 {
+    const char *string = "A string\xc1zzz";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 100);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringInvalid3
-{
-    const char* string = "\xc0";
+- (void)testIsNullTerminatedUTF8StringInvalid3 {
+    const char *string = "\xc0";
     bool success = ksstring_isNullTerminatedUTF8String(string, 1, 1);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringInvalid4
-{
-    const char* string = "blah \x80";
+- (void)testIsNullTerminatedUTF8StringInvalid4 {
+    const char *string = "blah \x80";
     bool success = ksstring_isNullTerminatedUTF8String(string, 1, 100);
     XCTAssertFalse(success, @"");
 }
 
-- (void) testIsNullTerminatedUTF8StringInvalid5
-{
-    const char* string = "\x01\x02\x03";
+- (void)testIsNullTerminatedUTF8StringInvalid5 {
+    const char *string = "\x01\x02\x03";
     bool success = ksstring_isNullTerminatedUTF8String(string, 2, 100);
     XCTAssertFalse(success, @"");
 }

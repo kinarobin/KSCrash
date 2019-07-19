@@ -24,89 +24,75 @@
 // THE SOFTWARE.
 //
 
-
-#import <XCTest/XCTest.h>
 #import "XCTestCase+KSCrash.h"
+#import <XCTest/XCTest.h>
 
 #import "KSLogger.h"
 
-
 @interface KSLogger_Tests : XCTestCase
 
-@property(nonatomic, readwrite, retain) NSString* tempDir;
+@property (nonatomic, readwrite, retain) NSString *tempDir;
 
 @end
-
 
 @implementation KSLogger_Tests
 
 @synthesize tempDir = _tempDir;
 
-- (void) setUp
-{
+- (void)setUp {
     [super setUp];
     self.tempDir = [self createTempPath];
 }
 
-- (void) tearDown
-{
+- (void)tearDown {
     [self removePath:self.tempDir];
 }
 
-- (void) testLogError
-{
+- (void)testLogError {
     KSLOG_ERROR(@"TEST");
 }
 
-- (void) testLogErrorNull
-{
-    NSString* str = nil;
+- (void)testLogErrorNull {
+    NSString *str = nil;
     KSLOG_ERROR(str);
 }
 
-- (void) testLogAlways
-{
+- (void)testLogAlways {
     KSLOG_ALWAYS(@"TEST");
 }
 
-- (void) testLogAlwaysNull
-{
-    NSString* str = nil;
+- (void)testLogAlwaysNull {
+    NSString *str = nil;
     KSLOG_ALWAYS(str);
 }
 
-- (void) testLogBasicError
-{
+- (void)testLogBasicError {
     KSLOGBASIC_ERROR(@"TEST");
 }
 
-- (void) testLogBasicErrorNull
-{
-    NSString* str = nil;
+- (void)testLogBasicErrorNull {
+    NSString *str = nil;
     KSLOGBASIC_ERROR(str);
 }
 
-- (void) testLogBasicAlways
-{
+- (void)testLogBasicAlways {
     KSLOGBASIC_ALWAYS(@"TEST");
 }
 
-- (void) testLogBasicAlwaysNull
-{
-    NSString* str = nil;
+- (void)testLogBasicAlwaysNull {
+    NSString *str = nil;
     KSLOGBASIC_ALWAYS(str);
 }
 
-- (void) testSetLogFilename
-{
-    NSString* expected = @"TEST";
-    NSString* logFileName = [self.tempDir stringByAppendingPathComponent:@"log.txt"];
+- (void)testSetLogFilename {
+    NSString *expected = @"TEST";
+    NSString *logFileName = [self.tempDir stringByAppendingPathComponent:@"log.txt"];
     kslog_setLogFilename([logFileName UTF8String], true);
     KSLOGBASIC_ALWAYS(expected);
     kslog_setLogFilename(nil, true);
 
-    NSError* error = nil;
-    NSString* result = [NSString stringWithContentsOfFile:logFileName encoding:NSUTF8StringEncoding error:&error];
+    NSError *error = nil;
+    NSString *result = [NSString stringWithContentsOfFile:logFileName encoding:NSUTF8StringEncoding error:&error];
     XCTAssertNil(error, @"");
     result = [[result componentsSeparatedByString:@"\x0a"] objectAtIndex:0];
     XCTAssertEqualObjects(result, expected, @"");

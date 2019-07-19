@@ -30,8 +30,8 @@
  */
 @interface KSCrashInstallationConsole : KSCrashInstallation
 
-@property(nonatomic,readwrite) BOOL printAppleFormat;
+@property (nonatomic, readwrite) BOOL printAppleFormat;
 
-+ (instancetype) sharedInstance;
++ (instancetype)sharedInstance;
 
 @end

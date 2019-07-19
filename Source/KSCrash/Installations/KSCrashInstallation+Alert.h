@@ -34,10 +34,10 @@
  * @param yesAnswer The text to display in the "yes" box.
  * @param noAnswer The text to display in the "no" box.
  */
-- (void) addConditionalAlertWithTitle:(NSString*) title
-                              message:(NSString*) message
-                            yesAnswer:(NSString*) yesAnswer
-                             noAnswer:(NSString*) noAnswer;
+- (void)addConditionalAlertWithTitle:(NSString *)title
+                             message:(NSString *)message
+                           yesAnswer:(NSString *)yesAnswer
+                            noAnswer:(NSString *)noAnswer;
 
 /** Show an alert before sending any reports. Reports will be unconditionally sent
  * when the alert is dismissed.
@@ -46,8 +46,8 @@
  * @param message The message to show the user.
  * @param dismissButtonText The text to display in the dismiss button.
  */
-- (void) addUnconditionalAlertWithTitle:(NSString*) title
-                                message:(NSString*) message
-                      dismissButtonText:(NSString*) dismissButtonText;
+- (void)addUnconditionalAlertWithTitle:(NSString *)title
+                               message:(NSString *)message
+                     dismissButtonText:(NSString *)dismissButtonText;
 
 @end

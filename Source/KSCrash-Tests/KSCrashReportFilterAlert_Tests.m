@@ -24,31 +24,28 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSCrashReportFilterAlert.h"
 
-
-@interface KSCrashReportFilterAlert_Tests : XCTestCase @end
-
+@interface KSCrashReportFilterAlert_Tests : XCTestCase
+@end
 
 @implementation KSCrashReportFilterAlert_Tests
 
-- (void) testAlert
-{
+- (void)testAlert {
     id<KSCrashReportFilter> filter = [KSCrashReportFilterAlert filterWithTitle:@"title"
                                                                        message:@"message"
                                                                      yesAnswer:@"YES"
                                                                       noAnswer:@"NO"];
-    
-    [filter filterReports:[NSArray array] onCompletion:^(__unused NSArray* filteredReports,
-                                                         BOOL completed,
-                                                         NSError* error)
-     {
-         XCTAssertTrue(completed, @"");
-         XCTAssertNil(error, @"");
-     }];
+
+    [filter filterReports:[NSArray array]
+             onCompletion:^(__unused NSArray *filteredReports,
+                            BOOL completed,
+                            NSError *error) {
+                 XCTAssertTrue(completed, @"");
+                 XCTAssertNil(error, @"");
+             }];
 }
 
 @end

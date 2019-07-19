@@ -28,8 +28,7 @@
 
 @implementation NSString (URLEncode)
 
-- (NSString*) URLEncoded
-{
+- (NSString *)URLEncoded {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < 70000
     return [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 #else

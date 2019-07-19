@@ -6,8 +6,8 @@
 //  Copyright © 2016 Karl Stenerud. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
 #import "KSCrashReportFixer.h"
+#import <XCTest/XCTest.h>
 
 @interface KSCrashReportFixer_Tests : XCTestCase
 
@@ -25,21 +25,20 @@
     [super tearDown];
 }
 
-- (void)testLoadCrash
-{
-    NSBundle* bundle = [NSBundle bundleForClass:[self class]];
-    NSString* rawPath = [bundle pathForResource:@"raw" ofType:@"json"];
-    NSData* rawData = [NSData dataWithContentsOfFile:rawPath];
-    char* fixedBytes = kscrf_fixupCrashReport(rawData.bytes);
-//    NSLog(@"%@", [[NSString alloc] initWithData:[NSData dataWithBytes:fixedBytes length:strlen(fixedBytes)] encoding:NSUTF8StringEncoding]);
-    NSData* fixedData = [NSData dataWithBytesNoCopy:fixedBytes length:strlen(fixedBytes)];
-    NSError* error = nil;
+- (void)testLoadCrash {
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *rawPath = [bundle pathForResource:@"raw" ofType:@"json"];
+    NSData *rawData = [NSData dataWithContentsOfFile:rawPath];
+    char *fixedBytes = kscrf_fixupCrashReport(rawData.bytes);
+    //    NSLog(@"%@", [[NSString alloc] initWithData:[NSData dataWithBytes:fixedBytes length:strlen(fixedBytes)] encoding:NSUTF8StringEncoding]);
+    NSData *fixedData = [NSData dataWithBytesNoCopy:fixedBytes length:strlen(fixedBytes)];
+    NSError *error = nil;
     id fixedObjects = [NSJSONSerialization JSONObjectWithData:fixedData options:0 error:&error];
     XCTAssertNil(error);
     XCTAssertNotNil(fixedObjects);
 
-    NSString* processedPath = [bundle pathForResource:@"processed" ofType:@"json"];
-    NSData* processedData = [NSData dataWithContentsOfFile:processedPath];
+    NSString *processedPath = [bundle pathForResource:@"processed" ofType:@"json"];
+    NSData *processedData = [NSData dataWithContentsOfFile:processedPath];
     id processedObjects = [NSJSONSerialization JSONObjectWithData:processedData options:0 error:&error];
     XCTAssertNil(error);
     XCTAssertNotNil(processedObjects);

@@ -24,63 +24,54 @@
 // THE SOFTWARE.
 //
 
-
 #import <XCTest/XCTest.h>
 
 #import "KSCrashInstallationQuincyHockey.h"
 
-
-@interface KSCrashInstallationQuincyHockey_Tests : XCTestCase @end
-
+@interface KSCrashInstallationQuincyHockey_Tests : XCTestCase
+@end
 
 @implementation KSCrashInstallationQuincyHockey_Tests
 
-- (void) testQuincyInstall
-{
-    KSCrashInstallationQuincy* installation = [KSCrashInstallationQuincy sharedInstance];
+- (void)testQuincyInstall {
+    KSCrashInstallationQuincy *installation = [KSCrashInstallationQuincy sharedInstance];
     installation.userIDKey = @"user_id";
     installation.contactEmailKey = nil;
     installation.crashDescriptionKey = @"crash_description";
-    
+
     installation.userID = nil;
     installation.contactEmail = @"nobody@nowhere.com";
     installation.crashDescription = @"desc";
-    
+
     installation.url = [NSURL URLWithString:@"http://www.google.com"];
-    
+
     [installation install];
-    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error)
-     {
-         // There are no reports, so this will succeed.
-         XCTAssertTrue(completed, @"");
-         XCTAssertNil(error, @"");
-     }];
+    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error) {
+        // There are no reports, so this will succeed.
+        XCTAssertTrue(completed, @"");
+        XCTAssertNil(error, @"");
+    }];
 }
 
-- (void) testQuincyInstallMissingProperties
-{
-    KSCrashInstallationQuincy* installation = [KSCrashInstallationQuincy sharedInstance];
+- (void)testQuincyInstallMissingProperties {
+    KSCrashInstallationQuincy *installation = [KSCrashInstallationQuincy sharedInstance];
     installation.url = nil;
     [installation install];
-    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error)
-     {
-         XCTAssertFalse(completed, @"");
-         XCTAssertNotNil(error, @"");
-     }];
+    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error) {
+        XCTAssertFalse(completed, @"");
+        XCTAssertNotNil(error, @"");
+    }];
 }
 
-- (void) testHockeyInstall
-{
-    KSCrashInstallationHockey* installation = [KSCrashInstallationHockey sharedInstance];
+- (void)testHockeyInstall {
+    KSCrashInstallationHockey *installation = [KSCrashInstallationHockey sharedInstance];
     installation.appIdentifier = @"some_app_id";
     [installation install];
-    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error)
-     {
-         // There are no reports, so this will succeed.
-         XCTAssertTrue(completed, @"");
-         XCTAssertNil(error, @"");
-     }];
+    [installation sendAllReportsWithCompletion:^(__unused NSArray *filteredReports, BOOL completed, NSError *error) {
+        // There are no reports, so this will succeed.
+        XCTAssertTrue(completed, @"");
+        XCTAssertNil(error, @"");
+    }];
 }
-
 
 @end

@@ -29,24 +29,27 @@
 extern "C" {
 #endif
 
-
 #include <sys/types.h>
 
 /** Convert a UNIX timestamp to an RFC3339 string representation.
  *
  * @param timestamp The date to convert.
  *
- * @param buffer21Chars A buffer of at least 21 chars to hold the RFC3339 date string.
+ * @param buffer21Chars A buffer of at least 21 chars to hold the RFC3339 date
+ * string.
  */
 void ksdate_utcStringFromTimestamp(time_t timestamp, char* buffer21Chars);
 
-/** Convert microseconds returned from `gettimeofday` to an RFC3339 string representation.
+/** Convert microseconds returned from `gettimeofday` to an RFC3339 string
+ * representation.
  *
  * @param microseconds The microseconds to convert.
  *
- * @param buffer28Chars A buffer of at least 28 chars to hold the RFC3339 date string with milliseconds precision.
+ * @param buffer28Chars A buffer of at least 28 chars to hold the RFC3339 date
+ * string with milliseconds precision.
  */
-void ksdate_utcStringFromMicroseconds(int64_t microseconds, char* buffer28Chars);
+void ksdate_utcStringFromMicroseconds(int64_t microseconds,
+                                      char* buffer28Chars);
 
 #ifdef __cplusplus
 }

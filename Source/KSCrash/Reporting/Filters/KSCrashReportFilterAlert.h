@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
-#import <Foundation/Foundation.h>
 #import "KSCrashReportFilter.h"
-
+#import <Foundation/Foundation.h>
 
 /** Pops up a standard alert window and awaits a user response before continuing.
  *
@@ -48,10 +46,10 @@
  * @param noAnswer The text to put in the "no" button. If nil, the filter will
  *                 proceed unconditionally.
  */
-+ (KSCrashReportFilterAlert*) filterWithTitle:(NSString*) title
-                                      message:(NSString*) message
-                                    yesAnswer:(NSString*) yesAnswer
-                                     noAnswer:(NSString*) noAnswer;
++ (KSCrashReportFilterAlert *)filterWithTitle:(NSString *)title
+                                      message:(NSString *)message
+                                    yesAnswer:(NSString *)yesAnswer
+                                     noAnswer:(NSString *)noAnswer;
 
 /**
  * @param title The title of the alert.
@@ -60,9 +58,9 @@
  * @param noAnswer The text to put in the "no" button. If nil, the filter will
  *                 proceed unconditionally.
  */
-- (id) initWithTitle:(NSString*) title
-             message:(NSString*) message
-           yesAnswer:(NSString*) yesAnswer
-            noAnswer:(NSString*) noAnswer;
+- (id)initWithTitle:(NSString *)title
+            message:(NSString *)message
+          yesAnswer:(NSString *)yesAnswer
+           noAnswer:(NSString *)noAnswer;
 
 @end

@@ -29,7 +29,6 @@
 extern "C" {
 #endif
 
-
 #include <stdint.h>
 
 /** Get the name of a mach exception.
@@ -66,9 +65,8 @@ int ksmach_signalForMachException(int exception, int64_t code);
  */
 int ksmach_machExceptionForSignal(int signal);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // HDR_KSMach_h
+#endif  // HDR_KSMach_h

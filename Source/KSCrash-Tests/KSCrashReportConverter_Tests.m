@@ -24,10 +24,8 @@
 // THE SOFTWARE.
 //
 
-
 #import "FileBasedTestCase.h"
 #import "XCTestCase+KSCrash.h"
-
 
 //#import "KSCrashReportConverter.h"
 #import "KSCrashReportStore.h"
@@ -40,8 +38,8 @@
 #define APPLE_BADPOINTER_UNSYMBOLICATED @"AppleReport-KSCrashTest-BadPointer-Unsymbolicated.txt"
 #define APPLE_NSEXCEPTION_UNSYMBOLICATED @"AppleReport-KSCrashTest-NSException-Unsymbolicated.txt"
 
-
-@interface KSCrashReportConverter_Tests : FileBasedTestCase @end
+@interface KSCrashReportConverter_Tests : FileBasedTestCase
+@end
 
 @implementation KSCrashReportConverter_Tests
 #if 0
