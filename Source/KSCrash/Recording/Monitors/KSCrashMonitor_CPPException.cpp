@@ -101,7 +101,7 @@ static void CPPExceptionTerminate(void)
 {
     ksmc_suspendEnvironment();
     KSLOG_DEBUG("Trapped c++ exception");
-    const char* name = NULL;
+    const char *name = NULL;
     std::type_info* tinfo = __cxxabiv1::__cxa_current_exception_type();
     if (tinfo != NULL)
     {
@@ -115,7 +115,7 @@ static void CPPExceptionTerminate(void)
         memset(crashContext, 0, sizeof(*crashContext));
 
         char descriptionBuff[DESCRIPTION_BUFFER_LENGTH];
-        const char* description = descriptionBuff;
+        const char *description = descriptionBuff;
         descriptionBuff[0] = 0;
 
         KSLOG_DEBUG("Discovering what kind of exception was thrown.");

@@ -28,7 +28,7 @@
 #include "Demangle.h"
 #include "KSDemangle_Swift.h"
 
-extern "C" char* ksdm_demangleSwift(const char* mangledSymbol)
+extern "C" char *ksdm_demangleSwift(const char *mangledSymbol)
 {
     swift::Demangle::DemangleOptions options = swift::Demangle::DemangleOptions::SimplifiedUIDemangleOptions();
     std::string demangled = swift::Demangle::demangleSymbolAsString(mangledSymbol, options);

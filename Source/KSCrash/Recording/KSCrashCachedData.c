@@ -114,7 +114,7 @@ static void updateThreadList()
     {
         for(int i = 0; i < oldThreadsCount; i++)
         {
-            const char* name = allThreadNames[i];
+            const char *name = allThreadNames[i];
             if (name != NULL)
             {
                 free((void*)name);
@@ -126,7 +126,7 @@ static void updateThreadList()
     {
         for(int i = 0; i < oldThreadsCount; i++)
         {
-            const char* name = allQueueNames[i];
+            const char *name = allQueueNames[i];
             if (name != NULL)
             {
                 free((void*)name);
@@ -217,7 +217,7 @@ KSThread* ksccd_getAllThreads(int* threadCount)
     return g_allMachThreads;
 }
 
-const char* ksccd_getThreadName(KSThread thread)
+const char *ksccd_getThreadName(KSThread thread)
 {
     if (g_allThreadNames != NULL)
     {
@@ -232,7 +232,7 @@ const char* ksccd_getThreadName(KSThread thread)
     return NULL;
 }
 
-const char* ksccd_getQueueName(KSThread thread)
+const char *ksccd_getQueueName(KSThread thread)
 {
     if (g_allQueueNames != NULL)
     {

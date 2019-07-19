@@ -262,9 +262,9 @@ static void* handleExceptions(void* const userData)
 {
     MachExceptionMessage exceptionMessage = {{0}};
     MachReplyMessage replyMessage = {{0}};
-    char* eventID = g_primaryEventID;
+    char *eventID = g_primaryEventID;
 
-    const char* threadName = (const char*) userData;
+    const char *threadName = (const char*) userData;
     pthread_setname_np(threadName);
     if (threadName == kThreadSecondary)
     {

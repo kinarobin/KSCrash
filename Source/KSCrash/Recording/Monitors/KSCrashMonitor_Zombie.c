@@ -44,7 +44,7 @@
 typedef struct
 {
     const void* object;
-    const char* className;
+    const char *className;
 } Zombie;
 
 static volatile Zombie* g_zombieCache;
@@ -67,7 +67,7 @@ static inline unsigned hashIndex(const void* object)
     return objPtr & g_zombieHashMask;
 }
 
-static bool copyStringIvar(const void* self, const char* ivarName, char* buffer, int bufferLength)
+static bool copyStringIvar(const void* self, const char *ivarName, char *buffer, int bufferLength)
 {
     Class class = object_getClass((id)self);
     KSObjCIvar ivar = {0};
@@ -190,7 +190,7 @@ static void install()
 //    });
 //}
 
-const char* kszombie_className(const void* object)
+const char *kszombie_className(const void* object)
 {
     volatile Zombie* cache = g_zombieCache;
     if (cache == NULL || object == NULL)

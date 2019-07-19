@@ -79,9 +79,9 @@ static KSApplicationState g_lastApplicationState = KSApplicationStateNone;
 #pragma mark - Utility -
 // ============================================================================
 
-static void printPreviousLog(const char* filePath)
+static void printPreviousLog(const char *filePath)
 {
-    char* data;
+    char *data;
     int length;
     if (ksfu_readEntireFile(filePath, &data, &length, 0))
     {
@@ -152,7 +152,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
 #pragma mark - API -
 // ============================================================================
 
-KSCrashMonitorType kscrash_install(const char* appName, const char* const installPath)
+KSCrashMonitorType kscrash_install(const char *appName, const char *const installPath)
 {
     KSLOG_DEBUG("Installing crash reporter.");
 
@@ -205,7 +205,7 @@ KSCrashMonitorType kscrash_setMonitoring(KSCrashMonitorType monitors)
     return g_monitoring;
 }
 
-void kscrash_setUserInfoJSON(const char* const userInfoJSON)
+void kscrash_setUserInfoJSON(const char *const userInfoJSON)
 {
     kscrashreport_setUserInfoJSON(userInfoJSON);
 }
@@ -257,11 +257,11 @@ void kscrash_setMaxReportCount(int maxReportCount)
     kscrs_setMaxReportCount(maxReportCount);
 }
 
-void kscrash_reportUserException(const char* name,
-                                 const char* reason,
-                                 const char* language,
-                                 const char* lineOfCode,
-                                 const char* stackTrace,
+void kscrash_reportUserException(const char *name,
+                                 const char *reason,
+                                 const char *language,
+                                 const char *lineOfCode,
+                                 const char *stackTrace,
                                  bool logAllThreads,
                                  bool terminateProgram)
 {
@@ -329,7 +329,7 @@ int kscrash_getReportIDs(int64_t* reportIDs, int count)
     return kscrs_getReportIDs(reportIDs, count);
 }
 
-char* kscrash_readReport(int64_t reportID)
+char *kscrash_readReport(int64_t reportID)
 {
     if (reportID <= 0)
     {
@@ -337,14 +337,14 @@ char* kscrash_readReport(int64_t reportID)
         return NULL;
     }
 
-    char* rawReport = kscrs_readReport(reportID);
+    char *rawReport = kscrs_readReport(reportID);
     if (rawReport == NULL)
     {
         KSLOG_ERROR("Failed to load report ID %" PRIx64, reportID);
         return NULL;
     }
 
-    char* fixedReport = kscrf_fixupCrashReport(rawReport);
+    char *fixedReport = kscrf_fixupCrashReport(rawReport);
     if (fixedReport == NULL)
     {
         KSLOG_ERROR("Failed to fixup report ID %" PRIx64, reportID);
@@ -354,7 +354,7 @@ char* kscrash_readReport(int64_t reportID)
     return fixedReport;
 }
 
-int64_t kscrash_addUserReport(const char* report, int reportLength)
+int64_t kscrash_addUserReport(const char *report, int reportLength)
 {
     return kscrs_addUserReport(report, reportLength);
 }

@@ -40,11 +40,11 @@
 static volatile bool g_isEnabled = false;
 
 
-void kscm_reportUserException(const char* name,
-                              const char* reason,
-                              const char* language,
-                              const char* lineOfCode,
-                              const char* stackTrace,
+void kscm_reportUserException(const char *name,
+                              const char *reason,
+                              const char *language,
+                              const char *lineOfCode,
+                              const char *stackTrace,
                               bool logAllThreads,
                               bool terminateProgram)
 {

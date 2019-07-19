@@ -43,8 +43,8 @@ static int g_maxReportCount = 5;
 // Have to use max 32-bit atomics because of MIPS.
 static _Atomic(uint32_t) g_nextUniqueIDLow;
 static int64_t g_nextUniqueIDHigh;
-static const char* g_appName;
-static const char* g_reportsPath;
+static const char *g_appName;
+static const char *g_reportsPath;
 static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static int compareInt64(const void* a, const void* b)
@@ -66,13 +66,13 @@ static inline int64_t getNextUniqueID()
     return g_nextUniqueIDHigh + g_nextUniqueIDLow++;
 }
 
-static void getCrashReportPathByID(int64_t id, char* pathBuffer)
+static void getCrashReportPathByID(int64_t id, char *pathBuffer)
 {
     snprintf(pathBuffer, KSCRS_MAX_PATH_LENGTH, "%s/%s-report-%016llx.json", g_reportsPath, g_appName, id);
     
 }
 
-static int64_t getReportIDFromFilename(const char* filename)
+static int64_t getReportIDFromFilename(const char *filename)
 {
     char scanFormat[100];
     sprintf(scanFormat, "%s-report-%%" PRIx64 ".json", g_appName);
@@ -173,7 +173,7 @@ static void initializeIDs()
 
 // Public API
 
-void kscrs_initialize(const char* appName, const char* reportsPath)
+void kscrs_initialize(const char *appName, const char *reportsPath)
 {
     pthread_mutex_lock(&g_mutex);
     g_appName = strdup(appName);
@@ -184,7 +184,7 @@ void kscrs_initialize(const char* appName, const char* reportsPath)
     pthread_mutex_unlock(&g_mutex);
 }
 
-int64_t kscrs_getNextCrashReport(char* crashReportPathBuffer)
+int64_t kscrs_getNextCrashReport(char *crashReportPathBuffer)
 {
     int64_t nextID = getNextUniqueID();
     if (crashReportPathBuffer)
@@ -210,18 +210,18 @@ int kscrs_getReportIDs(int64_t* reportIDs, int count)
     return count;
 }
 
-char* kscrs_readReport(int64_t reportID)
+char *kscrs_readReport(int64_t reportID)
 {
     pthread_mutex_lock(&g_mutex);
     char path[KSCRS_MAX_PATH_LENGTH];
     getCrashReportPathByID(reportID, path);
-    char* result;
+    char *result;
     ksfu_readEntireFile(path, &result, NULL, 2000000);
     pthread_mutex_unlock(&g_mutex);
     return result;
 }
 
-int64_t kscrs_addUserReport(const char* report, int reportLength)
+int64_t kscrs_addUserReport(const char *report, int reportLength)
 {
     pthread_mutex_lock(&g_mutex);
     int64_t currentID = getNextUniqueID();

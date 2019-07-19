@@ -74,7 +74,7 @@ static char g_hexNybbles[] =
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
 
-const char* ksjson_stringForError(const int error)
+const char *ksjson_stringForError(const int error)
 {
     switch (error)
     {
@@ -123,14 +123,14 @@ const char* ksjson_stringForError(const int error)
  * @return KSJSON_OK if the data was handled successfully.
  */
 static int appendEscapedString(KSJSONEncodeContext* const context,
-                               const char* restrict const string,
+                               const char *restrict const string,
                                int length)
 {
     char workBuffer[KSJSONCODEC_WorkBufferSize];
-    const char* const srcEnd = string + length;
+    const char *const srcEnd = string + length;
 
-    const char* restrict src = string;
-    char* restrict dst = workBuffer;
+    const char *restrict src = string;
+    char *restrict dst = workBuffer;
 
     // Simple case (no escape or special characters)
     for(; src < srcEnd &&
@@ -197,7 +197,7 @@ static int appendEscapedString(KSJSONEncodeContext* const context,
  * @return KSJSON_OK if the data was handled successfully.
  */
 static int addEscapedString(KSJSONEncodeContext* const context,
-                            const char* restrict const string,
+                            const char *restrict const string,
                             int length)
 {
     int result = KSJSON_OK;
@@ -232,7 +232,7 @@ static int addEscapedString(KSJSONEncodeContext* const context,
  * @return KSJSON_OK if the data was handled successfully.
  */
 static int addQuotedEscapedString(KSJSONEncodeContext* const context,
-                                  const char* restrict const string,
+                                  const char *restrict const string,
                                   int length)
 {
     int result;
@@ -248,7 +248,7 @@ static int addQuotedEscapedString(KSJSONEncodeContext* const context,
     return result || closeResult;
 }
 
-int ksjson_beginElement(KSJSONEncodeContext* const context, const char* const name)
+int ksjson_beginElement(KSJSONEncodeContext* const context, const char *const name)
 {
     int result = KSJSON_OK;
 
@@ -312,14 +312,14 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char* const na
 }
 
 int ksjson_addRawJSONData(KSJSONEncodeContext* const context,
-                          const char* const data,
+                          const char *const data,
                           const int length)
 {
     return addJSONData(context, data, length);
 }
 
 int ksjson_addBooleanElement(KSJSONEncodeContext* const context,
-                             const char* const name,
+                             const char *const name,
                              const bool value)
 {
     int result = ksjson_beginElement(context, name);
@@ -338,7 +338,7 @@ int ksjson_addBooleanElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_addFloatingPointElement(KSJSONEncodeContext* const context,
-                                   const char* const name,
+                                   const char *const name,
                                    double value)
 {
     int result = ksjson_beginElement(context, name);
@@ -352,7 +352,7 @@ int ksjson_addFloatingPointElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_addIntegerElement(KSJSONEncodeContext* const context,
-                             const char* const name,
+                             const char *const name,
                              int64_t value)
 {
     int result = ksjson_beginElement(context, name);
@@ -366,7 +366,7 @@ int ksjson_addIntegerElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_addNullElement(KSJSONEncodeContext* const context,
-                          const char* const name)
+                          const char *const name)
 {
     int result = ksjson_beginElement(context, name);
     unlikely_if(result != KSJSON_OK)
@@ -377,8 +377,8 @@ int ksjson_addNullElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_addStringElement(KSJSONEncodeContext* const context,
-                            const char* const name,
-                            const char* const value,
+                            const char *const name,
+                            const char *const value,
                             int length)
 {
     unlikely_if(value == NULL)
@@ -398,7 +398,7 @@ int ksjson_addStringElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_beginStringElement(KSJSONEncodeContext* const context,
-                              const char* const name)
+                              const char *const name)
 {
     int result = ksjson_beginElement(context, name);
     unlikely_if(result != KSJSON_OK)
@@ -409,7 +409,7 @@ int ksjson_beginStringElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_appendStringElement(KSJSONEncodeContext* const context,
-                               const char* const value,
+                               const char *const value,
                                int length)
 {
     return addEscapedString(context, value, length);
@@ -421,8 +421,8 @@ int ksjson_endStringElement(KSJSONEncodeContext* const context)
 }
 
 int ksjson_addDataElement(KSJSONEncodeContext* const context,
-                          const char* name,
-                          const char* value,
+                          const char *name,
+                          const char *value,
                           int length)
 {
     int result = KSJSON_OK;
@@ -439,17 +439,17 @@ int ksjson_addDataElement(KSJSONEncodeContext* const context,
 }
 
 int ksjson_beginDataElement(KSJSONEncodeContext* const context,
-                            const char* const name)
+                            const char *const name)
 {
     return ksjson_beginStringElement(context, name);
 }
 
 int ksjson_appendDataElement(KSJSONEncodeContext* const context,
-                             const char* const value,
+                             const char *const value,
                              int length)
 {
-    unsigned char* currentByte = (unsigned char*)value;
-    unsigned char* end = currentByte + length;
+    unsigned char *currentByte = (unsigned char*)value;
+    unsigned char *end = currentByte + length;
     char chars[2];
     int result = KSJSON_OK;
     while(currentByte < end)
@@ -472,7 +472,7 @@ int ksjson_endDataElement(KSJSONEncodeContext* const context)
 }
 
 int ksjson_beginArray(KSJSONEncodeContext* const context,
-                      const char* const name)
+                      const char *const name)
 {
     likely_if(context->containerLevel >= 0)
     {
@@ -491,7 +491,7 @@ int ksjson_beginArray(KSJSONEncodeContext* const context,
 }
 
 int ksjson_beginObject(KSJSONEncodeContext* const context,
-                       const char* const name)
+                       const char *const name)
 {
     likely_if(context->containerLevel >= 0)
     {
@@ -574,15 +574,15 @@ int ksjson_endEncode(KSJSONEncodeContext* const context)
 typedef struct
 {
     /** Pointer to current work area in the buffer. */
-    const char* bufferPtr;
+    const char *bufferPtr;
     /** Pointer to the end of the buffer. */
-    const char* bufferEnd;
+    const char *bufferEnd;
     /** Pointer to a buffer for storing a decoded name. */
-    char* nameBuffer;
+    char *nameBuffer;
     /** Length of the name buffer. */
     int nameBufferLength;
     /** Pointer to a buffer for storing a decoded string. */
-    char* stringBuffer;
+    char *stringBuffer;
     /** Length of the string buffer. */
     int stringBufferLength;
     /** The callbacks to call while decoding. */
@@ -637,7 +637,7 @@ static int writeUTF8(unsigned int character, char** dst);
  *
  * @return KSJSON_OK if successful.
  */
-static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBufferLength);
+static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBufferLength);
 
 /** Decode a JSON element.
  *
@@ -647,7 +647,7 @@ static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBu
  *
  * @return KSJSON_OK if successful.
  */
-static int decodeElement(const char* const name,
+static int decodeElement(const char *const name,
                                 KSJSONDecodeContext* context);
 
 
@@ -721,7 +721,7 @@ static int writeUTF8(unsigned int character, char** dst)
     return KSJSON_ERROR_INVALID_CHARACTER;
 }
 
-static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBufferLength)
+static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBufferLength)
 {
     *dstBuffer = '\0';
     unlikely_if(*context->bufferPtr != '\"')
@@ -730,7 +730,7 @@ static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBu
         return KSJSON_ERROR_INVALID_CHARACTER;
     }
 
-    const char* src = context->bufferPtr + 1;
+    const char *src = context->bufferPtr + 1;
     bool fastCopy = true;
 
     for(; src < context->bufferEnd && *src != '\"'; src++)
@@ -746,7 +746,7 @@ static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBu
         KSLOG_DEBUG("Premature end of data");
         return KSJSON_ERROR_INCOMPLETE;
     }
-    const char* srcEnd = src;
+    const char *srcEnd = src;
     src = context->bufferPtr + 1;
     int length = (int)(srcEnd - src);
     if (length >= dstBufferLength)
@@ -765,7 +765,7 @@ static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBu
         return KSJSON_OK;
     }
 
-    char* dst = dstBuffer;
+    char *dst = dstBuffer;
 
     for(; src < srcEnd; src++)
     {
@@ -880,7 +880,7 @@ static int decodeString(KSJSONDecodeContext* context, char* dstBuffer, int dstBu
     return KSJSON_OK;
 }
 
-static int decodeElement(const char* const name, KSJSONDecodeContext* context)
+static int decodeElement(const char *const name, KSJSONDecodeContext* context)
 {
     SKIP_WHITESPACE(context);
     unlikely_if(context->bufferPtr >= context->bufferEnd)
@@ -1050,7 +1050,7 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
         {
             // Try integer conversion.
             int64_t accum = 0;
-            const char* const start = context->bufferPtr;
+            const char *const start = context->bufferPtr;
 
             for(; context->bufferPtr < context->bufferEnd && isdigit(*context->bufferPtr); context->bufferPtr++)
             {
@@ -1108,15 +1108,15 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
     return KSJSON_ERROR_INVALID_CHARACTER;
 }
 
-int ksjson_decode(const char* const data,
+int ksjson_decode(const char *const data,
                   int length,
-                  char* stringBuffer,
+                  char *stringBuffer,
                   int stringBufferLength,
                   KSJSONDecodeCallbacks* const callbacks,
                   void* const userData,
                   int* const errorOffset)
 {
-    char* nameBuffer = stringBuffer;
+    char *nameBuffer = stringBuffer;
     int nameBufferLength = stringBufferLength / 4;
     stringBuffer = nameBuffer + nameBufferLength;
     stringBufferLength -= nameBufferLength;
@@ -1132,7 +1132,7 @@ int ksjson_decode(const char* const data,
         .userData = userData
     };
 
-    const char* ptr = data;
+    const char *ptr = data;
 
     int result = decodeElement(NULL, &context);
     likely_if(result == KSJSON_OK)
@@ -1154,8 +1154,8 @@ typedef struct JSONFromFileContext
 {
     KSJSONEncodeContext* encodeContext;
     KSJSONDecodeContext* decodeContext;
-    char* bufferStart;
-    const char* sourceFilename;
+    char *bufferStart;
+    const char *sourceFilename;
     int fd;
     bool isEOF;
     bool closeLastContainer;
@@ -1171,9 +1171,9 @@ static void updateDecoder_readFile(struct JSONFromFileContext* context)
 {
     likely_if(!context->isEOF)
     {
-        const char* end = context->decodeContext->bufferEnd;
-        char* start = context->bufferStart;
-        const char* ptr = context->decodeContext->bufferPtr;
+        const char *end = context->decodeContext->bufferEnd;
+        char *start = context->bufferStart;
+        const char *ptr = context->decodeContext->bufferPtr;
         int bufferLength = (int)(end - start);
         int remainingLength = (int)(end - ptr);
         unlikely_if(remainingLength < bufferLength / 2)
@@ -1194,7 +1194,7 @@ static void updateDecoder_readFile(struct JSONFromFileContext* context)
     }
 }
 
-static int addJSONFromFile_onBooleanElement(const char* const name,
+static int addJSONFromFile_onBooleanElement(const char *const name,
                                             const bool value,
                                             void* const userData)
 {
@@ -1204,7 +1204,7 @@ static int addJSONFromFile_onBooleanElement(const char* const name,
     return result;
 }
 
-static int addJSONFromFile_onFloatingPointElement(const char* const name,
+static int addJSONFromFile_onFloatingPointElement(const char *const name,
                                                   const double value,
                                                   void* const userData)
 {
@@ -1214,7 +1214,7 @@ static int addJSONFromFile_onFloatingPointElement(const char* const name,
     return result;
 }
 
-static int addJSONFromFile_onIntegerElement(const char* const name,
+static int addJSONFromFile_onIntegerElement(const char *const name,
                                             const int64_t value,
                                             void* const userData)
 {
@@ -1224,7 +1224,7 @@ static int addJSONFromFile_onIntegerElement(const char* const name,
     return result;
 }
 
-static int addJSONFromFile_onNullElement(const char* const name,
+static int addJSONFromFile_onNullElement(const char *const name,
                                          void* const userData)
 {
     JSONFromFileContext* context = (JSONFromFileContext*)userData;
@@ -1233,8 +1233,8 @@ static int addJSONFromFile_onNullElement(const char* const name,
     return result;
 }
 
-static int addJSONFromFile_onStringElement(const char* const name,
-                                           const char* const value,
+static int addJSONFromFile_onStringElement(const char *const name,
+                                           const char *const value,
                                            void* const userData)
 {
     JSONFromFileContext* context = (JSONFromFileContext*)userData;
@@ -1243,7 +1243,7 @@ static int addJSONFromFile_onStringElement(const char* const name,
     return result;
 }
 
-static int addJSONFromFile_onBeginObject(const char* const name,
+static int addJSONFromFile_onBeginObject(const char *const name,
                                          void* const userData)
 {
     JSONFromFileContext* context = (JSONFromFileContext*)userData;
@@ -1252,7 +1252,7 @@ static int addJSONFromFile_onBeginObject(const char* const name,
     return result;
 }
 
-static int addJSONFromFile_onBeginArray(const char* const name,
+static int addJSONFromFile_onBeginArray(const char *const name,
                                         void* const userData)
 {
     JSONFromFileContext* context = (JSONFromFileContext*)userData;
@@ -1279,8 +1279,8 @@ static int addJSONFromFile_onEndData(__unused void* const userData)
 }
 
 int ksjson_addJSONFromFile(KSJSONEncodeContext* const encodeContext,
-                           const char* restrict const name,
-                           const char* restrict const filename,
+                           const char *restrict const name,
+                           const char *restrict const filename,
                            const bool closeLastContainer)
 {
     KSJSONDecodeCallbacks callbacks =
@@ -1340,8 +1340,8 @@ int ksjson_addJSONFromFile(KSJSONEncodeContext* const encodeContext,
 }
 
 int ksjson_addJSONElement(KSJSONEncodeContext* const encodeContext,
-                          const char* restrict const name,
-                          const char* restrict const jsonData,
+                          const char *restrict const name,
+                          const char *restrict const jsonData,
                           const int jsonDataLength,
                           const bool closeLastContainer)
 {

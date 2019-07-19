@@ -90,7 +90,7 @@
 
 - (IBAction) onCrash:(__unused id) sender
 {
-    char* invalid = (char*)-1;
+    char *invalid = (char*)-1;
     *invalid = 1;
 }
 

@@ -36,7 +36,7 @@
 #include "KSLogger.h"
 
 
-const char* kscpu_currentArch(void)
+const char *kscpu_currentArch(void)
 {
     const NXArchInfo* archInfo = NXGetLocalArchInfo();
     return archInfo == NULL ? NULL : archInfo->name;

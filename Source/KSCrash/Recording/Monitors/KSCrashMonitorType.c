@@ -31,7 +31,7 @@
 static const struct
 {
     const KSCrashMonitorType type;
-    const char* const name;
+    const char *const name;
 } g_monitorTypes[] =
 {
 #define MONITORTYPE(NAME) {NAME, #NAME}
@@ -48,7 +48,7 @@ static const struct
 static const int g_monitorTypesCount = sizeof(g_monitorTypes) / sizeof(*g_monitorTypes);
 
 
-const char* kscrashmonitortype_name(const KSCrashMonitorType monitorType)
+const char *kscrashmonitortype_name(const KSCrashMonitorType monitorType)
 {
     for(int i = 0; i < g_monitorTypesCount; i++)
     {
