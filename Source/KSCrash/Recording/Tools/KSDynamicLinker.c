@@ -155,17 +155,12 @@ uint32_t ksdl_imageNamed(const char * const imageName, bool exactMatch)
 
         for (uint32_t iImg = 0; iImg < imageCount; iImg++) {
             const char *name = _dyld_get_image_name(iImg);
-            if (exactMatch)
-            {
-                if (strcmp(name, imageName) == 0)
-                {
+            if (exactMatch) {
+                if (strcmp(name, imageName) == 0) {
                     return iImg;
                 }
-            }
-            else
-            {
-                if (strstr(name, imageName) != NULL)
-                {
+            } else {
+                if (strstr(name, imageName) != NULL) {
                     return iImg;
                 }
             }

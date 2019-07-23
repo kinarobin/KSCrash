@@ -55,7 +55,7 @@
 typedef struct
 {
     KSCrashMonitorType monitorType;
-    KSCrashMonitorAPI* (*getAPI)(void);
+    KSCrashMonitorAPI * (*getAPI)(void);
 } Monitor;
 
 static Monitor g_monitors[] =
@@ -112,7 +112,7 @@ static void (*g_onExceptionEvent)(struct KSCrash_MonitorContext* monitorContext)
 #pragma mark - API -
 // ============================================================================
 
-static inline KSCrashMonitorAPI* getAPI(Monitor* monitor)
+static inline KSCrashMonitorAPI *getAPI(Monitor *monitor)
 {
     if (monitor != NULL && monitor->getAPI != NULL) {
         return monitor->getAPI();
@@ -120,17 +120,17 @@ static inline KSCrashMonitorAPI* getAPI(Monitor* monitor)
     return NULL;
 }
 
-static inline void setMonitorEnabled(Monitor* monitor, bool isEnabled)
+static inline void setMonitorEnabled(Monitor *monitor, bool isEnabled)
 {
-    KSCrashMonitorAPI* api = getAPI(monitor);
+    KSCrashMonitorAPI *api = getAPI(monitor);
     if (api != NULL && api->setEnabled != NULL) {
         api->setEnabled(isEnabled);
     }
 }
 
-static inline bool isMonitorEnabled(Monitor* monitor)
+static inline bool isMonitorEnabled(Monitor *monitor)
 {
-    KSCrashMonitorAPI* api = getAPI(monitor);
+    KSCrashMonitorAPI *api = getAPI(monitor);
     if (api != NULL && api->isEnabled != NULL) {
         return api->isEnabled();
     }
@@ -145,7 +145,7 @@ static inline void addContextualInfoToEvent(Monitor *monitor, struct KSCrash_Mon
     }
 }
 
-void kscm_setEventCallback(void (*onEvent)(struct KSCrash_MonitorContext* monitorContext))
+void kscm_setEventCallback(void (*onEvent)(struct KSCrash_MonitorContext *monitorContext))
 {
     g_onExceptionEvent = onEvent;
 }
@@ -172,7 +172,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
 
     KSCrashMonitorType activeMonitors = KSCrashMonitorTypeNone;
     for (int i = 0; i < g_monitorsCount; i++) {
-        Monitor* monitor = &g_monitors[i];
+        Monitor *monitor = &g_monitors[i];
         bool isEnabled = monitor->monitorType & monitorTypes;
         setMonitorEnabled(monitor, isEnabled);
         if (isMonitorEnabled(monitor)) {

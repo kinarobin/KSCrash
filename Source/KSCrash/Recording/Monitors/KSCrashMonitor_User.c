@@ -101,7 +101,7 @@ static bool isEnabled()
     return g_isEnabled;
 }
 
-KSCrashMonitorAPI* kscm_user_getAPI()
+KSCrashMonitorAPI *kscm_user_getAPI()
 {
     static KSCrashMonitorAPI api = {
         .setEnabled = setEnabled,

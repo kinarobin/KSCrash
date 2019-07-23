@@ -155,7 +155,7 @@ bool kslog_setLogFilename(const char *filename, bool overwrite)
             writeFmtToLog("KSLogger: Could not open %s: %s", filename, strerror(errno));
             return false;
         }
-        if(filename != g_logFilename) {
+        if (filename != g_logFilename) {
             strncpy(g_logFilename, filename, sizeof(g_logFilename));
         }
     }

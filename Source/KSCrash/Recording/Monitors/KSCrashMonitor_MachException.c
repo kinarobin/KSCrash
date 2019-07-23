@@ -521,8 +521,7 @@ static void setEnabled(bool isEnabled)
         if (isEnabled) {
             ksid_generate(g_primaryEventID);
             ksid_generate(g_secondaryEventID);
-            if (!installExceptionHandler())
-            {
+            if (!installExceptionHandler()) {
                 return;
             }
         } else {
@@ -547,10 +546,9 @@ static void addContextualInfoToEvent(struct KSCrash_MonitorContext* eventContext
 
 #endif
 
-KSCrashMonitorAPI* kscm_machexception_getAPI()
+KSCrashMonitorAPI *kscm_machexception_getAPI()
 {
-    static KSCrashMonitorAPI api =
-    {
+    static KSCrashMonitorAPI api = {
 #if KSCRASH_HAS_MACH
         .setEnabled = setEnabled,
         .isEnabled = isEnabled,

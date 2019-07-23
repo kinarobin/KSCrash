@@ -205,7 +205,7 @@ static bool isEnabled()
     return g_isEnabled;
 }
 
-extern "C" KSCrashMonitorAPI* kscm_cppexception_getAPI()
+extern "C" KSCrashMonitorAPI *kscm_cppexception_getAPI()
 {
     static KSCrashMonitorAPI api = {
         .setEnabled = setEnabled,

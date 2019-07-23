@@ -118,7 +118,7 @@ static void notifyOfBeforeInstallationState(void)
  *
  * This function gets passed as a callback to a crash handler.
  */
-static void onCrash(struct KSCrash_MonitorContext* monitorContext)
+static void onCrash(struct KSCrash_MonitorContext *monitorContext)
 {
     if (monitorContext->currentSnapshotUserReported == false) {
         KSLOG_DEBUG("Updating application state to note crash.");
@@ -145,7 +145,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
 #pragma mark - API -
 // ============================================================================
 
-KSCrashMonitorType kscrash_install(const char * appName, const char * const installPath)
+KSCrashMonitorType kscrash_install(const char *appName, const char *const installPath)
 {
     KSLOG_DEBUG("Installing crash reporter.");
 
@@ -277,9 +277,7 @@ void kscrash_notifyAppActive(bool isActive)
     if (g_installed) {
         kscrashstate_notifyAppActive(isActive);
     }
-    g_lastApplicationState = isActive
-        ? KSApplicationStateDidBecomeActive
-        : KSApplicationStateWillResignActiveActive;
+    g_lastApplicationState = isActive ? KSApplicationStateDidBecomeActive : KSApplicationStateWillResignActiveActive;
 }
 
 void kscrash_notifyAppInForeground(bool isInForeground)
@@ -287,9 +285,7 @@ void kscrash_notifyAppInForeground(bool isInForeground)
     if (g_installed) {
         kscrashstate_notifyAppInForeground(isInForeground);
     }
-    g_lastApplicationState = isInForeground
-        ? KSApplicationStateWillEnterForeground
-        : KSApplicationStateDidEnterBackground;
+    g_lastApplicationState = isInForeground ? KSApplicationStateWillEnterForeground : KSApplicationStateDidEnterBackground;
 }
 
 void kscrash_notifyAppTerminate(void)

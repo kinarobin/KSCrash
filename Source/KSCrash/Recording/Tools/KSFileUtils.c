@@ -211,7 +211,7 @@ bool ksfu_writeBytesToFD(const int fd, const char * const bytes, int length)
 bool ksfu_readBytesFromFD(const int fd, char * const bytes, int length)
 {
     char *pos = bytes;
-    while(length > 0) {
+    while (length > 0) {
         int bytesRead = (int)read(fd, pos, (unsigned)length);
         if (bytesRead == -1) {
             KSLOG_ERROR("Could not write to fd %d: %s", fd, strerror(errno));
@@ -350,7 +350,7 @@ bool ksfu_makePath(const char *absolutePath)
 {
     bool isSuccessful = false;
     char *pathCopy = strdup(absolutePath);
-    for (char *ptr = pathCopy+1; *ptr != '\0';ptr++) {
+    for (char *ptr = pathCopy + 1; *ptr != '\0'; ptr++) {
         if (*ptr == '/') {
             *ptr = '\0';
             if (mkdir(pathCopy, S_IRWXU) < 0 && errno != EEXIST) {

@@ -104,14 +104,15 @@ done:
 static int getReportIDs(int64_t* reportIDs, int count)
 {
     int index = 0;
-    DIR* dir = opendir(g_reportsPath);
+    DIR *dir = opendir(g_reportsPath);
     if (dir == NULL) {
         KSLOG_ERROR("Could not open directory %s", g_reportsPath);
         goto done;
     }
 
-    struct dirent* ent;
-    while((ent = readdir(dir)) != NULL && index < count) {
+    struct dirent *ent;
+    while ((ent = readdir(dir)) != NULL && index < count) {
+        printf("readdir-%s\n", ent->d_name);
         int64_t reportID = getReportIDFromFilename(ent->d_name);
         if (reportID > 0) {
             reportIDs[index++] = reportID;

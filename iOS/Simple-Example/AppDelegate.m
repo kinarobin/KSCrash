@@ -53,14 +53,10 @@ didFinishLaunchingWithOptions:(__unused NSDictionary *) launchOptions
     // Send all outstanding reports. You can do this any time; it doesn't need
     // to happen right as the app launches. Advanced-Example shows how to defer
     // displaying the main view controller until crash reporting completes.
-    [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error)
-     {
-         if (completed)
-         {
+    [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
+         if (completed){
              NSLog(@"Sent %d reports", (int)[reports count]);
-         }
-         else
-         {
+         } else {
              NSLog(@"Failed to send reports: %@", error);
          }
      }];

@@ -204,8 +204,7 @@ static void setEnabled(bool isEnabled)
         g_isEnabled = isEnabled;
         if (isEnabled) {
             ksid_generate(g_eventID);
-            if (!installSignalHandler())
-            {
+            if (!installSignalHandler()) {
                 return;
             }
         } else {
@@ -228,7 +227,7 @@ static void addContextualInfoToEvent(struct KSCrash_MonitorContext* eventContext
 
 #endif
 
-KSCrashMonitorAPI* kscm_signal_getAPI()
+KSCrashMonitorAPI *kscm_signal_getAPI()
 {
     static KSCrashMonitorAPI api =
     {
