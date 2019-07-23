@@ -177,10 +177,9 @@ int g_crasher_denominator = 0;
     RefHolder* ref = [RefHolder new];
     ref.ref = [MyProxy alloc];
 
-    dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       NSLog(@"Object = %@", ref.ref);
-                   });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"Object = %@", ref.ref);
+    });
 }
 
 - (void)zombieNSException
@@ -189,8 +188,7 @@ int g_crasher_denominator = 0;
         NSString* value = @"This is a string";
         [NSException raise:@"TurboEncabulatorException"
                     format:@"Spurving bearing failure: Barescent skor motion non-sinusoidal for %p", value];
-    }
-    @catch (NSException *exception) {
+    } @catch (NSException *exception) {
         RefHolder* ref = [RefHolder new];
         ref.ref = exception;
 
@@ -216,10 +214,9 @@ int g_crasher_denominator = 0;
 {
     [self.lock lock];
     [NSThread sleepForTimeInterval:0.2f];
-    dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       [self.lock lock];
-                   });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.lock lock];
+    });
 }
 
 - (void)pthreadAPICrash

@@ -47,7 +47,7 @@
 //
 //    bool success = false;
 //    char buffer[100];
-//    for(mach_msg_type_number_t i = 0; i < numThreads; i++)
+//    for (mach_msg_type_number_t i = 0; i < numThreads; i++)
 //    {
 //        thread_t thread = threads[i];
 //        if (ksthread_getQueueName(thread, buffer, sizeof(buffer)))
@@ -57,7 +57,7 @@
 //        }
 //    }
 //
-//    for(mach_msg_type_number_t i = 0; i < numThreads; i++)
+//    for (mach_msg_type_number_t i = 0; i < numThreads; i++)
 //    {
 //        mach_port_deallocate(thisTask, threads[i]);
 //    }

@@ -137,9 +137,9 @@ static inline bool isMonitorEnabled(Monitor* monitor)
     return false;
 }
 
-static inline void addContextualInfoToEvent(Monitor* monitor, struct KSCrash_MonitorContext* eventContext)
+static inline void addContextualInfoToEvent(Monitor *monitor, struct KSCrash_MonitorContext *eventContext)
 {
-    KSCrashMonitorAPI* api = getAPI(monitor);
+    KSCrashMonitorAPI *api = getAPI(monitor);
     if (api != NULL && api->addContextualInfoToEvent != NULL) {
         api->addContextualInfoToEvent(eventContext);
     }
@@ -171,7 +171,7 @@ void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
     KSLOG_DEBUG("Changing active monitors from 0x%x tp 0x%x.", g_activeMonitors, monitorTypes);
 
     KSCrashMonitorType activeMonitors = KSCrashMonitorTypeNone;
-    for(int i = 0; i < g_monitorsCount; i++) {
+    for (int i = 0; i < g_monitorsCount; i++) {
         Monitor* monitor = &g_monitors[i];
         bool isEnabled = monitor->monitorType & monitorTypes;
         setMonitorEnabled(monitor, isEnabled);
@@ -216,7 +216,7 @@ void kscm_handleException(struct KSCrash_MonitorContext* context)
     if (g_crashedDuringExceptionHandling) {
         context->crashedDuringCrashHandling = true;
     }
-    for(int i = 0; i < g_monitorsCount; i++) {
+    for (int i = 0; i < g_monitorsCount; i++) {
         Monitor* monitor = &g_monitors[i];
         if (isMonitorEnabled(monitor)) {
             addContextualInfoToEvent(monitor, context);

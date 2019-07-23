@@ -134,7 +134,7 @@ static void pruneReports()
         int64_t reportIDs[reportCount];
         reportCount = getReportIDs(reportIDs, reportCount);
         
-        for(int i = 0; i < reportCount - g_maxReportCount; i++) {
+        for (int i = 0; i < reportCount - g_maxReportCount; i++) {
             kscrs_deleteReportWithID(reportIDs[i]);
         }
     }

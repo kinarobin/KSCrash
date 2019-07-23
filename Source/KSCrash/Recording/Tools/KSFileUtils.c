@@ -127,7 +127,7 @@ done:
 static void freeDirListing(char** entries, int count)
 {
     if (entries != NULL) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             char *ptr = entries[i];
             if (ptr != NULL)
             {
@@ -156,7 +156,7 @@ static bool deletePathContents(const char *path, bool deleteTopLevelPathAlso)
         char *pathPtr = pathBuffer + strlen(pathBuffer);
         int pathRemainingLength = bufferLength - (int)(pathPtr - pathBuffer);
 
-        for(int i = 0; i < entryCount; i++) {
+        for (int i = 0; i < entryCount; i++) {
             char *entry = entries[i];
             if (entry != NULL && canDeletePath(entry))
             {
@@ -333,7 +333,7 @@ int ksfu_readLineFromFD(const int fd, char * const buffer, const int maxLength)
     char *end = buffer + maxLength - 1;
     *end = 0;
     char *ch;
-    for(ch = buffer; ch < end; ch++) {
+    for (ch = buffer; ch < end; ch++) {
         int bytesRead = (int)read(fd, ch, 1);
         if (bytesRead < 0) {
             KSLOG_ERROR("Could not read from fd %d: %s", fd, strerror(errno));
@@ -350,11 +350,10 @@ bool ksfu_makePath(const char *absolutePath)
 {
     bool isSuccessful = false;
     char *pathCopy = strdup(absolutePath);
-    for(char *ptr = pathCopy+1; *ptr != '\0';ptr++) {
+    for (char *ptr = pathCopy+1; *ptr != '\0';ptr++) {
         if (*ptr == '/') {
             *ptr = '\0';
-            if (mkdir(pathCopy, S_IRWXU) < 0 && errno != EEXIST)
-            {
+            if (mkdir(pathCopy, S_IRWXU) < 0 && errno != EEXIST) {
                 KSLOG_ERROR("Could not create directory %s: %s", pathCopy, strerror(errno));
                 goto done;
             }

@@ -103,7 +103,7 @@ static bool matchesPath(FixupContext* context, char** path, const char *finalNam
         finalName = "";
     }
 
-    for(int i = 0;i < context->currentDepth; i++) {
+    for (int i = 0;i < context->currentDepth; i++) {
         if (strncmp(context->objectPath[i], path[i], MAX_NAME_LENGTH) != 0) {
             return false;
         }
@@ -116,7 +116,7 @@ static bool matchesPath(FixupContext* context, char** path, const char *finalNam
 
 static bool matchesAPath(FixupContext* context, const char *name, char *paths[][MAX_DEPTH], int pathsCount)
 {
-    for(int i = 0; i < pathsCount; i++) {
+    for (int i = 0; i < pathsCount; i++) {
         if (matchesPath(context, paths[i], name)) {
             return true;
         }

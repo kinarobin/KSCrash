@@ -153,7 +153,7 @@ static bool installSignalHandler()
     sigemptyset(&action.sa_mask);
     action.sa_sigaction = &handleSignal;
 
-    for(int i = 0; i < fatalSignalsCount; i++) {
+    for (int i = 0; i < fatalSignalsCount; i++) {
         KSLOG_DEBUG("Assigning handler for signal %d", fatalSignals[i]);
         if (sigaction(fatalSignals[i], &action, &g_previousSignalHandlers[i]) != 0) {
             char sigNameBuff[30];
@@ -165,7 +165,7 @@ static bool installSignalHandler()
             }
             KSLOG_ERROR("sigaction (%s): %s", sigName, strerror(errno));
             // Try to reverse the damage
-            for(i--;i >= 0; i--)
+            for (i--;i >= 0; i--)
             {
                 sigaction(fatalSignals[i], &g_previousSignalHandlers[i], NULL);
             }
@@ -187,7 +187,7 @@ static void uninstallSignalHandler(void)
     const int* fatalSignals = kssignal_fatalSignals();
     int fatalSignalsCount = kssignal_numFatalSignals();
 
-    for(int i = 0; i < fatalSignalsCount; i++) {
+    for (int i = 0; i < fatalSignalsCount; i++) {
         KSLOG_DEBUG("Restoring original handler for signal %d", fatalSignals[i]);
         sigaction(fatalSignals[i], &g_previousSignalHandlers[i], NULL);
     }

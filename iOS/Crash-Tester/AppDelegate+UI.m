@@ -520,7 +520,7 @@ block:^(__unused UIViewController* controller) \
     Class* classes = objc_copyClassList(&classCount);
     Class foundClass = nil;
     
-    for(unsigned int i=0; i < classCount; i++) {
+    for (unsigned int i=0; i < classCount; i++) {
         Class testClass = classes[i];
         if (testClass != NULL &&
             class_getSuperclass(testClass) == [CRLCrash class] &&

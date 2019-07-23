@@ -53,11 +53,11 @@ didFinishLaunchingWithOptions:(__unused NSDictionary *) launchOptions
     // Create an installation (choose one)
 
     self.crashInstallation = [self makeConsoleInstallation];
-    //    self.crashInstallation = [self makeStandardInstallation];
-    //    self.crashInstallation = [self makeEmailInstallation];
-    //    self.crashInstallation = [self makeHockeyInstallation];
-    //    self.crashInstallation = [self makeQuincyInstallation];
-    //    self.crashInstallation = [self makeVictoryInstallation];
+    self.crashInstallation = [self makeStandardInstallation];
+    self.crashInstallation = [self makeEmailInstallation];
+    self.crashInstallation = [self makeHockeyInstallation];
+    self.crashInstallation = [self makeQuincyInstallation];
+    self.crashInstallation = [self makeVictoryInstallation];
     
     
     // Install the crash handler. This should be done as early as possible.

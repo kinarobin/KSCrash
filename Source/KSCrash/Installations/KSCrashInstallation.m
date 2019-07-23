@@ -214,8 +214,7 @@ static void crashCallback(const KSCrashReportWriter *writer) {
             if (value == nil) {
                 nextError = @"is nil";
             }
-        }
-        @catch (NSException *exception) {
+        } @catch (NSException *exception) {
             nextError = @"property not found";
         }
         if (nextError != nil) {

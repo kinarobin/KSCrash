@@ -312,18 +312,18 @@ static int extractTaggedNSString(const void * const object, char *buffer, int bu
     uintptr_t value = payload >> 4;
     static char *alphabet = "eilotrm.apdnsIc ufkMShjTRxgC4013bDNvwyUL2O856P-B79AFKEWV_zGJ/HYX";
     if (length <=7) {
-        for(int i = 0; i < copyLength; i++) {
+        for (int i = 0; i < copyLength; i++) {
             // ASCII case, limit to bottom 7 bits just in case
             buffer[i] = (char)(value & 0x7f);
             value >>= 8;
         }
     } else if (length <= 9) {
-        for(int i = 0; i < copyLength; i++) {
+        for (int i = 0; i < copyLength; i++) {
             uintptr_t index = (value >> ((length - 1 - i) * 6)) & 0x3f;
             buffer[i] = alphabet[index];
         }
     } else if (length <= 11) {
-        for(int i = 0; i < copyLength; i++) {
+        for (int i = 0; i < copyLength; i++) {
             uintptr_t index = (value >> ((length - 1 - i) * 5)) & 0x1f;
             buffer[i] = alphabet[index];
         }
@@ -369,7 +369,7 @@ static CFAbsoluteTime extractTaggedNSDate(const void * const object)
 static ClassData* getClassData(const void *class)
 {
     const char *className = getClassName(class);
-    for(ClassData* data = g_classData;; data++) {
+    for (ClassData* data = g_classData;; data++) {
         unlikely_if(data->name == NULL) {
             return data;
         }
@@ -463,7 +463,7 @@ static bool isValidName(const char * const name, const int maxLength)
     if (length == 0 || !VALID_NAME_START_CHAR(name[0])) {
         return false;
     }
-    for(int i = 1; i < length; i++) {
+    for (int i = 1; i < length; i++) {
         unlikely_if(!VALID_NAME_CHAR(name[i])) {
             if (name[i] == 0)
             {
@@ -489,7 +489,7 @@ static bool isValidIvarType(const char * const type)
     if (length == 0 || !VALID_TYPE_CHAR(type[0])) {
         return false;
     }
-    for(int i = 0; i < length; i++) {
+    for (int i = 0; i < length; i++) {
         unlikely_if(!VALID_TYPE_CHAR(type[i])) {
             if (type[i] == 0)
             {
@@ -531,7 +531,7 @@ static bool containsValidIvarData(const void * const classPtr)
     if (ivars->count > 0) {
         struct ivar_t ivar;
         uint8_t* ivarPtr = (uint8_t*)(&ivars->first) + ivars->entsizeAndFlags;
-        for(uint32_t i = 1; i < ivars->count; i++) {
+        for (uint32_t i = 1; i < ivars->count; i++) {
             if (!ksmem_copySafely(ivarPtr, &ivar, sizeof(ivar)))
             {
                 return false;
@@ -666,7 +666,7 @@ bool ksobjc_isKindOfClass(const void * const classPtr, const char * const classN
     
     const struct class_t* class = (const struct class_t*)classPtr;
     
-    for(int i = 0; i < 20; i++) {
+    for (int i = 0; i < 20; i++) {
         const char *name = getClassName(class);
         if (name == NULL) {
             return false;
@@ -687,7 +687,7 @@ const void *ksobjc_baseClass(const void * const classPtr)
     const struct class_t* superClass = classPtr;
     const struct class_t* subClass = classPtr;
     
-    for(int i = 0; i < 20; i++) {
+    for (int i = 0; i < 20; i++) {
         if (isRootClass(superClass)) {
             return subClass;
         }
@@ -727,7 +727,7 @@ int ksobjc_ivarList(const void * const classPtr, KSObjCIvar* dstIvars, int ivars
     const struct ivar_list_t* srcIvars = getClassRO(classPtr)->ivars;
     uintptr_t srcPtr = (uintptr_t)&srcIvars->first;
     const struct ivar_t* src = (void *)srcPtr;
-    for(int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         KSObjCIvar* dst = &dstIvars[i];
         dst->name = src->name;
         dst->type = src->type;
@@ -746,7 +746,7 @@ bool ksobjc_ivarNamed(const void * const classPtr, const char *name, KSObjCIvar*
     const struct ivar_list_t* ivars = getClassRO(classPtr)->ivars;
     uintptr_t ivarPtr = (uintptr_t)&ivars->first;
     const struct ivar_t* ivar = (void *)ivarPtr;
-    for(int i = 0; i < (int)ivars->count; i++) {
+    for (int i = 0; i < (int)ivars->count; i++) {
         if (ivar->name != NULL && strcmp(name, ivar->name) == 0) {
             dst->name = ivar->name;
             dst->type = ivar->type;
@@ -963,7 +963,7 @@ static int copyAndConvertUTF16StringToUTF8(const void * const src,
     const uint16_t* pSrc = src;
     uint8_t* pDst = dst;
     const uint8_t* const pDstEnd = pDst + maxByteCount - 1; // Leave room for null termination.
-    for(int charsRemaining = charCount; charsRemaining > 0 && pDst < pDstEnd; charsRemaining--) {
+    for (int charsRemaining = charCount; charsRemaining > 0 && pDst < pDstEnd; charsRemaining--) {
         // Decode UTF-16
         uint32_t character = 0;
         uint16_t leadSurrogate = *pSrc++;

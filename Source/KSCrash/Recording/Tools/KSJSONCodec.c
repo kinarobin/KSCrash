@@ -132,7 +132,7 @@ static int appendEscapedString(KSJSONEncodeContext* const context,
     char *restrict dst = workBuffer;
 
     // Simple case (no escape or special characters)
-    for(; src < srcEnd &&
+    for (; src < srcEnd &&
         *src != '\\' &&
         *src != '\"' &&
         (unsigned char)*src >= ' '; src++) {
@@ -140,7 +140,7 @@ static int appendEscapedString(KSJSONEncodeContext* const context,
     }
 
     // Deal with complicated case (if any)
-    for(; src < srcEnd; src++) {
+    for (; src < srcEnd; src++) {
         switch(*src) {
             case '\\':
             case '\"':
@@ -258,7 +258,7 @@ int ksjson_beginElement(KSJSONEncodeContext* const context, const char * const n
         unlikely_if((result = addJSONData(context, "\n", 1)) != KSJSON_OK) {
             return result;
         }
-        for(int i = 0; i < context->containerLevel; i++) {
+        for (int i = 0; i < context->containerLevel; i++) {
             unlikely_if((result = addJSONData(context, "    ", 4)) != KSJSON_OK)
             {
                 return result;
@@ -484,7 +484,7 @@ int ksjson_endContainer(KSJSONEncodeContext* const context)
         unlikely_if((result = addJSONData(context, "\n", 1)) != KSJSON_OK) {
             return result;
         }
-        for(int i = 0; i < context->containerLevel; i++) {
+        for (int i = 0; i < context->containerLevel; i++) {
             unlikely_if((result = addJSONData(context, "    ", 4)) != KSJSON_OK)
             {
                 return result;
@@ -681,7 +681,7 @@ static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBu
     const char *src = context->bufferPtr + 1;
     bool fastCopy = true;
 
-    for(; src < context->bufferEnd && *src != '\"'; src++) {
+    for (; src < context->bufferEnd && *src != '\"'; src++) {
         unlikely_if(*src == '\\') {
             fastCopy = false;
             src++;
@@ -710,7 +710,7 @@ static int decodeString(KSJSONDecodeContext* context, char *dstBuffer, int dstBu
 
     char *dst = dstBuffer;
 
-    for(; src < srcEnd; src++) {
+    for (; src < srcEnd; src++) {
         likely_if(*src != '\\') {
             *dst++ = *src;
         } else {
@@ -988,7 +988,7 @@ static int decodeElement(const char * const name, KSJSONDecodeContext* context)
             int64_t accum = 0;
             const char * const start = context->bufferPtr;
 
-            for(; context->bufferPtr < context->bufferEnd && isdigit(*context->bufferPtr); context->bufferPtr++)
+            for (; context->bufferPtr < context->bufferEnd && isdigit(*context->bufferPtr); context->bufferPtr++)
             {
                 accum = accum * 10 + (*context->bufferPtr - '0');
                 unlikely_if(accum < 0)

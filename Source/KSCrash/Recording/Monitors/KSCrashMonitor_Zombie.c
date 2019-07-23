@@ -113,7 +113,7 @@ static inline void handleDealloc(const void *self)
         zombie->object = self;
         Class class = object_getClass((id)self);
         zombie->className = class_getName(class);
-        for(; class != nil; class = class_getSuperclass(class)) {
+        for (; class != nil; class = class_getSuperclass(class)) {
             unlikely_if(class == g_lastDeallocedException.class)
             {
                 storeException(self);

@@ -77,7 +77,7 @@ static void updateThreadList()
     allThreadNames = calloc(allThreadsCount, sizeof(*allThreadNames));
     allQueueNames = calloc(allThreadsCount, sizeof(*allQueueNames));
     
-    for(mach_msg_type_number_t i = 0; i < allThreadsCount; i++) {
+    for (mach_msg_type_number_t i = 0; i < allThreadsCount; i++) {
         char buffer[1000];
         thread_t thread = threads[i];
         pthread_t pthread = pthread_from_mach_thread_np(thread);
@@ -105,7 +105,7 @@ static void updateThreadList()
         free(allPThreads);
     }
     if (allThreadNames != NULL) {
-        for(int i = 0; i < oldThreadsCount; i++) {
+        for (int i = 0; i < oldThreadsCount; i++) {
             const char *name = allThreadNames[i];
             if (name != NULL)
             {
@@ -115,7 +115,7 @@ static void updateThreadList()
         free(allThreadNames);
     }
     if (allQueueNames != NULL) {
-        for(int i = 0; i < oldThreadsCount; i++) {
+        for (int i = 0; i < oldThreadsCount; i++) {
             const char *name = allQueueNames[i];
             if (name != NULL)
             {
@@ -125,7 +125,7 @@ static void updateThreadList()
         free(allQueueNames);
     }
     
-    for(mach_msg_type_number_t i = 0; i < allThreadsCount; i++) {
+    for (mach_msg_type_number_t i = 0; i < allThreadsCount; i++) {
         mach_port_deallocate(thisTask, threads[i]);
     }
     vm_deallocate(thisTask, (vm_address_t)threads, sizeof(thread_t) * allThreadsCount);
@@ -135,7 +135,7 @@ static void *monitorCachedData(__unused void * const userData)
 {
     static int quickPollCount = 4;
     usleep(1);
-    for(;;) {
+    for (;;) {
         if (g_semaphoreCount <= 0) {
             updateThreadList();
         }
@@ -202,7 +202,7 @@ KSThread* ksccd_getAllThreads(int* threadCount)
 const char *ksccd_getThreadName(KSThread thread)
 {
     if (g_allThreadNames != NULL) {
-        for(int i = 0; i < g_allThreadsCount; i++) {
+        for (int i = 0; i < g_allThreadsCount; i++) {
             if (g_allMachThreads[i] == thread)
             {
                 return g_allThreadNames[i];
@@ -215,7 +215,7 @@ const char *ksccd_getThreadName(KSThread thread)
 const char *ksccd_getQueueName(KSThread thread)
 {
     if (g_allQueueNames != NULL) {
-        for(int i = 0; i < g_allThreadsCount; i++) {
+        for (int i = 0; i < g_allThreadsCount; i++) {
             if (g_allMachThreads[i] == thread)
             {
                 return g_allQueueNames[i];

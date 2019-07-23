@@ -165,7 +165,7 @@ static void restoreExceptionPorts(void)
     kern_return_t kr;
 
     // Reinstall old exception ports.
-    for(mach_msg_type_number_t i = 0; i < g_previousExceptionPorts.count; i++) {
+    for (mach_msg_type_number_t i = 0; i < g_previousExceptionPorts.count; i++) {
         KSLOG_TRACE("Restoring port index %d", i);
         kr = task_set_exception_ports(thisTask,
                                       g_previousExceptionPorts.masks[i],
@@ -267,7 +267,7 @@ static void *handleExceptions(void * const userData)
         eventID = g_secondaryEventID;
     }
 
-    for(;;) {
+    for (;;) {
         KSLOG_DEBUG("Waiting for mach exception");
 
         // Wait for a message.

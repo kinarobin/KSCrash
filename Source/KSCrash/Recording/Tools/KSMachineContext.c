@@ -80,12 +80,12 @@ static inline bool getThreadList(KSMachineContext* context)
         KSLOG_ERROR("Thread count %d is higher than maximum of %d", threadCount, maxThreadCount);
         threadCount = maxThreadCount;
     }
-    for(int i = 0; i < threadCount; i++) {
+    for (int i = 0; i < threadCount; i++) {
         context->allThreads[i] = threads[i];
     }
     context->threadCount = threadCount;
 
-    for(mach_msg_type_number_t i = 0; i < actualThreadCount; i++) {
+    for (mach_msg_type_number_t i = 0; i < actualThreadCount; i++) {
         mach_port_deallocate(thisTask, context->allThreads[i]);
     }
     vm_deallocate(thisTask, (vm_address_t)threads, sizeof(thread_t) * actualThreadCount);
@@ -149,7 +149,7 @@ void ksmc_addReservedThread(KSThread thread)
 #if KSCRASH_HAS_THREADS_API
 static inline bool isThreadInList(thread_t thread, KSThread* list, int listCount)
 {
-    for(int i = 0; i < listCount; i++) {
+    for (int i = 0; i < listCount; i++) {
         if (list[i] == (KSThread)thread) {
             return true;
         }
@@ -171,7 +171,7 @@ void ksmc_suspendEnvironment()
         return;
     }
     
-    for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
+    for (mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
         thread_t thread = g_suspendedThreads[i];
         if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount)) {
             if ((kr = thread_suspend(thread)) != KERN_SUCCESS)
@@ -199,7 +199,7 @@ void ksmc_resumeEnvironment()
         return;
     }
     
-    for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
+    for (mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
         thread_t thread = g_suspendedThreads[i];
         if (thread != thisThread && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount)) {
             if ((kr = thread_resume(thread)) != KERN_SUCCESS)
@@ -210,7 +210,7 @@ void ksmc_resumeEnvironment()
         }
     }
     
-    for(mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
+    for (mach_msg_type_number_t i = 0; i < g_suspendedThreadsCount; i++) {
         mach_port_deallocate(thisTask, g_suspendedThreads[i]);
     }
     vm_deallocate(thisTask, (vm_address_t)g_suspendedThreads, sizeof(thread_t) * g_suspendedThreadsCount);
@@ -235,7 +235,7 @@ KSThread ksmc_getThreadAtIndex(const KSMachineContext* const context, int index)
 int ksmc_indexOfThread(const KSMachineContext* const context, KSThread thread)
 {
     KSLOG_TRACE("check thread vs %d threads", context->threadCount);
-    for(int i = 0; i < (int)context->threadCount; i++) {
+    for (int i = 0; i < (int)context->threadCount; i++) {
         KSLOG_TRACE("%d: %x vs %x", i, thread, context->allThreads[i]);
         if (context->allThreads[i] == thread) {
             return i;

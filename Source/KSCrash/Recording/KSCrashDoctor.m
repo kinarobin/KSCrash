@@ -460,8 +460,7 @@ typedef enum {
         }
 
         return nil;
-    }
-    @catch (NSException *e) {
+    } @catch (NSException *e) {
         NSArray *symbols = [e callStackSymbols];
         if (symbols) {
             return [NSString stringWithFormat:@"No diagnosis due to exception %@:\n%@\nPlease file a bug report to the KSCrash project.", e, symbols];

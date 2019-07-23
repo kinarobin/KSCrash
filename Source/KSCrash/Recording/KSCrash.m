@@ -348,9 +348,9 @@ static NSString *getBasePath() {
 // ============================================================================
 
 #define SYNTHESIZE_CRASH_STATE_PROPERTY(TYPE, NAME) \
-    -(TYPE)NAME {                                   \
-        return kscrashstate_currentState()->NAME;   \
-    }
+- (TYPE)NAME {                                   \
+   return kscrashstate_currentState()->NAME;   \
+}
 
 SYNTHESIZE_CRASH_STATE_PROPERTY(NSTimeInterval, activeDurationSinceLastCrash)
 SYNTHESIZE_CRASH_STATE_PROPERTY(NSTimeInterval, backgroundDurationSinceLastCrash)

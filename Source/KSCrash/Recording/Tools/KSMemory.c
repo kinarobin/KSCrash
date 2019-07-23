@@ -63,7 +63,7 @@ static inline int copyMaxPossible(const void *restrict const src, void *restrict
         return byteCount;
     }
     
-    for(;;) {
+    for (;;) {
         int copyLength = (int)(pSrcEnd - pSrc);
         if (copyLength <= 0) {
             break;

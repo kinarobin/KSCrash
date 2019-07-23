@@ -97,7 +97,7 @@ bool ksthread_getQueueName(const KSThread thread, char * const buffer, int bufLe
     
     // Queue label must be a null terminated string.
     int iLabel;
-    for(iLabel = 0; iLabel < length + 1; iLabel++) {
+    for (iLabel = 0; iLabel < length + 1; iLabel++) {
         if (queue_name[iLabel] < ' ' || queue_name[iLabel] > '~') {
             break;
         }

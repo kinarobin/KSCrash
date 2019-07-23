@@ -66,7 +66,7 @@ bool ksstring_isNullTerminatedUTF8String(const void *memory,
     const unsigned char *ptr = memory;
     const unsigned char * const end = ptr + maxLength;
 
-    for(; ptr < end; ptr++) {
+    for (; ptr < end; ptr++) {
         unsigned char ch = *ptr;
         unlikely_if(ch == 0) {
             return (ptr - (const unsigned char*)memory) >= minLength;
@@ -81,7 +81,7 @@ bool ksstring_isNullTerminatedUTF8String(const void *memory,
             {
                 return false;
             }
-            for(int i = 0; i < continuationBytes; i++)
+            for (int i = 0; i < continuationBytes; i++)
             {
                 ptr++;
                 unlikely_if((*ptr & 0xc0) != 0x80)
@@ -128,7 +128,7 @@ bool ksstring_extractHexValue(const char *string, int stringLength, uint64_t* co
     if (stringLength > 0) {
         const unsigned char *current = (const unsigned char*)string;
         const unsigned char * const end = current + stringLength;
-        for(;;)
+        for (;;)
         {
 #if KSCRASH_HAS_STRNSTR
             current = (const unsigned char*)strnstr((const char*)current, "0x", (unsigned)(end - current));

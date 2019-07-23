@@ -50,8 +50,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum
-{
+typedef enum {
     KSApplicationStateNone,
     KSApplicationStateDidBecomeActive,
     KSApplicationStateWillResignActiveActive,
@@ -146,7 +145,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
 #pragma mark - API -
 // ============================================================================
 
-KSCrashMonitorType kscrash_install(const char *appName, const char * const installPath)
+KSCrashMonitorType kscrash_install(const char * appName, const char * const installPath)
 {
     KSLOG_DEBUG("Installing crash reporter.");
 

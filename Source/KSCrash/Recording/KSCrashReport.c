@@ -158,7 +158,7 @@ static void addTextFileElement(const KSCrashReportWriter* const writer, const ch
 
     char buffer[512];
     int bytesRead;
-    for(bytesRead = (int)read(fd, buffer, sizeof(buffer));
+    for (bytesRead = (int)read(fd, buffer, sizeof(buffer));
         bytesRead > 0;
         bytesRead = (int)read(fd, buffer, sizeof(buffer))) {
         if (ksjson_appendStringElement(getJsonContext(writer), buffer, bytesRead) != KSJSON_OK) {
@@ -203,27 +203,27 @@ static void addUUIDElement(const KSCrashReportWriter* const writer, const char *
         char uuidBuffer[37];
         const unsigned char *src = value;
         char *dst = uuidBuffer;
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             *dst++ = g_hexNybbles[(*src>>4)&15];
             *dst++ = g_hexNybbles[(*src++)&15];
         }
         *dst++ = '-';
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             *dst++ = g_hexNybbles[(*src>>4)&15];
             *dst++ = g_hexNybbles[(*src++)&15];
         }
         *dst++ = '-';
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             *dst++ = g_hexNybbles[(*src>>4)&15];
             *dst++ = g_hexNybbles[(*src++)&15];
         }
         *dst++ = '-';
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             *dst++ = g_hexNybbles[(*src>>4)&15];
             *dst++ = g_hexNybbles[(*src++)&15];
         }
         *dst++ = '-';
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             *dst++ = g_hexNybbles[(*src>>4)&15];
             *dst++ = g_hexNybbles[(*src++)&15];
         }
@@ -294,7 +294,7 @@ static void addTextLinesFromFile(const KSCrashReportWriter* const writer, const 
     }
     char buffer[1024];
     beginArray(writer, key); {
-        for(;;) {
+        for (;;) {
             int length = sizeof(buffer);
             ksfu_readBufferedReaderUntilChar(&reader, '\n', buffer, &length);
             if (length <= 0)
@@ -543,7 +543,7 @@ static void writeUnknownObjectContents(const KSCrashReportWriter* const writer,
             const void *class = ksobjc_isaPointer(object);
             int ivarCount = ksobjc_ivarList(class, ivars, sizeof(ivars)/sizeof(*ivars));
             *limit -= ivarCount;
-            for(int i = 0; i < ivarCount; i++)
+            for (int i = 0; i < ivarCount; i++)
             {
                 KSObjCIvar* ivar = &ivars[i];
                 switch(ivar->type[0])
@@ -619,7 +619,7 @@ static void writeUnknownObjectContents(const KSCrashReportWriter* const writer,
 static bool isRestrictedClass(const char *name)
 {
     if (g_introspectionRules.restrictedClasses != NULL) {
-        for(int i = 0; i < g_introspectionRules.restrictedClassesCount; i++) {
+        for (int i = 0; i < g_introspectionRules.restrictedClassesCount; i++) {
             if (strcmp(name, g_introspectionRules.restrictedClasses[i]) == 0)
             {
                 return true;
@@ -954,7 +954,7 @@ static void writeNotableStackContents(const KSCrashReportWriter* const writer,
     }
     uintptr_t contentsAsPointer;
     char nameBuffer[40];
-    for(uintptr_t address = lowAddress; address < highAddress; address += sizeof(address)) {
+    for (uintptr_t address = lowAddress; address < highAddress; address += sizeof(address)) {
         if (ksmem_copySafely((void *)address, &contentsAsPointer, sizeof(contentsAsPointer))) {
             sprintf(nameBuffer, "stack@%p", (void *)address);
             writeMemoryContentsIfNotable(writer, nameBuffer, contentsAsPointer);
@@ -981,7 +981,7 @@ static void writeBasicRegisters(const KSCrashReportWriter* const writer,
     const char *registerName;
     writer->beginObject(writer, key); {
         const int numRegisters = kscpu_numRegisters();
-        for(int reg = 0; reg < numRegisters; reg++) {
+        for (int reg = 0; reg < numRegisters; reg++) {
             registerName = kscpu_registerName(reg);
             if (registerName == NULL)
             {
@@ -1011,7 +1011,7 @@ static void writeExceptionRegisters(const KSCrashReportWriter* const writer,
     const char *registerName;
     writer->beginObject(writer, key); {
         const int numRegisters = kscpu_numExceptionRegisters();
-        for(int reg = 0; reg < numRegisters; reg++) {
+        for (int reg = 0; reg < numRegisters; reg++) {
             registerName = kscpu_exceptionRegisterName(reg);
             if (registerName == NULL)
             {
@@ -1058,7 +1058,7 @@ static void writeNotableRegisters(const KSCrashReportWriter* const writer,
     char registerNameBuff[30];
     const char *registerName;
     const int numRegisters = kscpu_numRegisters();
-    for(int reg = 0; reg < numRegisters; reg++) {
+    for (int reg = 0; reg < numRegisters; reg++) {
         registerName = kscpu_registerName(reg);
         if (registerName == NULL) {
             snprintf(registerNameBuff, sizeof(registerNameBuff), "r%d", reg);
@@ -1170,7 +1170,7 @@ static void writeAllThreads(const KSCrashReportWriter* const writer,
     // Fetch info for all threads.
     writer->beginArray(writer, key); {
         KSLOG_DEBUG("Writing %d threads.", threadCount);
-        for(int i = 0; i < threadCount; i++) {
+        for (int i = 0; i < threadCount; i++) {
             KSThread thread = ksmc_getThreadAtIndex(context, i);
             if (thread == offendingThread)
             {
@@ -1231,7 +1231,7 @@ static void writeBinaryImages(const KSCrashReportWriter* const writer, const cha
     const int imageCount = ksdl_imageCount();
 
     writer->beginArray(writer, key); {
-        for(int iImg = 0; iImg < imageCount; iImg++) {
+        for (int iImg = 0; iImg < imageCount; iImg++) {
             writeBinaryImage(writer, NULL, iImg);
         }
     }
@@ -1733,7 +1733,7 @@ void kscrashreport_setDoNotIntrospectClasses(const char** doNotIntrospectClasses
             return;
         }
         
-        for(int i = 0; i < newClassesLength; i++) {
+        for (int i = 0; i < newClassesLength; i++) {
             newClasses[i] = strdup(doNotIntrospectClasses[i]);
         }
     }
@@ -1742,7 +1742,7 @@ void kscrashreport_setDoNotIntrospectClasses(const char** doNotIntrospectClasses
     g_introspectionRules.restrictedClassesCount = newClassesLength;
     
     if (oldClasses != NULL) {
-        for(int i = 0; i < oldClassesLength; i++) {
+        for (int i = 0; i < oldClassesLength; i++) {
             free((void *)oldClasses[i]);
         }
         free(oldClasses);

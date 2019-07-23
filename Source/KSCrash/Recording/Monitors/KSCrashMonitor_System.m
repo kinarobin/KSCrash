@@ -556,10 +556,10 @@ static void addContextualInfoToEvent(KSCrash_MonitorContext *eventContext) {
 }
 
 KSCrashMonitorAPI *kscm_system_getAPI() {
-    static KSCrashMonitorAPI api =
-        {
+    static KSCrashMonitorAPI api = {
             .setEnabled = setEnabled,
             .isEnabled = isEnabled,
-            .addContextualInfoToEvent = addContextualInfoToEvent};
+            .addContextualInfoToEvent = addContextualInfoToEvent
+    };
     return &api;
 }

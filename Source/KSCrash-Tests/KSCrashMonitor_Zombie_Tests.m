@@ -94,8 +94,7 @@
     @autoreleasepool {
         @try {
             [NSException raise:@"name" format:@"reason"];
-        }
-        @catch (NSException *exception) {
+        } @catch (NSException *exception) {
             object = exception;
         }
     }
